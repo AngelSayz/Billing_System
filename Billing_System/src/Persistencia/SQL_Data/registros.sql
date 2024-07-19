@@ -116,7 +116,7 @@ INSERT INTO pago (numero, fechaPago, monto, nivel_educativo, periodo, alumno) VA
     (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000015');
 
 -- Tabla grupo /// AUTO_INCREMENT
-INSERT INTO Grupo (numero, nombre, periodo, nivel_educativo) VALUES
+INSERT INTO grupo (numero, nombre, periodo, nivel_educativo) VALUES
     (null, 'A', 1, 'KIND'),
     (null, 'B', 1, 'KIND'),
     (null, 'A', 2, 'PRIM'),

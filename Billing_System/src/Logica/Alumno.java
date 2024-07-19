@@ -1,6 +1,5 @@
 package Logica;
 
-import Persistencia.*;
 
 public class Alumno {
     private String matricula;

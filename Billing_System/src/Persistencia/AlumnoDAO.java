@@ -28,7 +28,7 @@ public class AlumnoDAO {
         }
     }
 
-    public static void inputAlumno() throws SQLException {
+    public static void crearAlumno() throws SQLException {
         AlumnoDAO alumnoDAO = new AlumnoDAO();
         Scanner scanner = new Scanner(System.in);
 
