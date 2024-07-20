@@ -1,21 +1,22 @@
 -- Tabla alumno
-INSERT INTO alumno (matricula, nombre_de_pila, primerApellido, segApellido, edad, fechaNac) VALUES
-    ('0000000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10'),
-    ('0000000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15'),
-    ('0000000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28'),
-    ('0000000004', 'María', 'López', 'Martínez', 4, '2020-04-22'),
-    ('0000000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03'),
-    ('0000000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05'),
-    ('0000000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12'),
-    ('0000000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20'),
-    ('0000000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17'),
-    ('0000000010', 'Pedro', 'González', 'López', 9, '2015-02-28'),
-    ('0000000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08'),
-    ('0000000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15'),
-    ('0000000013', 'María', 'López', 'Sánchez', 15, '2009-08-22'),
-    ('0000000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10'),
-    ('0000000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30'),
-    ('0000000000', 'Admin', 'Pass', '', 0, '2000-01-01');
+INSERT INTO alumno (matricula, nombre_de_pila, primerApellido, segApellido, edad, fechaNac, category) VALUES
+    ('0000', 'Jose', 'Zuniga', 'Medina', 20, '2004-06-14', 'admin');
+    ('0000000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10', 'user'),
+    ('0000000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15', 'user'),
+    ('0000000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28', 'user'),
+    ('0000000004', 'María', 'López', 'Martínez', 4, '2020-04-22', 'user'),
+    ('0000000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03', 'user'),
+    ('0000000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05', 'user'),
+    ('0000000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12', 'user'),
+    ('0000000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20', 'user'),
+    ('0000000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17', 'user'),
+    ('0000000010', 'Pedro', 'González', 'López', 9, '2015-02-28', 'user'),
+    ('0000000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08', 'user'),
+    ('0000000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15', 'user'),
+    ('0000000013', 'María', 'López', 'Sánchez', 15, '2009-08-22', 'user'),
+    ('0000000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10', 'user'),
+    ('0000000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30', 'user'),
+    ('0000', 'Admin', 'X', '', 0, '0000-00-00', 'admin');
 
 -- Tabla periodo ///// AUTO_INCREMENT
 INSERT INTO periodo (numero, añoInicio, añoFin) VALUES
@@ -396,3 +397,4 @@ INSERT INTO detalle_Pago (tipo_de_pago, pago) VALUES
     (12, 13),
     (12, 14),
     (12, 15);
+    alter table 

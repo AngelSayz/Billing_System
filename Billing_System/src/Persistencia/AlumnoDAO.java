@@ -10,7 +10,7 @@ import java.util.Random;
 public class AlumnoDAO {
 
     public void registrarAlumno(Alumno alumno) throws SQLException {
-        String sql = "INSERT INTO alumno (matricula, nombre_de_pila, primerApellido, segApellido, edad, fechaNac) VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO alumno (matricula, nombre_de_pila, primerApellido, segApellido, edad, fechaNac, category) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -20,27 +20,23 @@ public class AlumnoDAO {
             stmt.setString(4, alumno.getSegApellido());
             stmt.setInt(5, alumno.getEdad());
             stmt.setDate(6, Date.valueOf(alumno.getFechaNac()));
-
+            stmt.setString(7, "user");
             stmt.executeUpdate();
         } catch (SQLException e) {
             System.err.println("Error al registrar el alumno: " + e.getMessage());
             throw e;
         }
     }
-
     public static void crearAlumno() throws SQLException {
         AlumnoDAO alumnoDAO = new AlumnoDAO();
         Scanner scanner = new Scanner(System.in);
 
-        String nombreDePila = getValidString(scanner, "Nombre del Alumno: ", 15); // Validación de longitud máxima
-        String primerApellido = getValidString(scanner, "Apellido Paterno: ", 15); // Validación de longitud máxima
-        String segundoApellido = getValidOptionalString(scanner, "Apellido Materno: ", 15); // Validación opcional de
-                                                                                            // longitud máxima
-        int edad = getValidInt(scanner, "Edad del Alumno: "); // Validación de entero mayor a 0
-        String fechaNac = getValidDate(scanner, "Fecha de nacimiento (YYYY-MM-DD): "); // Validación de fecha válida
-
-        String matricula = generarMatricula(); // Llamada sin parámetros
-
+        String nombreDePila = getValidString(scanner, "Nombre del Alumno: ", 15); 
+        String primerApellido = getValidString(scanner, "Apellido Paterno: ", 15); 
+        String segundoApellido = getValidOptionalString(scanner, "Apellido Materno: ", 15);                                                                                  
+        int edad = getValidInt(scanner, "Edad del Alumno: "); 
+        String fechaNac = getValidDate(scanner, "Fecha de nacimiento (YYYY-MM-DD): "); 
+        String matricula = generarMatricula(); 
         Alumno alumno = new Alumno(matricula, nombreDePila, primerApellido, segundoApellido, edad, fechaNac);
 
         try {
@@ -58,10 +54,10 @@ public class AlumnoDAO {
 
         try (Connection connection = DatabaseConnection.getConnection()) {
             do {
-                int randomInt = random.nextInt(1, 999999999); // Generates a random integer between 0 and 999999999
+                int randomInt = random.nextInt(1, 999999999);
                 matricula = String.format("%010d", randomInt); // Formatea el número a 4 dígitos
 
-                // Check if the matricula already exists in the database
+                // Comprobacion en la DB de la matricula
                 String query = "SELECT COUNT(*) FROM alumno WHERE matricula = ?";
                 try (PreparedStatement statement = connection.prepareStatement(query)) {
                     statement.setString(1, matricula);
@@ -76,7 +72,6 @@ public class AlumnoDAO {
         return matricula;
     }
 
-    // Validar que la cadena no esté vacía y que su longitud no exceda un máximo
     private static String getValidString(Scanner scanner, String prompt, int maxLength) {
         String input;
         while (true) {
@@ -93,7 +88,6 @@ public class AlumnoDAO {
         return input;
     }
 
-    // Validar que la cadena sea vacía o que su longitud no exceda un máximo
     private static String getValidOptionalString(Scanner scanner, String prompt, int maxLength) {
         String input;
         while (true) {
@@ -107,8 +101,6 @@ public class AlumnoDAO {
         }
         return input;
     }
-
-    // Validar que la entrada sea un número entero
     private static int getValidInt(Scanner scanner, String prompt) {
         Integer input = null;
         while (input == null) {
@@ -130,9 +122,6 @@ public class AlumnoDAO {
         }
         return input;
     }
-
-    // Validar que la entrada sea una fecha válida en el formato YYYY-MM-DD
-
     private static String getValidDate(Scanner scanner, String prompt) {
         String input;
         while (true) {
@@ -146,8 +135,6 @@ public class AlumnoDAO {
         }
         return input;
     }
-
-    // Método auxiliar para validar la fecha
     private static boolean isValidDate(String date) {
         try {
             LocalDate.parse(date);
@@ -155,5 +142,31 @@ public class AlumnoDAO {
         } catch (DateTimeParseException e) {
             return false;
         }
+    }
+    public String verificarMatricula(String matricula) throws SQLException {
+        String sql = "SELECT category FROM alumno WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("category");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar la matrícula: " + e.getMessage());
+            throw e;
+        }
+    }
+    public static void eliminarAlumno() throws SQLException {
+
+    }
+    public static void actualizarAlumno() throws SQLException {
+        
+    }
+    public static void consultarAlumno() throws SQLException {
+        
     }
 }
