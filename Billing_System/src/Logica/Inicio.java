@@ -6,30 +6,32 @@ import java.util.Scanner;
 import Persistencia.AlumnoDAO;
 
 public class Inicio {
- public static void iniciarSesion() {
-        boolean loginExitoso = true;
-        @SuppressWarnings("resource")
-        Scanner sc= new Scanner(System.in);
+    public static void iniciarSesion() {
+        Scanner sc = new Scanner(System.in);
         AlumnoDAO alumnoDAO = new AlumnoDAO();
-
-    do {  
-        System.out.println("BIENVENIDO");
-        System.out.print("Ingrese su matrícula: ");
-        String matricula = sc.nextLine().trim();
-        try {
-            String categoria = alumnoDAO.verificarMatricula(matricula);
-            if (categoria != null) {
-                if (categoria.equals("admin")) {
-                    menu.menuAdmin();
+        boolean loginExitoso;
+        System.out.println("----------------------------------------------");
+        System.out.println("                  BIENVENIDO");
+        System.out.println("----------------------------------------------");
+        do {
+            loginExitoso = false;
+            String matricula = Valid.getValidString(sc, "Ingrese su matrícula: ", 10);
+            try {
+                String categoria = alumnoDAO.verificarMatricula(matricula);
+                if (categoria != null) {
+                    if (categoria.equals("admin")) {
+                        loginExitoso = true;
+                        menu.menuAdmin();
+                    } else {
+                        loginExitoso = true;
+                        menu.menuAlumno(matricula);
+                    }
                 } else {
-                    menu.menuAlumno();
+                    System.out.println("Matrícula invalida. Por favor, inténtelo de nuevo.");
                 }
-            } else {
-                System.out.println("Matrícula invalida. Por favor, inténtelo de nuevo.");
+            } catch (SQLException e) {
+                System.err.println("Error al iniciar sesión: " + e.getMessage());
             }
-        } catch (SQLException e) {
-            System.err.println("Error al iniciar sesión: " + e.getMessage());
-        }
-    } while (loginExitoso);
+        } while (!loginExitoso);
     }
 }

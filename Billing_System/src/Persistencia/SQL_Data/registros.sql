@@ -1,22 +1,21 @@
 -- Tabla alumno
 INSERT INTO alumno (matricula, nombre_de_pila, primerApellido, segApellido, edad, fechaNac, category) VALUES
-    ('0000', 'Jose', 'Zuniga', 'Medina', 20, '2004-06-14', 'admin');
-    ('0000000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10', 'user'),
-    ('0000000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15', 'user'),
-    ('0000000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28', 'user'),
-    ('0000000004', 'María', 'López', 'Martínez', 4, '2020-04-22', 'user'),
-    ('0000000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03', 'user'),
-    ('0000000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05', 'user'),
-    ('0000000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12', 'user'),
-    ('0000000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20', 'user'),
-    ('0000000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17', 'user'),
-    ('0000000010', 'Pedro', 'González', 'López', 9, '2015-02-28', 'user'),
-    ('0000000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08', 'user'),
-    ('0000000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15', 'user'),
-    ('0000000013', 'María', 'López', 'Sánchez', 15, '2009-08-22', 'user'),
-    ('0000000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10', 'user'),
-    ('0000000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30', 'user'),
-    ('0000', 'Admin', 'X', '', 0, '0000-00-00', 'admin');
+    ('0', 'Admin', '-', '', 0, '2000-01-01', 'admin'),
+    ('000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10', 'user'),
+    ('000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15', 'user'),
+    ('000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28', 'user'),
+    ('000004', 'María', 'López', 'Martínez', 4, '2020-04-22', 'user'),
+    ('000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03', 'user'),
+    ('000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05', 'user'),
+    ('000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12', 'user'),
+    ('000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20', 'user'),
+    ('000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17', 'user'),
+    ('000010', 'Pedro', 'González', 'López', 9, '2015-02-28', 'user'),
+    ('000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08', 'user'),
+    ('000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15', 'user'),
+    ('000013', 'María', 'López', 'Sánchez', 15, '2009-08-22', 'user'),
+    ('000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10', 'user'),
+    ('000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30', 'user');
 
 -- Tabla periodo ///// AUTO_INCREMENT
 INSERT INTO periodo (numero, añoInicio, añoFin) VALUES
@@ -98,23 +97,23 @@ INSERT INTO tipo_de_examen (codigo, nombre) VALUES
 
 -- Tabla pago /// AUTO_INCREMENT
 INSERT INTO pago (numero, fechaPago, monto, nivel_educativo, periodo, alumno) VALUES
-    (null, '2024-01-15', 1500.00, 'KIND', 1, '0000000001'),
-    (null, '2024-01-15', 1500.00, 'KIND', 1, '0000000002'),
-    (null, '2024-01-15', 1500.00, 'KIND', 1, '0000000003'),
-    (null, '2024-01-15', 1500.00, 'KIND', 1, '0000000004'),
-    (null, '2024-01-15', 1500.00, 'KIND', 1, '0000000005'),
+    (null, '2024-01-15', 1500.00, 'KIND', 1, '000003'),
+    (null, '2024-01-15', 1500.00, 'KIND', 1, '000003'),
+    (null, '2024-01-15', 1500.00, 'KIND', 1, '000003'),
+    (null, '2024-01-15', 1500.00, 'KIND', 1, '000004'),
+    (null, '2024-01-15', 1500.00, 'KIND', 1, '000005'),
     
-    (null, '2024-07-15', 2000.00, 'PRIM', 2, '0000000006'),
-    (null, '2024-07-15', 2000.00, 'PRIM', 2, '0000000007'),
-    (null, '2024-07-15', 2000.00, 'PRIM', 2, '0000000008'),
-    (null, '2024-07-15', 2000.00, 'PRIM', 2, '0000000009'),
-    (null, '2024-07-15', 2000.00, 'PRIM', 2, '0000000010'),
+    (null, '2024-07-15', 2000.00, 'PRIM', 2, '000006'),
+    (null, '2024-07-15', 2000.00, 'PRIM', 2, '000007'),
+    (null, '2024-07-15', 2000.00, 'PRIM', 2, '000008'),
+    (null, '2024-07-15', 2000.00, 'PRIM', 2, '000009'),
+    (null, '2024-07-15', 2000.00, 'PRIM', 2, '000010'),
     
-    (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000011'),
-    (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000012'),
-    (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000013'),
-    (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000014'),
-    (null, '2025-01-15', 2500.00, 'SECU', 3, '0000000015');
+    (null, '2025-01-15', 2500.00, 'SECU', 3, '000011'),
+    (null, '2025-01-15', 2500.00, 'SECU', 3, '000012'),
+    (null, '2025-01-15', 2500.00, 'SECU', 3, '000013'),
+    (null, '2025-01-15', 2500.00, 'SECU', 3, '000014'),
+    (null, '2025-01-15', 2500.00, 'SECU', 3, '000015');
 
 -- Tabla grupo /// AUTO_INCREMENT
 INSERT INTO grupo (numero, nombre, periodo, nivel_educativo) VALUES
@@ -127,21 +126,21 @@ INSERT INTO grupo (numero, nombre, periodo, nivel_educativo) VALUES
 
 -- Tabla grupo_alumno 
 INSERT INTO grupo_alumno (alumno, grupo) VALUES
-    ('0000000001', 1),
-    ('0000000002', 2),
-    ('0000000003', 1),
-    ('0000000004', 2),
-    ('0000000005', 1),
-    ('0000000006', 3),
-    ('0000000007', 4),
-    ('0000000008', 3),
-    ('0000000009', 4),
-    ('0000000010', 3),
-    ('0000000011', 5),
-    ('0000000012', 6),
-    ('0000000013', 5),
-    ('0000000014', 6),
-    ('0000000015', 5);
+    ('000001', 1),
+    ('000002', 2),
+    ('000003', 1),
+    ('000004', 2),
+    ('000005', 1),
+    ('000006', 3),
+    ('000007', 4),
+    ('000008', 3),
+    ('000009', 4),
+    ('000010', 3),
+    ('000011', 5),
+    ('000012', 6),
+    ('000013', 5),
+    ('000014', 6),
+    ('000015', 5);
 
 -- Tabla grado
 INSERT INTO grado (numero, nombre, nivel_educativo) VALUES

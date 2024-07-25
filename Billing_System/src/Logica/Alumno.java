@@ -1,6 +1,5 @@
 package Logica;
 
-
 public class Alumno {
     private String matricula;
     private String nombreDePila;

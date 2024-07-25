@@ -1,12 +1,11 @@
 package Interfaz;
+//CAFCATS PROYECT 2-C
 import Logica.*;
 import java.sql.*;
 
-
 public class App {
     public static void main(String[] args) throws SQLException {
-        menu.clear();
+        Valid.clear();
         Inicio.iniciarSesion();
     }
 }
- 
