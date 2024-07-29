@@ -12,7 +12,7 @@ SELECT pe.numero as Periodo Escolar,
 pe.añoInicio as Fecha de Inicio,
 pe.añoFin as Fecha Final,
 a.matricula as Matricula del Alumno,
-CONCAT(a.primerApellido, ' ', a.segundoApellido, ' ', a.nombredepila) as Alumno,
+CONCAT(a.primerApellido, ' ', a.segundoApellido, ' ', a.nombrePila) as Alumno,
 gr.nombre as Grado,
 ne.nombre as Nivel,
 CONCAT(a.pApellTutor, ' ', a.sApellTutor, ' ', a.nombPilaTutor) as Tutor,
@@ -33,7 +33,7 @@ d. Fecha final del periodo escolar
 e. Grado
 f. Nivel*/
 SELECT a.matricula as Matricula del Alumno,
-CONCAT(a.primerApellido, ' ', a.segundoApellido, ' ', a.nombredepila) as Alumno,
+CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
 pe.añoInicio AS Fecha de Inicio del Periodo Escolar,
 pe.añoFin as Fecha Final del Periodo Escolar,
 gr.nombre as Grado,

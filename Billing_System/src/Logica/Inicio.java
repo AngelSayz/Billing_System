@@ -10,12 +10,15 @@ public class Inicio {
         Scanner sc = new Scanner(System.in);
         AlumnoDAO alumnoDAO = new AlumnoDAO();
         boolean loginExitoso;
-        System.out.println("----------------------------------------------");
-        System.out.println("                  BIENVENIDO");
-        System.out.println("----------------------------------------------");
+        System.out.println("\n\n");
+        System.out.println("╔══════════════════════════════════════════════╗");
+        System.out.println("║       BIENVENIDO AL SISTEMA DE PAGOS         ║");
+        System.out.println("╚══════════════════════════════════════════════╝");
+
         do {
-            loginExitoso = false;
-            String matricula = Valid.getValidString(sc, "Ingrese su matrícula: ", 10);
+            loginExitoso = false;          
+            String matricula = Valid.getValidString(sc, " Ingrese su matrícula: ", 6);
+
             try {
                 String categoria = alumnoDAO.verificarMatricula(matricula);
                 if (categoria != null) {
@@ -27,7 +30,10 @@ public class Inicio {
                         menu.menuAlumno(matricula);
                     }
                 } else {
-                    System.out.println("Matrícula invalida. Por favor, inténtelo de nuevo.");
+                    System.out.println("╔════════════════════════════════════════════════════╗");
+                    System.out.println("║ Matrícula invalida. Por favor, inténtelo de nuevo. ║");
+                    System.out.println("╚════════════════════════════════════════════════════╝");
+                    
                 }
             } catch (SQLException e) {
                 System.err.println("Error al iniciar sesión: " + e.getMessage());

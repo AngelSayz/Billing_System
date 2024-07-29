@@ -1,21 +1,39 @@
 package Logica;
 
+
 public class Alumno {
     private String matricula;
-    private String nombreDePila;
+    private String nombrePila;
     private String primerApellido;
     private String segApellido;
     private int edad;
     private String fechaNac;
+    private String nombreTutor;
+    private String primerApellTutor;
+    private String segApellTutor;
+    private String dirCalle;
+    private String dirNumero;
+    private String dirColonia;
+    private String numTel;
+    private String category;
 
-    public Alumno(String matricula, String nombreDePila, String primerApellido, String segApellido, int edad,
-            String fechaNac) {
+    public Alumno(String matricula, String nombrePila, String primerApellido, String segApellido, int edad,
+                  String fechaNac, String nombreTutor, String primerApellTutor, String segApellTutor,
+                  String dirCalle, String dirNumero, String dirColonia, String numTel, String category) {
         this.matricula = matricula;
-        this.nombreDePila = nombreDePila;
+        this.nombrePila = nombrePila;
         this.primerApellido = primerApellido;
         this.segApellido = segApellido;
         this.edad = edad;
         this.fechaNac = fechaNac;
+        this.nombreTutor = nombreTutor;
+        this.primerApellTutor = primerApellTutor;
+        this.segApellTutor = segApellTutor;
+        this.dirCalle = dirCalle;
+        this.dirNumero = dirNumero;
+        this.dirColonia = dirColonia;
+        this.numTel = numTel;
+        this.category = category;
     }
 
     public String getMatricula() {
@@ -26,12 +44,12 @@ public class Alumno {
         this.matricula = matricula;
     }
 
-    public String getNombreDePila() {
-        return nombreDePila;
+    public String getNombrePila() {
+        return nombrePila;
     }
 
-    public void setNombreDePila(String nombreDePila) {
-        this.nombreDePila = nombreDePila;
+    public void setNombrePila(String nombrePila) {
+        this.nombrePila = nombrePila;
     }
 
     public String getPrimerApellido() {
@@ -64,5 +82,69 @@ public class Alumno {
 
     public void setFechaNac(String fechaNac) {
         this.fechaNac = fechaNac;
+    }
+
+    public String getNombreTutor() {
+        return nombreTutor;
+    }
+
+    public void setNombreTutor(String nombreTutor) {
+        this.nombreTutor = nombreTutor;
+    }
+
+    public String getPrimerApellTutor() {
+        return primerApellTutor;
+    }
+
+    public void setPrimerApellTutor(String primerApellTutor) {
+        this.primerApellTutor = primerApellTutor;
+    }
+
+    public String getSegApellTutor() {
+        return segApellTutor;
+    }
+
+    public void setSegApellTutor(String segApellTutor) {
+        this.segApellTutor = segApellTutor;
+    }
+
+    public String getDirCalle() {
+        return dirCalle;
+    }
+
+    public void setDirCalle(String dirCalle) {
+        this.dirCalle = dirCalle;
+    }
+
+    public String getDirNumero() {
+        return dirNumero;
+    }
+
+    public void setDirNumero(String dirNumero) {
+        this.dirNumero = dirNumero;
+    }
+
+    public String getDirColonia() {
+        return dirColonia;
+    }
+
+    public void setDirColonia(String dirColonia) {
+        this.dirColonia = dirColonia;
+    }
+
+    public String getNumTel() {
+        return numTel;
+    }
+
+    public void setNumTel(String numTel) {
+        this.numTel = numTel;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }

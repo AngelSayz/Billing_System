@@ -1,16 +1,15 @@
 package Logica;
-//Gael DO NOT STEAL!!!!!
+
 public class Evento{
     private int codigo;
     private String nombre;
     private String fecha;
-    private String fecha_Registro;
 
-public Evento(int codigo, String nombre, String fecha,String fecha_Registro){
+public Evento(int codigo, String nombre, String fecha){
     this.codigo=codigo;
     this.nombre=nombre;
     this.fecha=fecha;
-    this.fecha_Registro=fecha_Registro;
+
 }
 
     public int getCodigo() {
@@ -36,13 +35,5 @@ public Evento(int codigo, String nombre, String fecha,String fecha_Registro){
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
-    }
-
-    public String getFecha_Registro() {
-        return fecha_Registro;
-    }
-
-    public void setFecha_Registro(String fecha_Registro) {
-        this.fecha_Registro=fecha_Registro;
     }
 }

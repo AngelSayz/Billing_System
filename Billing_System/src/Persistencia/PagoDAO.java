@@ -3,6 +3,9 @@ package Persistencia;
 import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
+
+import Interfaz.DateDisplay;
+
 import java.util.Random;
 
 public class PagoDAO{
@@ -26,27 +29,35 @@ public class PagoDAO{
         }
     }
 
-    public static String inputPago() throws SQLException {
+    public static void inputPago() throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
+        System.err.println("╔══════════════════════════════════════════════════════════════════╗");
+        System.err.println("║ Por favor, seleccione la fecha del pago en la ventana emergente. ║");
+        System.err.println("╚══════════════════════════════════════════════════════════════════╝");
+        String fechaPago = DateDisplay.getValidDate("Seleccione la fecha del pago");
+        if (fechaPago == null) {
+            System.out.println("╔════════════════════════════════════════════════════════╗");
+            System.out.println("║ Operación cancelada. No se ha ingresado ninguna fecha. ║");
+            System.out.println("╚════════════════════════════════════════════════════════╝");
+            return;
+        }    
         Scanner scanner = new Scanner(System.in);
-
-        String fechaPago = Valid.getValidDate(scanner, "Fecha de Pago (YYYY-MM-DD): ");
         double monto = Valid.getValidDouble(scanner, "Monto a Pagar: ");
         String nivelEducativo = Valid.getValidString(scanner, "Nivel Educativo: ", 10);
         String periodo = Valid.getValidString(scanner, "Periodo: ", 10);
         String alumno = Valid.getValidString(scanner, "Matrícula del Alumno: ", 10);
-
-        String referencia = generarReferencia(); // Llamada sin parámetros
-
-        Pago pago = new Pago(referencia,fechaPago,periodo,nivelEducativo,alumno,monto);
-
+    
+        String referencia = generarReferencia(); 
+    
+        Pago pago = new Pago(referencia, fechaPago, nivelEducativo, periodo, alumno, monto);
+    
         try {
             pagoDAO.registrarPago(pago);
             System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
         } catch (SQLException e) {
             System.err.println("Error al registrar el pago: " + e.getMessage());
         }
-        return referencia;
+        return;
     }
 
     public static String generarReferencia() throws SQLException {
