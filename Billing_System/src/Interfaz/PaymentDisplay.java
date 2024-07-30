@@ -37,9 +37,10 @@ public class PaymentDisplay {
         panel.add(new JLabel("Seleccione el tipo de pago:"));
         panel.add(paymentBox);
         panel.add(priceLabel);
-
-        int result = JOptionPane.showConfirmDialog(null, panel, "Generar referencia de pago", JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-        
+        JFrame jf = new JFrame();
+        jf.setAlwaysOnTop(true);
+            int result = JOptionPane.showConfirmDialog(jf, panel, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.QUESTION_MESSAGE);
         if (result == JOptionPane.OK_OPTION) {
             String selectedPayment = (String) paymentBox.getSelectedItem();
             return generatePaymentReference(selectedPayment, paymentPrices.get(selectedPayment));
@@ -49,8 +50,9 @@ public class PaymentDisplay {
     }
 
     private static String generatePaymentReference(String paymentType, int price) {
-        // Aquí puedes implementar la lógica para generar la referencia de pago
-        // Por ahora, solo devolvemos una cadena de ejemplo
+        // Este metodo de momento es un placeholder ya que aunque ya tengo un metodo que genera referencias no lo he implementado
+        // Asi que tambien te pasare el metodo que utilizo para generar referencias aleatorias y me gustaria que lo implementaras aqui
+        // Ya sea simplemente llamandolo o creando el metodo aqui mismo, lo que veas como mejor practica.
         return "Referencia generada para " + paymentType + " con precio $" + price;
     }
 

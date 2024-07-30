@@ -5,19 +5,12 @@ USE Billing_System;
 
 
 CREATE TABLE alumno (
-    matricula VARCHAR(6) PRIMARY KEY,
+    matricula VARCHAR(6) PRIMARY KEY NOT NULL,
     nombrePila VARCHAR(15) NOT NULL,
     primerApellido VARCHAR(15) NOT NULL,
     segApellido VARCHAR(15),
     edad INT NOT NULL,
     fechaNac DATE NOT NULL,
-    nombreTutor VARCHAR(15) NOT NULL,
-    primerApellTutor VARCHAR(15) NOT NULL,
-    segApellTutor VARCHAR(15) ,
-    dirCalle VARCHAR(30) NOT NULL,
-    dirNumero VARCHAR(30) NOT NULL,
-    dirColonia VARCHAR(30) NOT NULL,
-    numTel VARCHAR(30) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     category varchar(5) not null
 );
@@ -29,7 +22,7 @@ CREATE TABLE periodo (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE paquete_de_material ( 
+CREATE TABLE paquete_de_material (
     codigo VARCHAR(10) PRIMARY KEY,
     nombre VARCHAR(15) NOT NULL,
     precio FLOAT NOT NULL,
@@ -40,6 +33,13 @@ CREATE TABLE evento (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(15) NOT NULL,
     fecha DATE NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE mantenimiento (
+    codigo VARCHAR(10) PRIMARY KEY,
+    descripcion VARCHAR(50) NOT NULL,
+    precio FLOAT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -61,15 +61,8 @@ CREATE TABLE genero (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE talla (
-    codigo VARCHAR(10) PRIMARY KEY,
-    descripcion VARCHAR(50) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
 CREATE TABLE tipo_de_uniforme (
     numero INT PRIMARY KEY AUTO_INCREMENT,
-    precio FLOAT NOT NULL,
     descripcion VARCHAR(50) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -86,7 +79,7 @@ CREATE TABLE pago (
     monto FLOAT,
     nivel_educativo VARCHAR(10) NOT NULL,
     periodo INT NOT NULL,
-    alumno VARCHAR(10) NOT NULL,
+    alumno VARCHAR(6) NOT NULL,
     FOREIGN KEY (nivel_educativo) REFERENCES nivel_educativo(codigo),
     FOREIGN KEY (periodo) REFERENCES periodo(numero),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
@@ -104,7 +97,7 @@ CREATE TABLE grupo (
 );
 
 CREATE TABLE grupo_alumno (
-    alumno VARCHAR(10),
+    alumno VARCHAR(6),
     grupo INT,
     PRIMARY KEY (alumno, grupo),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
@@ -166,6 +159,8 @@ CREATE TABLE paquete_de_uniforme (
 CREATE TABLE detalle_Paquete (
     paquete_de_uniforme INT,
     tipo_de_uniforme INT,
+    precio FLOAT NOT NULL,
+    talla VARCHAR(10) NOT NULL,
     PRIMARY KEY (paquete_de_uniforme, tipo_de_uniforme),
     FOREIGN KEY (paquete_de_uniforme) REFERENCES paquete_de_uniforme(numero),
     FOREIGN KEY (tipo_de_uniforme) REFERENCES tipo_de_uniforme(numero),
@@ -183,6 +178,7 @@ CREATE TABLE tipo_de_pago (
     mensualidad VARCHAR(10),
     evento INT,
     paquete_de_material VARCHAR(10),
+    mantenimiento VARCHAR(10),
     FOREIGN KEY (pago) REFERENCES pago(referencia),
     FOREIGN KEY (inscripcion) REFERENCES inscripcion(codigo),
     FOREIGN KEY (paquete_de_libros) REFERENCES paquete_de_libros(codigo),
@@ -191,23 +187,38 @@ CREATE TABLE tipo_de_pago (
     FOREIGN KEY (mensualidad) REFERENCES mensualidad(codigo),
     FOREIGN KEY (evento) REFERENCES evento(numero),
     FOREIGN KEY (paquete_de_material) REFERENCES paquete_de_material(codigo),
+    FOREIGN KEY (mantenimiento) REFERENCES mantenimiento(codigo),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+ALTER TABLE alumno
+ADD category varchar(5) not null;
 
 CREATE TABLE grado_alumno (
-    alumno VARCHAR(10),
+    alumno VARCHAR(6),
     grado INT,
     PRIMARY KEY (alumno, grado),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
-    FOREIGN KEY (grado) REFERENCES grado(numero),
+    FOREIGN KEY (grupo) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE talla_uniforme (
-    talla VARCHAR(10),
-    tipo_de_uniforme INT,
-    PRIMARY KEY (talla, tipo_de_uniforme),
-    FOREIGN KEY (talla) REFERENCES talla(codigo),
-    FOREIGN KEY (tipo_de_uniforme) REFERENCES tipo_de_uniforme(numero),
+CREATE TABLE tutor (
+    numero INT PRIMARY KEY AUTO_INCREMENT,
+    nombrePila VARCHAR(15) NOT NULL,
+    primerApellido VARCHAR(15) NOT NULL,
+    segApellido VARCHAR(15),
+    dirCalle VARCHAR(30) NOT NULL,
+    dirNumero VARCHAR(10) NOT NULL,
+    dirColonia VARCHAR(30) NOT NULL,
+    numTel VARCHAR(15) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE tutor_alumno (
+    alumno VARCHAR(6),
+    tutor INT,
+    PRIMARY KEY (alumno, tutor),
+    FOREIGN KEY (alumno) REFERENCES alumno(matricula),
+    FOREIGN KEY (tutor) REFERENCES tutor(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

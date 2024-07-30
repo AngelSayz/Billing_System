@@ -1,3 +1,17 @@
+CREATE database billing_system;
+use billing_system;
+drop database billing_system;
+SELECT
+p.referencia as referencia,
+p.alumno as alumno,
+tp.descripcion as descripcion,
+p.monto as Monto,
+p.fechaPago as FechaDePago,
+p.periodo as Periodo
+FROM pago as p
+INNER JOIN tipo_de_pago as tp ON tp.pago = p.referencia
+WHERE p.referencia = "2024011501";
+
 /*1. Datos de un alumno en un periodo escolar
 a. Periodo escolar
 b. Fecha de inicio

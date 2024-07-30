@@ -11,21 +11,44 @@ import java.util.Random;
 public class PagoDAO{
 
     public void registrarPago(Pago pago) throws SQLException {
-        String sql = "INSERT INTO pago (referencia, fechaPago, monto, nivel_educativo, periodo, alumno) VALUES (?, ?, ?, ?, ?, ?)";
-
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, pago.getReferencia());
-            stmt.setDate(2, Date.valueOf(pago.getFecha()));
-            stmt.setDouble(3, pago.getMonto());
-            stmt.setString(4, pago.getNivel_educativo()); //Duda
-            stmt.setString(5, pago.getPeriodo()); //Duda
-            stmt.setString(6, pago.getAlumno()); //Duda
-
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al registrar el pago: " + e.getMessage());
-            throw e;
+        String sqlP = "INSERT INTO pago (referencia, fechaPago, monto, nivel_educativo, periodo, alumno) VALUES (?, ?, ?, ?, ?, ?)";
+        String sqlTP = "INSERT INTO tipo_de_pago (numero, descripcion, pago, inscripcion, paquete_de_libros, paquete_de_uniforme, examen, mensualidad, evento, paquete_de_material) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false); // Iniciar transacción
+    
+            try (PreparedStatement stmtP = conn.prepareStatement(sqlP);
+                 PreparedStatement stmtTP = conn.prepareStatement(sqlTP)) {
+                
+                // Insert d la tabla pago
+                stmtP.setString(1, pago.getReferencia());
+                stmtP.setDate(2, Date.valueOf(pago.getFecha()));
+                stmtP.setDouble(3, pago.getMonto());
+                stmtP.setString(4, pago.getNivel_educativo());
+                stmtP.setString(5, pago.getPeriodo());
+                stmtP.setString(6, pago.getAlumno());
+                stmtP.executeUpdate();
+    
+                // Insert de la tabla tipod e pago
+                 stmtTP.setInt(1, pago.getTPnumero());
+                stmtTP.setString(2, pago.getTPdescripcion());
+                stmtTP.setString(3, pago.getReferencia());
+                stmtTP.setString(4, pago.getTPinscripcion());
+                stmtTP.setString(5, pago.getTPpaquete_de_libros());
+                stmtTP.setInt(6, pago.getTPpaquete_de_uniforme());
+                stmtTP.setString(7, pago.getTPexamen());
+                stmtTP.setString(8, pago.getTPmensualidad());
+                stmtTP.setInt(9, pago.getTPevento());
+                stmtTP.setString(10, pago.getTPpaquete_de_material());
+                stmtTP.executeUpdate();
+    
+                conn.commit(); // se confirma la transacción
+    
+            } catch (SQLException e) {
+                conn.rollback(); // se cancela la transaccion 
+                System.err.println("Error al registrar el pago: " + e.getMessage());
+                throw e;
+            }
         }
     }
 

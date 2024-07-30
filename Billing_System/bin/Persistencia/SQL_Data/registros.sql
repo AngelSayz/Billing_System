@@ -1,22 +1,21 @@
 -- Tabla alumno
-INSERT INTO alumno (matricula, nombrePila, primerApellido, segApellido, edad, fechaNac, nombreTutor, primerApellTutor, segApellTutor, dirCalle, dirNumero, dirColonia, numTel, category) VALUES
-    ('0', 'Admin', '-', '', 0, '2000-01-01', '-', '-', '', '-', '-', '-', '.', 'admin'),
-    ('250817', 'Angel', 'Mayo','Ramos', '19', '2000-01-01', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'admin'),
-    ('000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10', 'María González', 'Hernández', 'Gutiérrez', 'Av. Benito Juárez', '123', 'Centro', '555-123-4567', 'user'),
-    ('000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15', 'Alejandro Pérez', 'Gómez', 'López', 'Calle 5 de Mayo', '456', 'Revolución', '555-234-5678', 'user'),
-    ('000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28', 'Fernanda Sánchez', 'García', 'Martínez', 'Av. Constitución', '789', 'Independencia', '555-345-6789', 'user'),
-    ('000004', 'María', 'López', 'Martínez', 4, '2020-04-22', 'Roberto Martínez', 'Sánchez', 'Flores', 'Calle Hidalgo', '234', 'Las Rosas', '555-456-7890', 'user'),
-    ('000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03', 'Isabel Hernández', 'Martínez', 'Díaz', 'Av. Reforma', '567', 'San Miguel', '555-567-8901', 'user'),
-    ('000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05', 'Laura Pérez', 'Fernández', 'Ramírez', 'Calle Morelos', '321', 'Centro', '555-678-9012', 'user'),
-    ('000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12', 'Juan García', 'Hernández', 'Torres', 'Av. Revolución', '654', 'Revolución', '555-789-0123', 'user'),
-    ('000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20', 'Luz Martínez', 'Sánchez', 'Jiménez', 'Calle 20 de Noviembre', '987', 'Independencia', '555-890-1234', 'user'),
-    ('000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17', 'Pedro Rodríguez', 'López', 'Vázquez', 'Calle Zaragoza', '432', 'Las Rosas', '555-901-2345', 'user'),
-    ('000010', 'Pedro', 'González', 'López', 9, '2015-02-28', 'Sofía Hernández', 'Gómez', 'Santos', 'Av. Juárez', '876', 'San Miguel', '555-012-3456', 'user'),
-    ('000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08', 'Carlos López', 'Martínez', 'Reyes', 'Calle Allende', '543', 'San Rafael', '555-234-5678', 'user'),
-    ('000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15', 'María Ramírez', 'Flores', 'Núñez', 'Av. Guerrero', '789', 'La Paz', '555-345-6789', 'user'),
-    ('000013', 'María', 'López', 'Sánchez', 15, '2009-08-22', 'Diego Torres', 'Gutiérrez', 'Ortega', 'Calle Madero', '234', 'San Antonio', '555-456-7890', 'user'),
-    ('000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10', 'Luisa Díaz', 'Castillo', 'García', 'Av. Hidalgo', '567', 'Del Valle', '555-567-8901', 'user'),
-    ('000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30', 'Javier Cruz', 'Herrera', 'Pineda', 'Calle Colón', '890', 'Las Águilas', '555-678-9012', 'user');
+INSERT INTO alumno (matricula, nombrePila, primerApellido, segApellido, edad, fechaNac, category) VALUES
+    ('0', 'Admin', '-', '', 0, '2000-01-01', 'admin'),
+    ('000001', 'Luis', 'García', 'Hernández', 5, '2019-03-10', 'user'),
+    ('000002', 'Ana', 'Martínez', 'López', 4, '2020-06-15', 'user'),
+    ('000003', 'Diego', 'Rodríguez', 'Gómez', 5, '2019-02-28', 'user'),
+    ('000004', 'María', 'López', 'Martínez', 4, '2020-04-22', 'user'),
+    ('000005', 'Javier', 'Hernández', 'Pérez', 5, '2019-08-03', 'user'),
+    ('000006', 'Carlos', 'Gómez', 'García', 10, '2014-01-05', 'user'),
+    ('000007', 'Laura', 'Díaz', 'Rodríguez', 9, '2015-05-12', 'user'),
+    ('000008', 'Juan', 'Martínez', 'Sánchez', 11, '2013-11-20', 'user'),
+    ('000009', 'Sofía', 'Pérez', 'Gómez', 10, '2014-08-17', 'user'),
+    ('000010', 'Pedro', 'González', 'López', 9, '2015-02-28', 'user'),
+    ('000011', 'Ana', 'Hernández', 'González', 14, '2010-09-08', 'user'),
+    ('000012', 'Diego', 'Martínez', 'Rodríguez', 13, '2011-12-15', 'user'),
+    ('000013', 'María', 'López', 'Sánchez', 15, '2009-08-22', 'user'),
+    ('000014', 'Javier', 'Pérez', 'Martínez', 14, '2010-11-10', 'user'),
+    ('000015', 'Laura', 'García', 'Gómez', 13, '2012-04-30', 'user');
 
 -- Tabla periodo ///// AUTO_INCREMENT
 INSERT INTO periodo (numero, añoInicio, añoFin) VALUES
@@ -54,6 +53,24 @@ INSERT INTO evento (numero, nombre, fecha) VALUES
     (null, 'Concurso de Talento', '2024-09-15'),
     (null, 'Día del Estudiante', '2024-11-17');
 
+-- Tabla mantenimiento
+INSERT INTO mantenimiento (codigo, descripcion, precio) VALUES
+    ('MNT001', 'Reparación de techos', 1200.00),
+    ('MNT002', 'Limpieza profunda de aulas', 500.00),
+    ('MNT003', 'Mantenimiento de sistemas eléctricos', 800.00),
+    ('MNT004', 'Reparación de tuberías y fontanería', 600.00),
+    ('MNT005', 'Servicio de jardinería y paisajismo', 300.00),
+    ('MNT006', 'Revisión de sistemas de climatización', 400.00),
+    ('MNT007', 'Mantenimiento de equipos tecnológicos', 1000.00),
+    ('MNT008', 'Pintura de aulas y oficinas', 1500.00),
+    ('MNT009', 'Control de plagas', 250.00),
+    ('MNT010', 'Reparación de mobiliario', 700.00),
+    ('MNT011', 'Sanitización de baños y áreas comunes', 350.00),
+    ('MNT012', 'Reparación de canchas deportivas', 800.00),
+    ('MNT013', 'Mantenimiento de sistemas de seguridad', 500.00),
+    ('MNT014', 'Remodelación de salas de profesores', 1200.00),
+    ('MNT015', 'Reemplazo de extintores y equipos de emergencia', 300.00);
+
 -- Tabla nivel_educativo
 INSERT INTO nivel_educativo (codigo, nombre) VALUES
     ('KIND', 'Kinder'),
@@ -72,21 +89,13 @@ INSERT INTO genero (codigo, nombre) VALUES
     ('M', 'Masculino'),
     ('F', 'Femenino');
 
--- Tabla talla
-INSERT INTO talla (codigo, descripcion) VALUES
-    ('XS', 'Extra Pequeño'),
-    ('S', 'Pequeño'),
-    ('M', 'Mediano'),
-    ('L', 'Grande'),
-    ('XL', 'Extra Grande');
-
 -- Tabla tipo_de_uniforme /// AUTO_INCREMENT
-INSERT INTO tipo_de_uniforme (numero, precio, descripcion) VALUES
-    (null, 150.00, 'Uniforme regular'),
-    (null, 200.50, 'Uniforme deportivo'),
-    (null, 180.75, 'Uniforme formal'),
-    (null, 120.25, 'Uniforme de invierno'),
-    (null, 180.00, 'Uniforme de verano');
+INSERT INTO tipo_de_uniforme (numero, descripcion) VALUES
+    (null, 'Uniforme regular'),
+    (null, 'Uniforme deportivo'),
+    (null, 'Uniforme formal'),
+    (null, 'Uniforme de invierno'),
+    (null, 'Uniforme de verano');
 
 -- Tabla tipo_de_examen
 INSERT INTO tipo_de_examen (codigo, nombre) VALUES
@@ -103,11 +112,13 @@ INSERT INTO pago (referencia, fechaPago, monto, nivel_educativo, periodo, alumno
     ('2024011503', '2024-01-15', 600.00, 'KIND', 1, '000003'),
     ('2024011504', '2024-01-15', 600.00, 'KIND', 1, '000004'),
     ('2024011505', '2024-01-15', 600.00, 'KIND', 1, '000005'),
+    
     ('2024071501', '2024-07-15', 650.00, 'PRIM', 2, '000006'),
     ('2024071502', '2024-07-15', 650.00, 'PRIM', 2, '000007'),
     ('2024071503', '2024-07-15', 700.00, 'PRIM', 2, '000008'),
     ('2024071504', '2024-07-15', 650.00, 'PRIM', 2, '000009'),
     ('2024071505', '2024-07-15', 650.00, 'PRIM', 2, '000010'),
+    
     ('2025011501', '2025-01-15', 700.00, 'SECU', 3, '000011'),
     ('2025011502', '2025-01-15', 700.00, 'SECU', 3, '000012'),
     ('2025011503', '2025-01-15', 750.00, 'SECU', 3, '000013'),
@@ -220,72 +231,58 @@ INSERT INTO paquete_de_uniforme (numero, descripcion, costo, genero) VALUES
     (null, 'Paquete de uniforme de verano M', 180.00, 'M'),
     (null, 'Paquete de uniforme de verano F', 180.00, 'F');
 
--- Tabla talla_uniforme
-INSERT INTO talla_Uniforme (tipo_de_uniforme, talla) VALUES  
-    (1, 'XS'),
-    (1, 'S'),
-    (1, 'M'),
-    (1, 'L'),
-    (1, 'XL'),
-    (2, 'XS'),
-    (2, 'S'),
-    (2, 'M'),
-    (2, 'L'),
-    (2, 'XL'),
-    (3, 'XS'),
-    (3, 'S'),
-    (3, 'M'),
-    (3, 'L'),
-    (3, 'XL'),
-    (4, 'XS'),
-    (4, 'S'),
-    (4, 'M'),
-    (4, 'L'),
-    (4, 'XL'),  
-    (5, 'XS'),
-    (5, 'S'),
-    (5, 'M'),
-    (5, 'L'),
-    (5, 'XL'), 
-    (6, 'XS'),
-    (6, 'S'),
-    (6, 'M'),
-    (6, 'L'),
-    (6, 'XL'),
-    (7, 'XS'),
-    (7, 'S'),
-    (7, 'M'),
-    (7, 'L'),
-    (7, 'XL'),
-    (8, 'XS'),
-    (8, 'S'),
-    (8, 'M'),
-    (8, 'L'),
-    (8, 'XL'),
-    (9, 'XS'),
-    (9, 'S'),
-    (9, 'M'),
-    (9, 'L'),
-    (9, 'XL'),
-    (10, 'XS'),
-    (10, 'S'),
-    (10, 'M'),
-    (10, 'L'),
-    (10, 'XL');
-
-
 -- Tabla detalle_paquete (Tipo de Uniforme y Paquete de Uniforme) 
-INSERT INTO detalle_Paquete (paquete_de_uniforme, tipo_de_uniforme) VALUES
-    (1, 1),
-    (2, 1),
-    (3, 2),
-    (4, 2),
-    (5, 3),
-    (6, 3),
-    (7, 4),
-    (8, 4),
-    (9, 5),
-    (10, 5);
+INSERT INTO detalle_Paquete (paquete_de_uniforme, tipo_de_uniforme, precio, talla) VALUES
+    (1, 1, 150.0, 'XS'),
+    (1, 1, 150.0, 'S'),
+    (1, 1, 150.0, 'M'),
+    (1, 1, 150.0, 'L'),
+    (1, 1, 150.0, 'XL'),
+    (2, 1, 150.0, 'XS'),
+    (2, 1, 150.0, 'S'),
+    (2, 1, 150.0, 'M'),
+    (2, 1, 150.0, 'L'),
+    (2, 1, 150.0, 'XL'),
+    (3, 2, 200.50, 'XS'),
+    (3, 2, 200.50, 'S'),
+    (3, 2, 200.50, 'M'),
+    (3, 2, 200.50, 'L'),
+    (3, 2, 200.50, 'XL'),
+    (4, 2, 200.50, 'XL'),
+    (4, 2, 200.50, 'S'),
+    (4, 2, 200.50, 'M'),
+    (4, 2, 200.50, 'L'),
+    (4, 2, 200.50, 'XL'),
+    (5, 3, 180.75, 'XS'),
+    (5, 3, 180.75, 'S'),
+    (5, 3, 180.75, 'M'),
+    (5, 3, 180.75, 'L'),
+    (5, 3, 180.75, 'XL'),
+    (6, 3, 180.75, 'XS'),
+    (6, 3, 180.75, 'S'),
+    (6, 3, 180.75, 'M'),
+    (6, 3, 180.75, 'L'),
+    (6, 3, 180.75, 'XL'),
+    (7, 4, 120.25, 'XS'),
+    (7, 4, 120.25, 'S'),
+    (7, 4, 120.25, 'M'),
+    (7, 4, 120.25, 'L'),
+    (7, 4, 120.25, 'XL'),
+    (8, 4, 120.25, 'XS'),
+    (8, 4, 120.25, 'S'),
+    (8, 4, 120.25, 'M'),
+    (8, 4, 120.25, 'L'),
+    (8, 4, 120.25, 'XL'),
+    (9, 5, 180.00, 'XS'),
+    (9, 5, 180.00, 'S'),
+    (9, 5, 180.00, 'M'),
+    (9, 5, 180.00, 'L'),
+    (9, 5, 180.00, 'XL'),
+    (10, 5, 180.00, 'XS');
+    (10, 5, 180.00, 'S');
+    (10, 5, 180.00, 'M');
+    (10, 5, 180.00, 'L');
+    (10, 5, 180.00, 'XL');
 
 -- Tabla tipo_de_pago /// AUTO_INCREMENT
 INSERT INTO tipo_de_pago (numero, descripcion, pago, inscripcion, paquete_de_libros, paquete_de_uniforme, examen, mensualidad, evento, paquete_de_material) VALUES
@@ -307,10 +304,7 @@ INSERT INTO tipo_de_pago (numero, descripcion, pago, inscripcion, paquete_de_lib
     (null, 'Pago de Inscripción 2do de Secundaria', '2025011504', 'INS_SECU2', NULL, NULL, NULL, NULL, NULL, NULL),
     (null, 'Pago de Inscripción 2do de Secundaria', '2025011505', 'INS_SECU2', NULL, NULL, NULL, NULL, NULL, NULL);
 
--- Tabla detalle_pago
-
-    alter table 
-
+-- Tabla grado_alumno
 INSERT INTO grado_alumno (alumno, grado) VALUES
     ('000001', 3), 
     ('000002', 3),  
@@ -327,3 +321,98 @@ INSERT INTO grado_alumno (alumno, grado) VALUES
     ('000013', 12),   
     ('000014', 11),   
     ('000015', 11);
+
+-- Tabla tutor
+INSERT INTO tutor (numero, nombrePila, primerApellido, segApellido, dirCalle, dirNumero, dirColonia, numTel) VALUES
+    -- Alumno 000001 (Luis García Hernández)
+    (null, 'Carlos', 'García', 'Hernández', 'Av. Reforma', '123', 'Centro', '(664)1234567'),
+    (null, 'Ana', 'Hernández', 'García', 'Av. Reforma', '123', 'Centro', '(664)1234567'),
+
+-- Alumno 000002 (Ana Martínez López)
+    (null, 'Luis', 'Martínez', 'López', 'Calle del Sol', '456', 'Santa María', '(664)2345678'),
+    (null, 'María', 'López', 'Martínez', 'Calle del Sol', '456', 'Santa María', '(664)2345678'),
+
+-- Alumno 000003 (Diego Rodríguez Gómez)
+    (null, 'Javier', 'Rodríguez', 'Gómez', 'Calle Luna', '789', 'La Colina', '(664)3456789'),
+    (null, 'Laura', 'Gómez', 'Rodríguez', 'Calle Luna', '789', 'La Colina', '(664)3456789'),
+
+-- Alumno 000004 (María López Martínez)
+    (null, 'Carlos', 'López', 'Martínez', 'Boulevard del Norte', '321', 'Las Palmas', '(664)4567890'),
+    (null, 'Ana', 'Martínez', 'López', 'Boulevard del Norte', '321', 'Las Palmas', '(664)4567890'),
+
+-- Alumno 000005 (Javier Hernández Pérez)
+    (null, 'Pedro', 'Hernández', 'Pérez', 'Avenida Central', '654', 'El Prado', '(664)5678901'),
+    (null, 'Sofía', 'Pérez', 'Hernández', 'Avenida Central', '654', 'El Prado', '(664)5678901'),
+
+-- Alumno 000006 (Carlos Gómez García)
+    (null, 'Luis', 'Gómez', 'García', 'Calle de la Luna', '987', 'El Molino', '(664)6789012'),
+    (null, 'Ana', 'García', 'Gómez', 'Calle de la Luna', '987', 'El Molino', '(664)6789012'),
+
+-- Alumno 000007 (Laura Díaz Rodríguez)
+    (null, 'Mario', 'Díaz', 'Rodríguez', 'Avenida de los Robles', '432', 'San José', '(664)7890123'),
+    (null, 'Isabel', 'Rodríguez', 'Díaz', 'Avenida de los Robles', '432', 'San José', '(664)7890123'),
+
+-- Alumno 000008 (Juan Martínez Sánchez)
+    (null, 'José', 'Martínez', 'Sánchez', 'Calle del Bosque', '876', 'La Loma', '(664)8901234'),
+    (null, 'Rosa', 'Sánchez', 'Martínez', 'Calle del Bosque', '876', 'La Loma', '(664)8901234'),
+
+-- Alumno 000009 (Sofía Pérez Gómez)
+    (null, 'Andrés', 'Pérez', 'Gómez', 'Calle de la Primavera', '543', 'Los Pinos', '(664)9012345'),
+    (null, 'Laura', 'Gómez', 'Pérez', 'Calle de la Primavera', '543', 'Los Pinos', '(664)9012345'),
+
+-- Alumno 000010 (Pedro González López)
+    (null, 'Héctor', 'González', 'López', 'Calle del Sol', '456', 'Santa María', '(664)2345678'),
+    (null, 'Carmen', 'López', 'González', 'Calle del Sol', '456', 'Santa María', '(664)2345678'),
+
+-- Alumno 000011 (Ana Hernández González)
+    (null, 'Felipe', 'Hernández', 'González', 'Av. Reforma', '123', 'Centro', '(664)1234567'),
+    (null, 'María', 'González', 'Hernández', 'Av. Reforma', '123', 'Centro', '(664)1234567'),
+
+-- Alumno 000012 (Diego Martínez Rodríguez)
+    (null, 'Roberto', 'Martínez', 'Rodríguez', 'Calle Luna', '789', 'La Colina', '(664)3456789'),
+    (null, 'Verónica', 'Rodríguez', 'Martínez', 'Calle Luna', '789', 'La Colina', '(664)3456789'),
+
+-- Alumno 000013 (María López Sánchez)
+    (null, 'Jorge', 'López', 'Sánchez', 'Boulevard del Norte', '321', 'Las Palmas', '(664)4567890'),
+    (null, 'Patricia', 'Sánchez', 'López', 'Boulevard del Norte', '321', 'Las Palmas', '(664)4567890'),
+
+-- Alumno 000014 (Javier Pérez Martínez)
+    (null, 'Eduardo', 'Pérez', 'Martínez', 'Avenida Central', '654', 'El Prado', '(664)5678901'),
+    (null, 'Claudia', 'Martínez', 'Pérez', 'Avenida Central', '654', 'El Prado', '(664)5678901'),
+
+-- Alumno 000015 (Laura García Gómez)
+    (null, 'Ricardo', 'García', 'Gómez', 'Calle de la Primavera', '543', 'Los Pinos', '(664)9012345'),
+    (null, 'Elena', 'Gómez', 'García', 'Calle de la Primavera', '543', 'Los Pinos', '(664)9012345');
+
+
+INSERT INTO tutor_alumno (alumno, tutor) VALUES
+    ('000001', 1),
+    ('000001', 2),
+    ('000002', 3),
+    ('000002', 4),
+    ('000003', 5),
+    ('000003', 6),
+    ('000004', 7),
+    ('000004', 8),
+    ('000005', 9),
+    ('000005', 10),
+    ('000006', 11),
+    ('000006', 12),
+    ('000007', 13),
+    ('000007', 14),
+    ('000008', 15),
+    ('000008', 16),
+    ('000009', 17),
+    ('000009', 18),
+    ('000010', 19),
+    ('000010', 20),
+    ('000011', 21),
+    ('000011', 22),
+    ('000012', 23),
+    ('000012', 24),
+    ('000013', 25),
+    ('000013', 26),
+    ('000014', 27),
+    ('000014', 28),
+    ('000015', 29),
+    ('000015', 30);
