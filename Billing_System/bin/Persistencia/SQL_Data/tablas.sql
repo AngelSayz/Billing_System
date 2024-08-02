@@ -29,7 +29,7 @@ CREATE TABLE periodo (
 CREATE TABLE paquete_de_material (
     codigo VARCHAR(10) PRIMARY KEY,
     nombre VARCHAR(15) NOT NULL,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -44,7 +44,7 @@ CREATE TABLE evento (
 CREATE TABLE mantenimiento (
     codigo VARCHAR(10) PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -80,10 +80,9 @@ CREATE TABLE tipo_de_examen (
 );
 
 CREATE TABLE pago (
-    numero INT PRIMARY KEY AUTO_INCREMENT,
-    referencia VARCHAR(10) NOT NULL,
+    referencia VARCHAR(10) PRIMARY KEY,
     fechaPago DATE NOT NULL,
-    monto FLOAT,
+    monto DECIMAL(10,2),
     nivel_educativo VARCHAR(10) NOT NULL,
     periodo INT NOT NULL,
     alumno VARCHAR(6) NOT NULL,
@@ -125,7 +124,7 @@ CREATE TABLE grado (
 
 CREATE TABLE inscripcion (
     codigo VARCHAR(10) PRIMARY KEY,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     grado INT,
     FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -134,7 +133,7 @@ CREATE TABLE inscripcion (
 CREATE TABLE paquete_de_libros (
     codigo VARCHAR(10) PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     grado INT NOT NULL,
     FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -142,7 +141,7 @@ CREATE TABLE paquete_de_libros (
 
 CREATE TABLE examen (
     codigo VARCHAR(10) PRIMARY KEY,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     tipo_de_examen VARCHAR(10) NOT NULL,
     FOREIGN KEY (tipo_de_examen) REFERENCES tipo_de_examen(codigo),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -151,7 +150,7 @@ CREATE TABLE examen (
 CREATE TABLE mensualidad (
     codigo VARCHAR(10) PRIMARY KEY,
     nombre VARCHAR(30) NOT NULL,
-    precio FLOAT NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     tipo_de_mensualidad VARCHAR(10) NOT NULL,
     FOREIGN KEY (tipo_de_mensualidad) REFERENCES tipo_de_mensualidad(codigo),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -179,7 +178,7 @@ CREATE TABLE detalle_Paquete (
 CREATE TABLE tipo_de_pago (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL,
-    pago INT,
+    pago varchar(10),
     inscripcion VARCHAR(10),
     paquete_de_libros VARCHAR(10),
     paquete_de_uniforme INT,
@@ -188,7 +187,7 @@ CREATE TABLE tipo_de_pago (
     evento INT,
     paquete_de_material VARCHAR(10),
     mantenimiento VARCHAR(10),
-    FOREIGN KEY (pago) REFERENCES pago(numero),
+    FOREIGN KEY (pago) REFERENCES pago(referencia),
     FOREIGN KEY (inscripcion) REFERENCES inscripcion(codigo),
     FOREIGN KEY (paquete_de_libros) REFERENCES paquete_de_libros(codigo),
     FOREIGN KEY (paquete_de_uniforme) REFERENCES paquete_de_uniforme(numero),

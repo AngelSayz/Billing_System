@@ -14,7 +14,7 @@ public class Inicio {
         System.out.println("║       BIENVENIDO AL SISTEMA DE PAGOS         ║");
         System.out.println("╚══════════════════════════════════════════════╝");
         boolean loginExitoso = false;
-    String matricula = null;
+        String matricula = null;
 
     // Verificación de matrícula
     do {
@@ -38,8 +38,12 @@ public class Inicio {
 
     // Verificación de contraseña
     do {
-        String password = Valid.getValidString(sc, " Ingrese su contraseña: ", 15);
-
+        String password = Valid.getValidString(sc,
+                            "Introduzca su contraseña (escriba 'CANCELAR' para cancelar el proceso): ",
+                            10);
+                    if (password.equalsIgnoreCase("CANCELAR")) {
+                        System.out.println("Cancelando proceso...");
+                    } else {
         try {
             String categoria = alumnoDAO.verificarPass(matricula, password);
             if (categoria != null) {
@@ -58,6 +62,7 @@ public class Inicio {
         } catch (SQLException e) {
             System.err.println("Error al verificar la contraseña: " + e.getMessage());
         }
-    } while (!loginExitoso);
+    } 
+}  while (!loginExitoso); 
 }
 }

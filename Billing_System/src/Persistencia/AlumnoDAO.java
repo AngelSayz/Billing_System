@@ -86,7 +86,7 @@ public class AlumnoDAO {
 
         try (Connection conn = DatabaseConnection.getConnection()) {
             do {
-                int randomInt = random.nextInt(1, 999999);
+                int randomInt = random.nextInt(240000, 249999);
                 matricula = String.format("%06d", randomInt); // Formatea el número a 6 digitos
 
                 // Comprobacion matricula

@@ -76,7 +76,7 @@ public class PagoDAO{
         String nivelEducativo = Valid.getValidString(sc, "Nivel Educativo: ", 10);
         String periodo = Valid.getValidString(sc, "Periodo: ", 10);
         String alumno = Valid.getValidString(sc, "Matrícula del Alumno: ", 10);
-    
+        String tpDescripcion = Valid.getValidString(sc, "Ingrese la descripcion del evento", 50);
         String referencia = generarReferencia(); 
     
         // Mostrar menú de selección de tipo de pago
@@ -91,7 +91,7 @@ public class PagoDAO{
         int tipoDePagoSeleccionado = Valid.getValidIntMenu(sc, "Seleccione una opción (1-7): ", 1, 7);
     
         // Inicializar todos los campos de tipo de pago como nulos
-        String tpDescripcion = null;
+
         String tpInscripcion = null;
         String tpPaqueteDeLibros = null;
         int tpPaqueteDeUniforme = 0;

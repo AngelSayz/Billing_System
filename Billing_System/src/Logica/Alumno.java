@@ -8,31 +8,23 @@ public class Alumno {
     private String segApellido;
     private int edad;
     private String fechaNac;
-    private String nombreTutor;
-    private String primerApellTutor;
-    private String segApellTutor;
-    private String numTel;
     private String dirCalle;
     private String dirNumero;
     private String dirColonia;
     private String category;
 
+
     public Alumno(String matricula, String nombrePila, String primerApellido, String segApellido, int edad,
-                  String fechaNac, String nombreTutor, String primerApellTutor, String segApellTutor,
-                  String dirCalle, String dirNumero, String dirColonia, String numTel, String category) {
+            String fechaNac, String dirCalle, String dirNumero, String dirColonia, String category, String dirNumero2, String dirColonia2, String numTel, String category2) {
         this.matricula = matricula;
         this.nombrePila = nombrePila;
         this.primerApellido = primerApellido;
         this.segApellido = segApellido;
         this.edad = edad;
         this.fechaNac = fechaNac;
-        this.nombreTutor = nombreTutor;
-        this.primerApellTutor = primerApellTutor;
-        this.segApellTutor = segApellTutor;
         this.dirCalle = dirCalle;
         this.dirNumero = dirNumero;
         this.dirColonia = dirColonia;
-        this.numTel = numTel;
         this.category = category;
     }
 
@@ -84,29 +76,6 @@ public class Alumno {
         this.fechaNac = fechaNac;
     }
 
-    public String getNombreTutor() {
-        return nombreTutor;
-    }
-
-    public void setNombreTutor(String nombreTutor) {
-        this.nombreTutor = nombreTutor;
-    }
-
-    public String getPrimerApellTutor() {
-        return primerApellTutor;
-    }
-
-    public void setPrimerApellTutor(String primerApellTutor) {
-        this.primerApellTutor = primerApellTutor;
-    }
-
-    public String getSegApellTutor() {
-        return segApellTutor;
-    }
-
-    public void setSegApellTutor(String segApellTutor) {
-        this.segApellTutor = segApellTutor;
-    }
 
     public String getDirCalle() {
         return dirCalle;
@@ -132,13 +101,6 @@ public class Alumno {
         this.dirColonia = dirColonia;
     }
 
-    public String getNumTel() {
-        return numTel;
-    }
-
-    public void setNumTel(String numTel) {
-        this.numTel = numTel;
-    }
 
     public String getCategory() {
         return category;
