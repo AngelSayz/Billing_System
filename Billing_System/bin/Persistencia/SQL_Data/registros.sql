@@ -23,6 +23,7 @@ INSERT INTO periodo (numero, nombre, añoInicio, añoFin) VALUES
     (null, 'CICLO 2021-2022','2021-07-01', '2022-06-30'),
     (null, 'CICLO 2022-2023','2022-07-01', '2023-06-30'),
     (null, 'CICLO 2023-2024','2023-07-01', '2024-06-30');
+    (null, 'CICLO 2024-2025','2024-07-01', '2025-06-30');
 
 -- Tabla paquete_de_material
 INSERT INTO paquete_de_material (codigo, nombre, precio) VALUES
@@ -59,11 +60,19 @@ INSERT INTO evento (numero, nombre, fecha, costo) VALUES
     (null, 'Competencia Deportiva Interescolar', '2024-02-15', 50.00),
     (null, 'Semana Cultural y de Innovación', '2024-03-20', 30.00),
     (null, 'Festival de Música y Arte Juvenil', '2024-04-25', 35.00),
-    (null, 'Ceremonia de Graduación de Secundaria', '2024-06-05', 150.00);
+    (null, 'Ceremonia de Graduación de Secundaria', '2024-06-05', 150.00),
+    --Proximos y pagables
+   19 (null, 'Kermes de regreso a clases', '2024-7-02', 200.00),
+   20 (null, 'Fiesta independencia de Mexico', '2024-09-16', 75.00),
+   21 (null, 'Fiesta navidad', '2024-12-17', 100.00),
+   22 (null, 'Fiesta semana santa' '2024-04-13', 65.00),
+   23 (null, 'Dia del Niño', '2025-06-30', 70.00);
 
 -- Tabla mantenimiento
 INSERT INTO mantenimiento (codigo, descripcion, precio) VALUES
-    ('MNT_TECH', 'Reparación de techos', 1200.00),
+    ('MNT_TECH', 'Mantenimiento aulas ciclo 21-22', 800.00),
+    ('MNT_TECH', 'Mantenimiento jardines ciclo 22-23', 840.00),
+    ('MNT_TECH', 'Mantenimiento a ciclo 22-23', 840.00),
     ('MNT_AULA', 'Limpieza profunda de aulas', 500.00),
     ('MNT_SIST', 'Mantenimiento de sistemas eléctricos', 800.00),
     ('MNT_TUB', 'Reparación de tuberías y fontanería', 600.00),

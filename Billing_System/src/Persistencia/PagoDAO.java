@@ -283,7 +283,11 @@ public static Pago ConsultarPagoAlumno(String matricula) throws SQLException {
     }
     return null; 
 }
+public static void pagarInscripcion(String matricula, int grado) throws SQLException {
 
-
-
+}
+public static void pagarUniforme(String matricula, int numPaq) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'pagarUniforme'");
+}
 }
