@@ -3,9 +3,6 @@ package Persistencia;
 import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
-
-import Interfaz.DateDisplay;
-
 import java.util.Random;
 import java.time.LocalDate;
 import java.time.Period;
@@ -14,30 +11,24 @@ public class AlumnoDAO {
 
     public void registrarAlumno(Alumno alumno) throws SQLException {
         String sql = "INSERT INTO alumno (matricula, nombrePila, primerApellido, segApellido, edad, fechaNac, " +
-                "nombreTutor, primerApellTutor, segApellTutor, dirCalle, dirNumero, dirColonia, numTel, category) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            "category, password) " +
+            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, alumno.getMatricula());
-            stmt.setString(2, alumno.getNombrePila());
-            stmt.setString(3, alumno.getPrimerApellido());
-            stmt.setString(4, alumno.getSegApellido());
-            stmt.setInt(5, alumno.getEdad());
-            stmt.setDate(6, Date.valueOf(alumno.getFechaNac()));
-            stmt.setString(7, alumno.getNombreTutor());
-            stmt.setString(8, alumno.getPrimerApellTutor());
-            stmt.setString(9, alumno.getSegApellTutor());
-            stmt.setString(10, alumno.getDirCalle());
-            stmt.setString(11, alumno.getDirNumero());
-            stmt.setString(12, alumno.getDirColonia());
-            stmt.setString(13, alumno.getNumTel());
-            stmt.setString(14, alumno.getCategory());
-            stmt.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error al registrar el alumno: " + e.getMessage());
-            throw e;
-        }
+    try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+        stmt.setString(1, alumno.getMatricula());
+        stmt.setString(2, alumno.getNombrePila());
+        stmt.setString(3, alumno.getPrimerApellido());
+        stmt.setString(4, alumno.getSegApellido());
+        stmt.setInt(5, alumno.getEdad());
+        stmt.setDate(6, Date.valueOf(alumno.getFechaNac()));
+        stmt.setString(7, alumno.getCategory());
+        stmt.setString(8, alumno.getPassword());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        System.err.println("Error al registrar el alumno: " + e.getMessage());
+        throw e;
+    }
     }
 
     public static void crearAlumno() throws SQLException {
@@ -54,7 +45,7 @@ public class AlumnoDAO {
         System.err.println("╔═══════════════════════════════════════════════════════════════════════╗");
         System.err.println("║ Por favor, seleccione la fecha de nacimiento en la ventana emergente. ║");
         System.err.println("╚═══════════════════════════════════════════════════════════════════════╝");
-        String fechaNac = DateDisplay.getValidDate("Seleccione la fecha de nacimiento");
+        String fechaNac = Valid.getValidDate(sc,"Seleccione la fecha de nacimiento");
         if (fechaNac == null) {
             System.out.println("╔════════════════════════════════════════════════════════╗");
             System.out.println("║ Operación cancelada. No se ha ingresado ninguna fecha. ║");
@@ -127,6 +118,37 @@ public class AlumnoDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error al verificar la matrícula: " + e.getMessage());
+            throw e;
+        }
+    }
+    public boolean existeMatricula(String matricula) throws SQLException {
+        String sql = "SELECT 1 FROM alumno WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar la matrícula: " + e.getMessage());
+            throw e;
+        }
+    }
+    public String verificarPass(String matricula, String password) throws SQLException {
+        String sql = "SELECT category FROM alumno WHERE matricula = ? AND password = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("category");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar las credenciales: " + e.getMessage());
             throw e;
         }
     }

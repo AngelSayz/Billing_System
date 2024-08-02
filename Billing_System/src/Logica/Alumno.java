@@ -11,10 +11,10 @@ public class Alumno {
     private String nombreTutor;
     private String primerApellTutor;
     private String segApellTutor;
+    private String numTel;
     private String dirCalle;
     private String dirNumero;
     private String dirColonia;
-    private String numTel;
     private String category;
 
     public Alumno(String matricula, String nombrePila, String primerApellido, String segApellido, int edad,
@@ -146,5 +146,10 @@ public class Alumno {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public String getPassword() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
     }
 }

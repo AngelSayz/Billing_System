@@ -3,8 +3,6 @@ import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
 
-import Interfaz.DateDisplay;
-
 public class EventoDAO{
 
     public void registrarEvento(Evento evento) throws SQLException {
@@ -28,7 +26,7 @@ public class EventoDAO{
 
         int codigo = Valid.getValidInt(scanner, "Codigo del evento: ");
         String nombre = Valid.getValidString(scanner, "Nombre del evento: ",15);
-        String fecha = DateDisplay.getValidDate("Fecha del evento (YYYY-MM-DD): ");
+        String fecha = Valid.getValidDate(scanner,"Fecha del evento (YYYY-MM-DD): ");
 
         
         Evento evento = new Evento(codigo,nombre,fecha);

@@ -11,12 +11,16 @@ CREATE TABLE alumno (
     segApellido VARCHAR(15),
     edad INT NOT NULL,
     fechaNac DATE NOT NULL,
+    dirCalle VARCHAR(30) NOT NULL,
+    dirNumero VARCHAR(10) NOT NULL,
+    dirColonia VARCHAR(30) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    category varchar(5) not null
+    category varchar(5) NOT NULL,
+    password VARCHAR(30) NOT NULL
 );
-
 CREATE TABLE periodo (
     numero INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(15) NOT NULL,
     añoInicio DATE NOT NULL,
     añoFin DATE NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -33,6 +37,7 @@ CREATE TABLE evento (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(15) NOT NULL,
     fecha DATE NOT NULL,
+    costo DECIMAL(10,2) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -64,6 +69,7 @@ CREATE TABLE genero (
 CREATE TABLE tipo_de_uniforme (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL,
+    precio DECIMAL(10,2) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -74,12 +80,14 @@ CREATE TABLE tipo_de_examen (
 );
 
 CREATE TABLE pago (
-    referencia VARCHAR(10) PRIMARY KEY,
+    numero INT PRIMARY KEY AUTO_INCREMENT,
+    referencia VARCHAR(10) NOT NULL,
     fechaPago DATE NOT NULL,
     monto FLOAT,
     nivel_educativo VARCHAR(10) NOT NULL,
     periodo INT NOT NULL,
     alumno VARCHAR(6) NOT NULL,
+    estado VARCHAR(10) NOT NULL,
     FOREIGN KEY (nivel_educativo) REFERENCES nivel_educativo(codigo),
     FOREIGN KEY (periodo) REFERENCES periodo(numero),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
@@ -109,7 +117,9 @@ CREATE TABLE grado (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(10) NOT NULL,
     nivel_educativo VARCHAR(10) NOT NULL,
+    periodo INT,
     FOREIGN KEY (nivel_educativo) REFERENCES nivel_educativo(codigo),
+    FOREIGN KEY (periodo) REFERENCES periodo(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -150,8 +160,9 @@ CREATE TABLE mensualidad (
 CREATE TABLE paquete_de_uniforme (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL,
-    costo FLOAT NOT NULL,
+    costo DECIMAL(10,2) NOT NULL,
     genero VARCHAR(10) NOT NULL,
+    talla VARCHAR (10) NOT NULL,
     FOREIGN KEY (genero) REFERENCES genero(codigo),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -159,8 +170,6 @@ CREATE TABLE paquete_de_uniforme (
 CREATE TABLE detalle_Paquete (
     paquete_de_uniforme INT,
     tipo_de_uniforme INT,
-    precio FLOAT NOT NULL,
-    talla VARCHAR(10) NOT NULL,
     PRIMARY KEY (paquete_de_uniforme, tipo_de_uniforme),
     FOREIGN KEY (paquete_de_uniforme) REFERENCES paquete_de_uniforme(numero),
     FOREIGN KEY (tipo_de_uniforme) REFERENCES tipo_de_uniforme(numero),
@@ -170,7 +179,7 @@ CREATE TABLE detalle_Paquete (
 CREATE TABLE tipo_de_pago (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL,
-    pago VARCHAR(10),
+    pago INT,
     inscripcion VARCHAR(10),
     paquete_de_libros VARCHAR(10),
     paquete_de_uniforme INT,
@@ -179,7 +188,7 @@ CREATE TABLE tipo_de_pago (
     evento INT,
     paquete_de_material VARCHAR(10),
     mantenimiento VARCHAR(10),
-    FOREIGN KEY (pago) REFERENCES pago(referencia),
+    FOREIGN KEY (pago) REFERENCES pago(numero),
     FOREIGN KEY (inscripcion) REFERENCES inscripcion(codigo),
     FOREIGN KEY (paquete_de_libros) REFERENCES paquete_de_libros(codigo),
     FOREIGN KEY (paquete_de_uniforme) REFERENCES paquete_de_uniforme(numero),
@@ -190,15 +199,13 @@ CREATE TABLE tipo_de_pago (
     FOREIGN KEY (mantenimiento) REFERENCES mantenimiento(codigo),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-ALTER TABLE alumno
-ADD category varchar(5) not null;
 
 CREATE TABLE grado_alumno (
     alumno VARCHAR(6),
     grado INT,
     PRIMARY KEY (alumno, grado),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
-    FOREIGN KEY (grupo) REFERENCES grado(numero),
+    FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -207,9 +214,6 @@ CREATE TABLE tutor (
     nombrePila VARCHAR(15) NOT NULL,
     primerApellido VARCHAR(15) NOT NULL,
     segApellido VARCHAR(15),
-    dirCalle VARCHAR(30) NOT NULL,
-    dirNumero VARCHAR(10) NOT NULL,
-    dirColonia VARCHAR(30) NOT NULL,
     numTel VARCHAR(15) NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -220,5 +224,14 @@ CREATE TABLE tutor_alumno (
     PRIMARY KEY (alumno, tutor),
     FOREIGN KEY (alumno) REFERENCES alumno(matricula),
     FOREIGN KEY (tutor) REFERENCES tutor(numero),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE grupo_grado (
+    grupo INT,
+    grado INT,
+    PRIMARY KEY (grupo, grado),
+    FOREIGN KEY (grupo) REFERENCES grupo(numero),
+    FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

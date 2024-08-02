@@ -3,16 +3,13 @@ package Persistencia;
 import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
-
-import Interfaz.DateDisplay;
-
 import java.util.Random;
 
 public class PagoDAO{
 
     public void registrarPago(Pago pago) throws SQLException {
-        String sqlP = "INSERT INTO pago (referencia, fechaPago, monto, nivel_educativo, periodo, alumno) VALUES (?, ?, ?, ?, ?, ?)";
-        String sqlTP = "INSERT INTO tipo_de_pago (numero, descripcion, pago, inscripcion, paquete_de_libros, paquete_de_uniforme, examen, mensualidad, evento, paquete_de_material) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        String sqlP = "INSERT INTO pago (referencia, fechaPago, monto, nivel_educativo, periodo, alumno, estado) VALUES (?, ?, ?, ?, ?, ?,?)";
+        String sqlTP = "INSERT INTO tipo_de_pago (descripcion, pago, inscripcion, paquete_de_libros, paquete_de_uniforme, examen, mensualidad, evento, paquete_de_material) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false); // Iniciar transacción
@@ -20,59 +17,134 @@ public class PagoDAO{
             try (PreparedStatement stmtP = conn.prepareStatement(sqlP);
                  PreparedStatement stmtTP = conn.prepareStatement(sqlTP)) {
                 
-                // Insert d la tabla pago
+                // Insert en la tabla pago
                 stmtP.setString(1, pago.getReferencia());
                 stmtP.setDate(2, Date.valueOf(pago.getFecha()));
                 stmtP.setDouble(3, pago.getMonto());
                 stmtP.setString(4, pago.getNivel_educativo());
                 stmtP.setString(5, pago.getPeriodo());
                 stmtP.setString(6, pago.getAlumno());
+                stmtP.setString(7, pago.getEstado());
                 stmtP.executeUpdate();
     
-                // Insert de la tabla tipod e pago
-                 stmtTP.setInt(1, pago.getTPnumero());
-                stmtTP.setString(2, pago.getTPdescripcion());
-                stmtTP.setString(3, pago.getReferencia());
-                stmtTP.setString(4, pago.getTPinscripcion());
-                stmtTP.setString(5, pago.getTPpaquete_de_libros());
-                stmtTP.setInt(6, pago.getTPpaquete_de_uniforme());
-                stmtTP.setString(7, pago.getTPexamen());
-                stmtTP.setString(8, pago.getTPmensualidad());
-                stmtTP.setInt(9, pago.getTPevento());
-                stmtTP.setString(10, pago.getTPpaquete_de_material());
+                // Insert en la tabla tipo_de_pago
+                stmtTP.setString(1, pago.getTPdescripcion());
+                stmtTP.setString(2, pago.getReferencia());
+    
+                // Establecer valores, permitiendo valores nulos
+                setNullableString(stmtTP, 3, pago.getTPinscripcion());
+                setNullableString(stmtTP, 4, pago.getTPpaquete_de_libros());
+                setNullableInt(stmtTP, 5, pago.getTPpaquete_de_uniforme());
+                setNullableString(stmtTP, 6, pago.getTPexamen());
+                setNullableString(stmtTP, 7, pago.getTPmensualidad());
+                setNullableInt(stmtTP, 8, pago.getTPevento());
+                setNullableString(stmtTP, 9, pago.getTPpaquete_de_material());
+    
                 stmtTP.executeUpdate();
     
-                conn.commit(); // se confirma la transacción
+                conn.commit(); // Confirmar la transacción
     
             } catch (SQLException e) {
-                conn.rollback(); // se cancela la transaccion 
+                conn.rollback(); // Cancelar la transacción
                 System.err.println("Error al registrar el pago: " + e.getMessage());
                 throw e;
             }
         }
     }
+    private void setNullableString(PreparedStatement stmt, int index, String value) throws SQLException {
+        if (value != null) {
+            stmt.setString(index, value);
+        } else {
+            stmt.setNull(index, Types.VARCHAR);
+        }
+    }
+    
+    private void setNullableInt(PreparedStatement stmt, int index, int value) throws SQLException {
+        if (value != 0) {
+            stmt.setInt(index, value);
+        } else {
+            stmt.setNull(index, Types.INTEGER);
+        }
+    }
 
     public static void inputPago() throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
-        System.err.println("╔══════════════════════════════════════════════════════════════════╗");
-        System.err.println("║ Por favor, seleccione la fecha del pago en la ventana emergente. ║");
-        System.err.println("╚══════════════════════════════════════════════════════════════════╝");
-        String fechaPago = DateDisplay.getValidDate("Seleccione la fecha del pago");
-        if (fechaPago == null) {
-            System.out.println("╔════════════════════════════════════════════════════════╗");
-            System.out.println("║ Operación cancelada. No se ha ingresado ninguna fecha. ║");
-            System.out.println("╚════════════════════════════════════════════════════════╝");
-            return;
-        }    
-        Scanner scanner = new Scanner(System.in);
-        double monto = Valid.getValidDouble(scanner, "Monto a Pagar: ");
-        String nivelEducativo = Valid.getValidString(scanner, "Nivel Educativo: ", 10);
-        String periodo = Valid.getValidString(scanner, "Periodo: ", 10);
-        String alumno = Valid.getValidString(scanner, "Matrícula del Alumno: ", 10);
+        Scanner sc = new Scanner(System.in);
+    
+        String fechaPago = Valid.getValidDate(sc, "Ingrese la fecha del pago");
+        double monto = Valid.getValidDouble(sc, "Monto a Pagar: ");
+        String nivelEducativo = Valid.getValidString(sc, "Nivel Educativo: ", 10);
+        String periodo = Valid.getValidString(sc, "Periodo: ", 10);
+        String alumno = Valid.getValidString(sc, "Matrícula del Alumno: ", 10);
     
         String referencia = generarReferencia(); 
     
-        Pago pago = new Pago(referencia, fechaPago, nivelEducativo, periodo, alumno, monto);
+        // Mostrar menú de selección de tipo de pago
+        System.out.println("Seleccione el tipo de pago:");
+        System.out.println("1. Inscripción");
+        System.out.println("2. Paquete de Libros");
+        System.out.println("3. Paquete de Uniforme");
+        System.out.println("4. Examen");
+        System.out.println("5. Mensualidad");
+        System.out.println("6. Evento");
+        System.out.println("7. Paquete de Material");
+        int tipoDePagoSeleccionado = Valid.getValidIntMenu(sc, "Seleccione una opción (1-7): ", 1, 7);
+    
+        // Inicializar todos los campos de tipo de pago como nulos
+        String tpDescripcion = null;
+        String tpInscripcion = null;
+        String tpPaqueteDeLibros = null;
+        int tpPaqueteDeUniforme = 0;
+        String tpExamen = null;
+        String tpMensualidad = null;
+        int tpEvento = 0;
+        String tpPaqueteDeMaterial = null;
+    
+        // Asignar valores según el tipo de pago seleccionado
+        switch (tipoDePagoSeleccionado) {
+            case 1:
+                tpDescripcion = "Inscripción";
+                tpInscripcion = "INS_KIND1";
+                break;
+            case 2:
+                tpDescripcion = "Paquete de Libros";
+                tpPaqueteDeLibros = "PAQ_KIND1";
+                break;
+            case 3:
+                tpDescripcion = "Paquete de Uniforme";
+                tpPaqueteDeUniforme = 1; // Ajustar según sea necesario
+                break;
+            case 4:
+                tpDescripcion = "Examen";
+                tpExamen = "Examen";
+                break;
+            case 5:
+                tpDescripcion = "Mensualidad";
+                tpMensualidad = "Mensualidad";
+                break;
+            case 6:
+                tpDescripcion = "Evento";
+                tpEvento = 1; // Ajustar según sea necesario
+                break;
+            case 7:
+                tpDescripcion = "Paquete de Material";
+                tpPaqueteDeMaterial = "Paquete de Material";
+                break;
+            default:
+                System.out.println("Opción no válida.");
+                return;
+        }
+    
+        Pago pago = new Pago(referencia, fechaPago, nivelEducativo, periodo, alumno, monto, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
+        pago.setTPdescripcion(tpDescripcion);
+        pago.setTPinscripcion(tpInscripcion);
+        pago.setTPpaquete_de_libros(tpPaqueteDeLibros);
+        pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
+        pago.setTPexamen(tpExamen);
+        pago.setTPmensualidad(tpMensualidad);
+        pago.setTPevento(tpEvento);
+        pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
+        pago.setEstado("pendiente");
     
         try {
             pagoDAO.registrarPago(pago);
@@ -80,7 +152,6 @@ public class PagoDAO{
         } catch (SQLException e) {
             System.err.println("Error al registrar el pago: " + e.getMessage());
         }
-        return;
     }
 
     public static String generarReferencia() throws SQLException {
@@ -153,7 +224,7 @@ public static Pago ConsultarPago(String referencia) throws SQLException {
                     rs.getString("nivel_educativo"),
                     rs.getString("periodo"),
                     rs.getString("alumno"),
-                    rs.getDouble("monto")
+                    rs.getDouble("monto"), sql, 0, sql, sql, sql, 0, sql, sql, 0, sql
                 );
 
                 // Imprimir información del pago en formato de tabla
@@ -190,7 +261,7 @@ public static Pago ConsultarPagoAlumno(String matricula) throws SQLException {
                     rs.getString("nivel_educativo"),
                     rs.getString("periodo"),
                     rs.getString("alumno"),
-                    rs.getDouble("monto")
+                    rs.getDouble("monto"), sql, 0, sql, sql, sql, 0, sql, sql, 0, sql
                 );
                 System.out.println("-----------------------------------------------------------------------------------------");
                 System.out.printf("| %-15s | %-10s | %-15s | %-10s | %-10s | %-10s |\n",
@@ -212,6 +283,7 @@ public static Pago ConsultarPagoAlumno(String matricula) throws SQLException {
     }
     return null; 
 }
+
 
 
 }

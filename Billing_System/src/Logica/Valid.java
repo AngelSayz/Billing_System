@@ -1,5 +1,7 @@
 package Logica;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class Valid {
@@ -128,6 +130,30 @@ public class Valid {
             }
         }
         return input;
+    }
+    public static String getValidDate(Scanner sc, String prompt) {
+        String input;
+        while (true) {
+            System.out.print(prompt);
+            input = sc.nextLine().trim();
+            if (input.matches("\\d{4}-\\d{2}-\\d{2}") && isValidDate(input)) {
+                break;
+            } else {
+                System.out.println("Entrada inválida. Por favor, ingrese una fecha válida en el formato YYYY-MM-DD.");
+            }
+        }
+        return input;
+    }
+
+    public static boolean isValidDate(String date) {
+        try {
+            LocalDate parsedDate = LocalDate.parse(date);
+            LocalDate startDate = LocalDate.of(2008, 1, 1);
+            LocalDate endDate = LocalDate.of(2024, 12, 31);
+            return !parsedDate.isBefore(startDate) && !parsedDate.isAfter(endDate);
+        } catch (DateTimeParseException e) {
+            return false;
+        }
     }
 
 }
