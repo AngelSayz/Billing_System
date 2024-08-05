@@ -12,10 +12,10 @@ public class Alumno {
     private String dirNumero;
     private String dirColonia;
     private String category;
-
+    private String password;
 
     public Alumno(String matricula, String nombrePila, String primerApellido, String segApellido, int edad,
-            String fechaNac, String dirCalle, String dirNumero, String dirColonia, String category, String dirNumero2, String dirColonia2, String numTel, String category2) {
+                  String fechaNac, String dirCalle, String dirNumero, String dirColonia, String category, String password) {
         this.matricula = matricula;
         this.nombrePila = nombrePila;
         this.primerApellido = primerApellido;
@@ -26,6 +26,7 @@ public class Alumno {
         this.dirNumero = dirNumero;
         this.dirColonia = dirColonia;
         this.category = category;
+        this.password = password;
     }
 
     public String getMatricula() {
@@ -76,7 +77,6 @@ public class Alumno {
         this.fechaNac = fechaNac;
     }
 
-
     public String getDirCalle() {
         return dirCalle;
     }
@@ -101,7 +101,6 @@ public class Alumno {
         this.dirColonia = dirColonia;
     }
 
-
     public String getCategory() {
         return category;
     }
@@ -111,7 +110,11 @@ public class Alumno {
     }
 
     public String getPassword() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+        return password;
     }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
 }

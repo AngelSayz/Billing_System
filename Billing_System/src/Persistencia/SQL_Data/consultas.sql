@@ -13,19 +13,18 @@ DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Fecha_de_Inicio,
 DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Fecha_Final,
 a.matricula as Matricula,
 CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, 
-CONCAT(gr.nombre, ' ', ne.nombre) as Grado,
+gr.nombre as Grado,
 CONCAT(t.primerApellido, ' ', t.segApellido, ' ', t.nombrePila) as Tutor,
-CONCAT(t.dirCalle, ' ', t.dirNumero, ' ', t.dirColonia) as Direccion
+CONCAT(a.dirCalle, ' ', a.dirNumero, ' ', a.dirColonia) as Direccion
 FROM alumno as a
 INNER JOIN tutor_alumno as ta on ta.alumno = a.matricula
 INNER JOIN tutor as t on t.numero = ta.tutor
 inner join grupo_alumno as gra on gra.alumno = a.matricula
 inner join grupo as g on g.numero = gra.grupo
 INNER JOIN periodo as pe ON pe.numero = g.periodo
-INNER JOIN grado_alumno as ga on ga.alumno = a.matricula
-INNER JOIN grado as gr on gr.numero = ga.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = gr.nivel_educativo
-WHERE a.matricula = '000001';
+INNER JOIN grado as gr on gr.numero = g.grado
+INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo
+WHERE a.matricula = '000001' and periodo = 1;
 
 /*2. Grupos en los que ha estado un alumno
 a. Matricula del alumno
@@ -38,22 +37,20 @@ SELECT a.matricula as Matricula,
 CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
 DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Inicio_del_Periodo_Escolar,
 DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Final_del_Periodo_Escolar,
-CONCAT(gr.nombre, ' ', ne.nombre) as Grado,
+gr.nombre as Grado,
 g.nombre as Grupo 
 FROM alumno as a
 INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula
 INNER JOIN grupo as g on g.numero = ga.grupo
 INNER JOIN periodo as pe on pe.numero = g.periodo
-INNER JOIN grado_alumno as gra on gra.alumno = a.matricula 
-INNER JOIN grado as gr on gr.numero = gra.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = gr.nivel_educativo
+INNER JOIN grado as gr on gr.numero = g.grado
 where a.matricula = '000001' 
 ORDER BY a.matricula;
 
 /*3. Números de teléfono de un tutor
 a. Nombre del tutor
 b. Nombre del alumno
-c. Número de teléfono*/ //que sea solo 1 tutor
+c. Número de teléfono*/ 
 SELECT 
 CONCAT(t.primerApellido, ' ', t.segApellido, ' ', t.nombrePila) as Tutor,
 CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
@@ -61,6 +58,7 @@ t.numTel as Número_de_Teléfono
 FROM tutor as t
 INNER JOIN tutor_alumno as ta on t.numero = ta.tutor
 INNER JOIN alumno as a on a.matricula = ta.alumno
+WHERE a.matricula='000001' 
 ORDER BY a.matricula;
 
 /*4. Inscripciones pagadas de un alumno
@@ -72,21 +70,25 @@ e. Fecha de pago
 f. Grado
 g. Nivel*/ 
 SELECT a.matricula as Matricula,
-       CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
-       DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Inicio_del_Periodo_Escolar,
-       DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Final_del_Periodo_Escolar,
-       tp.descripcion as Inscripcion_Pagada,
-       DATE_FORMAT(p.fechaPago, "%d-%m-%y" ) as Fecha_de_Pago,
-       CONCAT(gr.nombre, ' ', ne.nombre) as Grado
+CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
+DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Inicio_del_Periodo_Escolar,
+DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Final_del_Periodo_Escolar,
+pe.nombre as Periodo,
+g.nombre as Grupo,
+g.nivel_educativo as Nivel_Educativo,
+gr.nombre as Grado,
+p.fechaPago as Fecha_del_Pago,
+tp.descripcion as Pago
 FROM alumno as a
-INNER JOIN pago as p on p.alumno = a.matricula
-INNER JOIN periodo as pe on pe.numero = p.periodo
-INNER JOIN grado_alumno as ga on ga.alumno = a.matricula
-INNER JOIN grado as gr on gr.numero = ga.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = gr.nivel_educativo
-INNER JOIN tipo_de_pago as tp on tp.pago = p.numero
-WHERE tp.inscripcion is not null
+INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula
+INNER JOIN grupo as g on g.numero = ga.grupo
+INNER JOIN periodo as pe on pe.numero = g.periodo
+inner join grado as gr on g.grado = gr.numero
+inner join pago as p on p.periodo = pe.numero
+inner join tipo_de_pago as tp on tp.pago = p.numero
+where a.matricula = '000001' and tp.inscripcion is not null and p.alumno = '000001'
 ORDER BY a.matricula;
+
 
 /*5. Mensualidades pagadas de un alumno en un periodo escolar
 a. Matricula del alumno
@@ -96,23 +98,26 @@ d. Fecha final del periodo escolar
 e. Grado
 f. Nivel
 g. Mes pagado
-h. Fecha de pago*///un alumno indivual solo uno independiente
+h. Fecha de pago*/
 SELECT a.matricula as Matricula,
 CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
 DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Inicio_del_Periodo_Escolar,
 DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Final_del_Periodo_Escolar,
-CONCAT(gr.nombre, ' ', ne.nombre) as Grado,
-tp.descripcion as Mes_Pagado,
-DATE_FORMAT(p.fechaPago, "%d-%m-%y" ) as Fecha_de_Pago
+pe.nombre as Periodo,
+g.nombre as Grupo,
+g.nivel_educativo as Nivel_Educativo,
+gr.nombre as Grado,
+p.fechaPago as Fecha_del_Pago,
+tp.descripcion as Pago
 FROM alumno as a
-INNER JOIN pago as p on p.alumno = a.matricula
-INNER JOIN periodo as pe on pe.numero = p.periodo
-INNER JOIN grado_alumno as ga on ga.alumno = a.matricula
-INNER JOIN grado as gr on gr.numero = ga.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = gr.nivel_educativo
-INNER JOIN tipo_de_pago as tp on tp.pago = p.numero
-WHERE tp.mensualidad is not null
-ORDER BY tp.pago;
+INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula
+INNER JOIN grupo as g on g.numero = ga.grupo
+INNER JOIN periodo as pe on pe.numero = g.periodo
+inner join grado as gr on g.grado = gr.numero
+inner join pago as p on p.periodo = pe.numero
+inner join tipo_de_pago as tp on tp.pago = p.numero
+where a.matricula = '000001' and tp.mensualidad is not null and p.alumno = '000001' and pe.numero = 2
+ORDER BY a.matricula;
 
 /*6. Pagos realizados por un evento especial
 a. Nombre del evento
@@ -124,39 +129,73 @@ f. Nombre del alumno
 g. Grupo
 h. Grado
 i. Nivel*/
-SELECT ev.nombre as Nombre_del_Evento,
-DATE_FORMAT(ev.fecha, "%d-%m-%y" ) as Fecha_del_Evento, 
-ev.costo as Costo_del_Evento,
-DATE_FORMAT(p.fechaPago, "%d-%m-%y" ) as Fecha_de_Pago,
-a.matricula as Matricula,
-CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
-CONCAT(grd.nombre, ' ', ne.nombre) as Grado,
-tp.descripcion as Evento_Pagado
-FROM evento as ev
-INNER JOIN tipo_de_pago as tp on tp.evento = ev.numero
-INNER JOIN pago as p on p.numero = tp.pago
-INNER JOIN alumno as a on a.matricula = p.numero
-INNER JOIN grupo_alumno as grp on a.matricula = grp.alumno
-INNER JOIN grupo as g on g.numero = grp.grupo
-INNER JOIN grado_alumno as gra on a.matricula = gra.alumno
-INNER JOIN grado as grd on grd.numero = gra.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo
-WHERE ev.numero = 1;
+SELECT DISTINCT
+    ev.nombre AS Evento,
+    ev.fecha AS Fecha,
+    ev.costo AS Costo,
+    a.matricula AS Matricula,
+    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) AS Alumno,
+    g.nombre AS Grupo,
+    g.nivel_educativo AS Nivel_Educativo,
+    gr.nombre AS Grado,
+    p.fechaPago AS Fecha_del_Pago
+FROM 
+    alumno AS a
+INNER JOIN 
+    grupo_alumno AS ga ON ga.alumno = a.matricula
+INNER JOIN 
+    grupo AS g ON g.numero = ga.grupo
+INNER JOIN 
+    periodo AS pe ON pe.numero = g.periodo
+INNER JOIN 
+    grado AS gr ON g.grado = gr.numero
+INNER JOIN 
+    pago AS p ON p.periodo = pe.numero
+INNER JOIN 
+    tipo_de_pago AS tp ON tp.pago = p.numero
+INNER JOIN 
+    evento AS ev ON ev.numero = tp.evento
+WHERE 
+    tp.evento IS NOT NULL 
+    AND p.estado = 'confirmado' 
+    AND ev.numero = 1;
+
 
 /*7. Costos del mantenimiento por periodo escolar
 a. Fecha de inicio del periodo escolar
 b. Fecha final del periodo escolar
 c. Concepto del mantenimiento
 d. Costo*/
-SELECT 
-DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Inicio_del_Periodo_Escolar,
-DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Final_del_Periodo_Escolar,
-m.descripcion as Concepto_del_Mantenimiento,
-SUM(m.precio) as Costo
-FROM pago as pa
-INNER JOIN periodo as pe on pe.numero = pa.periodo
-INNER JOIN tipo_de_pago as tp on tp.pago = pa.numero
-INNER JOIN mantenimiento as m on m.codigo = tp.mantenimiento
+SELECT
+    DATE_FORMAT(p.añoInicio, '%d/%m/%Y') AS Fecha_de_inicio_del_periodo_escolar,
+    DATE_FORMAT(p.añoFin, '%d/%m/%Y') AS Fecha_final_del_periodo_escolar,
+    m.descripcion AS Concepto_del_mantenimiento,
+    m.precio AS Costo,
+    NULL AS Total_del_periodo
+FROM
+    mantenimiento AS m
+    INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
+    INNER JOIN periodo AS p ON mp.periodo = p.numero
+WHERE
+    p.numero = 3
+
+UNION ALL
+
+-- Selección del total del periodo escolar
+SELECT
+    NULL AS Fecha_de_inicio_del_periodo_escolar,
+    NULL AS Fecha_final_del_periodo_escolar,
+    'Total' AS Concepto_del_mantenimiento,
+    NULL AS Costo,
+    ROUND(SUM(m.precio), 2) AS Total_del_periodo
+FROM
+    mantenimiento AS m
+    INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
+    INNER JOIN periodo AS p ON mp.periodo = p.numero
+WHERE
+    p.numero = 3;
+
+
 
 /*8. Lista de precios de los paquetes de útiles escolares (papelería) para un
 periodo y nivel escolar.
@@ -166,20 +205,17 @@ c. Nivel escolar
 d. Grado
 e. Descripción del paquete de útiles
 f. Costo*/
-SELECT 
-DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Fecha_de_Inicio_del_Periodo_Escolar,
+SELECT DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Fecha_de_Inicio_del_Periodo_Escolar,
 DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Fecha_Final_del_Periodo_Escolar,
-ne.nombre as Nivel_Escolar,
-gr.nombre as Grado,
-pm.nombre as Descripción_del_Paquete_de_Útiles,
+ne.nombre as Nivel,
+pm.nombre as Descripcion,
 pm.precio as Costo
-FROM nivel_educativo as ne
-INNER JOIN grado as gr on gr.nivel_educativo = ne.codigo
-INNER JOIN pago as pa on pa.nivel_educativo = ne.codigo
-INNER JOIN periodo as pe on pe.numero = p.periodo
-INNER JOIN tipo_de_pago as tp on tp.pago = pa.referencia
-INNER JOIN paquete_de_material as pm on tp.paquete_de_material = pm.codigo
-WHERE pe.numero = ?; and gr.codigo=?;
+FROM paquete_de_material as pm
+inner join paq_periodo as pp on pp.paquete_de_material = pm.codigo
+inner join periodo as pe on pe.numero = pp.periodo
+inner join grado as g on pm.grado = g.numero
+inner join nivel_educativo as ne on ne.codigo = g.nivel_educativo
+where pe.numero = ? and ne.codigo = ?;
 
 /*9. Lista de precios de los uniformes para un periodo y nivel escolar.
 a. Fecha de inicio del periodo escolar
@@ -192,18 +228,18 @@ g. Costo del uniforme*/
 SELECT 
 DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Fecha_de_Inicio_del_Periodo_Escolar,
 DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Fecha_Final_del_Periodo_Escolar,
-ne.nombre as Nivel_Escolar,
 gr.nombre as Grado,
+ne.nombre as Nivel_Escolar,
 pu.descripcion as Descripción_del_Uniforme,
 tu.descripcion as Tipo_de_Uniforme,
-tu.precio as Costo_del_Uniforme
-FROM periodo as pe
-INNER JOIN tipo_de_uniforme as tu on tu.numero = pu.tipoUniforme
-INNER JOIN nivel_educativo as ne on ne.codigo = pe.nivel_educativo
+pu.costo as Costo
+FROM paquete_de_uniforme as pu
+INNER JOIN detalle_paquete as dp on dp.paquete_de_uniforme = pu.numero
+INNER JOIN tipo_de_uniforme as tu on dp.tipo_de_uniforme = tu.numero
+INNER JOIN nivel_educativo as ne on pu.nivel_educativo = ne.codigo
+INNER JOIN periodo as pe on pu.periodo = pe.numero
 INNER JOIN grado as gr on gr.nivel_educativo = ne.codigo
-INNER JOIN pago as pa on pa.nivel_educativo = ne.codigo
-INNER JOIN tipo_de_pago as tp on tp.pago = pa.referencia
-INNER JOIN paquete_de_uniforme as pu on tp.paquete_de_uniforme = pu.numero
+WHERE pe.numero = 1 AND ne.codigo='PRIM'
 
 /*10.Total de pagos realizados para un nivel educativo en un periodo escolar
 a. Fecha de inicio del periodo escolar
@@ -211,15 +247,49 @@ b. Fecha final del periodo escolar
 c. Nivel escolar
 d. Total de pagos*/
 SELECT 
-DATE_FORMAT(pe.añoInicio, "%d-%m-%y" ) as Fecha_de_Inicio_del_Periodo_Escolar,
-DATE_FORMAT(pe.añoFin, "%d-%m-%y" ) as Fecha_Final_del_Periodo_Escolar,
-ne.nombre as Nivel_Escolar,
-SUM(pa.monto) as Total_de_Pagos
-FROM pago as pa
-INNER JOIN periodo as pe on pe.numero = pa.periodo
-INNER JOIN alumno as a on a.matricula = pa.alumno
-INNER JOIN grado_alumno as ga on ga.alumno = a.matricula
-INNER JOIN grado as gr on gr.codigo = ga.grado
-INNER JOIN nivel_educativo as ne on ne.codigo = gr.nivel_educativo
-WHERE ne.codigo = ? and pa.periodo = ?
+    DATE_FORMAT(pe.añoInicio, "%d-%m-%y") AS Fecha_de_Inicio_del_Periodo_Escolar,
+    DATE_FORMAT(pe.añoFin, "%d-%m-%y") AS Fecha_Final_del_Periodo_Escolar,
+    ne.nombre AS Nivel_Escolar,
+    COUNT(*) AS Total_de_Pagos
+FROM pago AS pa
+INNER JOIN periodo AS pe ON pe.numero = pa.periodo
+INNER JOIN nivel_educativo AS ne ON ne.codigo = pa.nivel_educativo
+WHERE pa.periodo = 1 AND pa.nivel_educativo = 'KIND'
 GROUP BY pe.añoInicio, pe.añoFin, ne.nombre;
+2021061501
+/*Consultas usadas en la logica del proyecto:
+Consultar un pago:*/
+
+SELECT 
+    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno,
+    a.matricula as Matricula,
+    DATE_FORMAT(p.fechaPago, '%d-%m-%y') as Fecha_de_Pago,
+    ROUND(p.monto, 2) as Monto,
+    p.referencia as Referencia,
+    CASE 
+        WHEN tp.inscripcion IS NOT NULL THEN 'Inscripcion'
+        WHEN tp.paquete_de_libros IS NOT NULL THEN 'Paquete de Libros'
+        WHEN tp.paquete_de_uniforme IS NOT NULL THEN 'Paquete de Uniforme'
+        WHEN tp.examen IS NOT NULL THEN 'Examen'
+        WHEN tp.mensualidad IS NOT NULL THEN 'Mensualidad'
+        WHEN tp.evento IS NOT NULL THEN 'Evento'
+        WHEN tp.paquete_de_material IS NOT NULL THEN 'Paquete de Material'
+        WHEN tp.mantenimiento IS NOT NULL THEN 'Mantenimiento'
+        ELSE 'Desconocido'
+    END as Tipo_de_Pago,
+    tp.descripcion as Descripcion,
+    p.estado as Estado
+FROM Pago as p 
+INNER JOIN tipo_de_pago as tp ON tp.pago = p.referencia
+INNER JOIN alumno as a on p.alumno = a.matricula
+WHERE a.matricula = '000001'
+  AND (
+        tp.inscripcion IS NOT NULL OR 
+        tp.paquete_de_libros IS NOT NULL OR 
+        tp.paquete_de_uniforme IS NOT NULL OR 
+        tp.examen IS NOT NULL OR 
+        tp.mensualidad IS NOT NULL OR 
+        tp.evento IS NOT NULL OR 
+        tp.paquete_de_material IS NOT NULL OR 
+        tp.mantenimiento IS NOT NULL
+  ) ORDER BY fechaPago;

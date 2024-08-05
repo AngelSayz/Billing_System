@@ -3,35 +3,46 @@ package Persistencia;
 import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.time.LocalDate;
 import java.time.Period;
 
 public class AlumnoDAO {
 
-    public void registrarAlumno(Alumno alumno) throws SQLException {
+    public String registrarAlumno(Alumno alumno) throws SQLException {
         String sql = "INSERT INTO alumno (matricula, nombrePila, primerApellido, segApellido, edad, fechaNac, " +
-            "category, password) " +
-            "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                "dirCalle, dirNumero, dirColonia, category, password) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection conn = DatabaseConnection.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql)) {
-        stmt.setString(1, alumno.getMatricula());
-        stmt.setString(2, alumno.getNombrePila());
-        stmt.setString(3, alumno.getPrimerApellido());
-        stmt.setString(4, alumno.getSegApellido());
-        stmt.setInt(5, alumno.getEdad());
-        stmt.setDate(6, Date.valueOf(alumno.getFechaNac()));
-        stmt.setString(7, alumno.getCategory());
-        stmt.setString(8, alumno.getPassword());
-        stmt.executeUpdate();
-    } catch (SQLException e) {
-        System.err.println("Error al registrar el alumno: " + e.getMessage());
-        throw e;
-    }
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, alumno.getMatricula());
+            stmt.setString(2, alumno.getNombrePila());
+            stmt.setString(3, alumno.getPrimerApellido());
+            stmt.setString(4, alumno.getSegApellido());
+            stmt.setInt(5, alumno.getEdad());
+            stmt.setDate(6, Date.valueOf(alumno.getFechaNac()));
+            stmt.setString(7, alumno.getDirCalle());
+            stmt.setString(8, alumno.getDirNumero());
+            stmt.setString(9, alumno.getDirColonia());
+            stmt.setString(10, alumno.getCategory());
+            stmt.setString(11, alumno.getPassword());
+
+            stmt.executeUpdate();
+            return alumno.getMatricula();
+        } catch (SQLException e) {
+            System.err.println("Error al registrar el alumno: " + e.getMessage());
+            throw e;
+        }
     }
 
-    public static void crearAlumno() throws SQLException {
+    public static void matricularAlumno() throws SQLException {
         AlumnoDAO alumnoDAO = new AlumnoDAO();
         Scanner sc = new Scanner(System.in);
 
@@ -42,119 +53,59 @@ public class AlumnoDAO {
         String nombrePila = Valid.getValidString(sc, "Nombre del Alumno: ", 15);
         String primerApellido = Valid.getValidString(sc, "Apellido Paterno: ", 15);
         String segApellido = Valid.getValidOptionalString(sc, "Apellido Materno: ", 15);
-        System.err.println("╔═══════════════════════════════════════════════════════════════════════╗");
-        System.err.println("║ Por favor, seleccione la fecha de nacimiento en la ventana emergente. ║");
-        System.err.println("╚═══════════════════════════════════════════════════════════════════════╝");
-        String fechaNac = Valid.getValidDate(sc,"Seleccione la fecha de nacimiento");
-        if (fechaNac == null) {
-            System.out.println("╔════════════════════════════════════════════════════════╗");
-            System.out.println("║ Operación cancelada. No se ha ingresado ninguna fecha. ║");
-            System.out.println("╚════════════════════════════════════════════════════════╝");
-            return;
-        }
+        String fechaNac = Valid.getValidDate(sc, "Seleccione la fecha de nacimiento (YYYY-MM-DD): ");
         int edad = calcularEdad(fechaNac);
-        String nombreTutor = Valid.getValidString(sc, "Nombre del Tutor: ", 15);
-        String primerApellTutor = Valid.getValidString(sc, "Apellido Paterno del Tutor: ", 15);
-        String segApellTutor = Valid.getValidOptionalString(sc, "Apellido Materno del Tutor: ", 15);
-        String numTel = Valid.getValidString(sc, "Número de Teléfono del tutor: ", 30);
         String dirCalle = Valid.getValidString(sc, "Calle: ", 30);
         String dirNumero = Valid.getValidString(sc, "Número: ", 30);
         String dirColonia = Valid.getValidString(sc, "Colonia: ", 30);
         String matricula = generarMatricula();
         String category = "user";
+        String password = matricula;
 
-        Alumno alumno = new Alumno(matricula, nombrePila, primerApellido, segApellido, edad, fechaNac,
-                nombreTutor, primerApellTutor, segApellTutor, dirCalle, dirNumero,
-                dirColonia, numTel, category);
-
+        Alumno alumno = new Alumno(matricula, nombrePila, primerApellido, segApellido, edad, fechaNac, dirCalle,
+                dirNumero, dirColonia,
+                category, password);
         try {
             alumnoDAO.registrarAlumno(alumno);
-            System.out.println("╔════════════════════════════════════════════════════════════════╗");
-            System.out.println("║ ALUMNO REGISTRADO EXITOSAMENTE SU MATRICULA ES: " + matricula + "         ║");
-            System.out.println("╚════════════════════════════════════════════════════════════════╝");
+            TutorDAO.crearTutor(matricula);
+            System.out.println("╔══════════════════════════════════════════════╗");
+            System.out.println("║        DESEA AGREGAR UN SEGUNDO TUTOR?       ║");
+            System.out.println("╠══════════════════════════════════════════════╣");
+            System.out.println("║ [1]- AGREGAR                                 ║");
+            System.out.println("║ [2]- OMITIR                                  ║");
+            System.out.println("╚══════════════════════════════════════════════╝");
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 2);
+            switch (respuesta) {
+                case 1:
+                    TutorDAO.crearTutor(matricula);
+                    System.out.println("╔════════════════════════════════════════════════════════════════╗");
+                    System.out.println("║ ALUMNO REGISTRADO EXITOSAMENTE SU MATRICULA ES: " + matricula + "         ║");
+                    System.out.println("╚════════════════════════════════════════════════════════════════╝");
+                    break;
+                case 2:
+                    System.out.println("╔════════════════════════════════════════════════════════════════╗");
+                    System.out.println("║ ALUMNO REGISTRADO EXITOSAMENTE SU MATRICULA ES: " + matricula + "         ║");
+                    System.out.println("╚════════════════════════════════════════════════════════════════╝");
+                    return;
+                default:
+                    System.out.println("╔═════════════════════════════════════════════════════════╗");
+                    System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
+                    System.out.println("╚═════════════════════════════════════════════════════════╝");
+                    break;
+
+            }
         } catch (SQLException e) {
             System.err.println("╔════════════════════════════════════════════════════════════════╗");
             System.err.println("║                    ERROR AL REGISTRAR EL ALUMNO                ║");
             System.err.println("╚════════════════════════════════════════════════════════════════╝");
         }
-    }
 
-    public static String generarMatricula() throws SQLException {
-        Random random = new Random();
-        String matricula;
-        boolean isUnique;
-
-        try (Connection conn = DatabaseConnection.getConnection()) {
-            do {
-                int randomInt = random.nextInt(240000, 249999);
-                matricula = String.format("%06d", randomInt); // Formatea el número a 6 digitos
-
-                // Comprobacion matricula
-                String query = "SELECT COUNT(*) FROM alumno WHERE matricula = ?";
-                try (PreparedStatement statement = conn.prepareStatement(query)) {
-                    statement.setString(1, matricula);
-                    try (ResultSet resultSet = statement.executeQuery()) {
-                        resultSet.next();
-                        isUnique = resultSet.getInt(1) == 0;
-                    }
-                }
-            } while (!isUnique);
-        }
-
-        return matricula;
-    }
-
-    public String verificarMatricula(String matricula) throws SQLException {
-        String sql = "SELECT category FROM alumno WHERE matricula = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, matricula);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("category");
-                } else {
-                    return null;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al verificar la matrícula: " + e.getMessage());
-            throw e;
-        }
-    }
-    public boolean existeMatricula(String matricula) throws SQLException {
-        String sql = "SELECT 1 FROM alumno WHERE matricula = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, matricula);
-            try (ResultSet rs = stmt.executeQuery()) {
-                return rs.next();
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al verificar la matrícula: " + e.getMessage());
-            throw e;
-        }
-    }
-    public String verificarPass(String matricula, String password) throws SQLException {
-        String sql = "SELECT category FROM alumno WHERE matricula = ? AND password = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, matricula);
-            stmt.setString(2, password);
-            try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    return rs.getString("category");
-                } else {
-                    return null;
-                }
-            }
-        } catch (SQLException e) {
-            System.err.println("Error al verificar las credenciales: " + e.getMessage());
-            throw e;
-        }
     }
 
     public static void eliminarAlumno(String matricula) {
         try (Connection conn = DatabaseConnection.getConnection()) {
+            conn.setAutoCommit(false); // Iniciar la transacción
+
             String checkCategoriaSql = "SELECT category FROM alumno WHERE matricula = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkCategoriaSql)) {
                 checkStmt.setString(1, matricula);
@@ -165,16 +116,27 @@ public class AlumnoDAO {
                             System.out.println("╔═══════════════════════════════════════════════════════════╗");
                             System.out.println("║ No se puede eliminar un usuario con la categoría 'admin'. ║");
                             System.out.println("╚═══════════════════════════════════════════════════════════╝");
+                            return;
                         } else {
+                            // Eliminar la relación en tutor_alumno
+                            String deleteRelacionSql = "DELETE FROM tutor_alumno WHERE alumno = ?";
+                            try (PreparedStatement deleteRelacionStmt = conn.prepareStatement(deleteRelacionSql)) {
+                                deleteRelacionStmt.setString(1, matricula);
+                                deleteRelacionStmt.executeUpdate();
+                            }
+
+                            // Eliminar el registro en alumno
                             String deleteSql = "DELETE FROM alumno WHERE matricula = ?";
                             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
                                 deleteStmt.setString(1, matricula);
                                 int rowsAffected = deleteStmt.executeUpdate();
                                 if (rowsAffected > 0) {
+                                    conn.commit(); // Confirmar la transacción
                                     System.out.println("╔══════════════════════════════════╗");
                                     System.out.println("║ Registro eliminado exitosamente. ║");
                                     System.out.println("╚══════════════════════════════════╝");
                                 } else {
+                                    conn.rollback(); // Revertir la transacción
                                     System.out.println("╔════════════════════════════════════════════════════╗");
                                     System.out.println("║ No se encontró ningún registro con esa matrícula.  ║");
                                     System.out.println("╚════════════════════════════════════════════════════╝");
@@ -190,13 +152,18 @@ public class AlumnoDAO {
             }
         } catch (SQLException e) {
             System.err.println("Error al eliminar el registro: " + e.getMessage());
+            try (Connection conn = DatabaseConnection.getConnection()) {
+                conn.rollback(); // Revertir la transacción en caso de error
+            } catch (SQLException ex) {
+                System.err.println("Error al revertir la transacción: " + ex.getMessage());
+            }
         }
     }
 
     public static void actualizarAlumno(Scanner sc, String matricula) throws SQLException {
 
         AlumnoDAO alumnoDAO = new AlumnoDAO();
-        String nombreAlumno = alumnoDAO.verificarMatricula(matricula);
+        String nombreAlumno = alumnoDAO.obtenerNombrePorMatricula(matricula);
         if (nombreAlumno == null) {
             System.out.println("╔══════════════════════════════════════════════════════════════╗");
             System.out.println("║ No se encontró ningún alumno con la matrícula proporcionada. ║");
@@ -244,7 +211,7 @@ public class AlumnoDAO {
                     switch (respuesta) {
                         case 1:
                             eliminarAlumno(matricula);
-                            menu.gestionarAlumnos(sc);
+                            menuAdmin.gestionarAlumnos(sc);
                             break;
                         case 2:
                             return;
@@ -262,46 +229,76 @@ public class AlumnoDAO {
     }
 
     public static void consultarTodosAlumnos() throws SQLException {
-        String sql = "SELECT matricula, CONCAT(primerApellido, ' ', segApellido, ' ', nombrePila) AS nombreCompleto, " +
-                "edad, fechaNac, CONCAT(primerApellTutor, ' ', segApellTutor, ' ', nombreTutor) AS nombreTutorCompleto, "
-                +
-                "CONCAT(dirCalle, ' ', dirNumero, ' ', dirColonia) AS direccionCompleta, numTel " +
-                "FROM alumno " +
-                "WHERE category = 'user' ORDER BY primerApellido";
+        String sql = "SELECT " +
+                "a.matricula as Matricula, " +
+                "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+                "a.edad as Edad, " +
+                "DATE_FORMAT(a.fechaNac, '%d-%m-%y') as Fecha_Nacimiento, " +
+                "CONCAT(t.primerApellido, ' ', t.segApellido, ' ', t.nombrePila) as Tutor, " +
+                "t.numTel as Numero_de_Telefono, " +
+                "CONCAT(a.dirCalle, ' ', a.dirNumero, ' ', a.dirColonia) as Direccion " +
+                "FROM alumno as a " +
+                "LEFT JOIN tutor_alumno as ta ON ta.alumno = a.matricula " +
+                "LEFT JOIN tutor as t ON t.numero = ta.tutor " +
+                "WHERE a.category = 'user'";
+
+        String countSql = "SELECT COUNT(*) as TotalAlumnos FROM alumno WHERE category = 'user'";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery()) {
+                ResultSet rs = stmt.executeQuery();
+                PreparedStatement countStmt = conn.prepareStatement(countSql);
+                ResultSet countRs = countStmt.executeQuery()) {
 
-            System.out.println(
-                    "╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
-            System.out.println(
-                    "║                                                                       LISTA DE ALUMNOS                                                                             ║");
-            System.out.println(
-                    "╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
-            System.out.printf("║ %-10s │ %-25s │ %-4s │ %-15s │ %-34s │ %-39s │ %-15s  ║\n",
-                    "Matrícula", "Alumno", "Edad", "Fecha Nacimiento", "Tutor", "Dirección", "Teléfono");
-            System.out.println(
-                    "╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+            Map<String, List<String>> alumnos = new HashMap<>();
 
             while (rs.next()) {
-                String matricula = rs.getString("matricula");
-                String nombreCompleto = rs.getString("nombreCompleto");
-                int edad = rs.getInt("edad");
-                Date fechaNac = rs.getDate("fechaNac");
-                String nombreTutorCompleto = rs.getString("nombreTutorCompleto");
-                String direccionCompleta = rs.getString("direccionCompleta");
-                String numTel = rs.getString("numTel");
+                String matricula = rs.getString("Matricula");
+                String nombreCompleto = rs.getString("Alumno");
+                int edad = rs.getInt("Edad");
+                String fechaNac = rs.getString("Fecha_Nacimiento");
+                String direccionCompleta = rs.getString("Direccion");
 
-                System.out.printf("║ %-10s │ %-25s │ %-4d │ %-15s │ %-35s │ %-40s │ %-15s ║\n",
-                        matricula, nombreCompleto, edad, fechaNac, nombreTutorCompleto, direccionCompleta, numTel);
+                String tutor = rs.getString("Tutor");
+                String numTel = rs.getString("Numero_de_Telefono");
+
+                String alumnoInfo = "Nombre: " + nombreCompleto + "\n" +
+                        "Edad: " + edad + "\n" +
+                        "Fecha de Nacimiento: " + fechaNac + "\n" +
+                        "Direccion: " + direccionCompleta;
+
+                String tutorInfo = "Tutor: " + tutor + "\n" +
+                        "Telefono: " + numTel;
+
+                if (!alumnos.containsKey(matricula)) {
+                    alumnos.put(matricula, new ArrayList<>(Arrays.asList(alumnoInfo)));
+                }
+                alumnos.get(matricula).add(tutorInfo);
             }
 
-            System.out.println(
-                    "╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+            if (alumnos.isEmpty()) {
+                System.out.println("No se encontró información de alumnos.");
+            } else {
+                for (Map.Entry<String, List<String>> entry : alumnos.entrySet()) {
+                    System.out.println("╔══════════════════════════════════════════════╗");
+                    System.out.println("║               Información del Alumno         ║");
+                    System.out.println("╚══════════════════════════════════════════════╝");
+                    System.out.println("Matricula: " + entry.getKey());
+                    System.out.println(entry.getValue().get(0));
 
+                    for (int i = 1; i < entry.getValue().size(); i++) {
+                        System.out.println(entry.getValue().get(i));
+                    }
+                    System.out.println("└──────────────────────────────────────────────┘");
+                }
+            }
+
+            if (countRs.next()) {
+                int totalAlumnos = countRs.getInt("TotalAlumnos");
+                System.out.println("Total de alumnos registrados: " + totalAlumnos);
+            }
         } catch (SQLException e) {
-            System.err.println("Error al consultar los alumnos: " + e.getMessage());
+            System.err.println("Error al consultar la información: " + e.getMessage());
             throw e;
         }
     }
@@ -324,46 +321,88 @@ public class AlumnoDAO {
         }
     }
 
-    public static void consultarInfoAlumno(String matriculaInfo) throws SQLException {
-        String sql = "SELECT matricula, CONCAT(primerApellido, ' ', segApellido, ' ', nombrePila) AS nombreCompleto, " +
-                "edad, fechaNac, CONCAT(primerApellTutor, ' ', segApellTutor, ' ', nombreTutor) AS nombreTutorCompleto, "
-                +
-                "CONCAT(dirCalle, ' ', dirNumero, ' ', dirColonia) AS direccionCompleta, numTel " +
-                "FROM alumno " +
-                "WHERE matricula = ? AND category = 'user'";
+    public static void consultarInfoAlumno(String matriculaInfo, int Periodo) throws SQLException {
+        // Consulta 1
+        String sql = "SELECT pe.nombre as Periodo_Escolar, " +
+                "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio, " +
+                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final, " +
+                "a.matricula as Matricula, " +
+                "a.edad as Edad, " +
+                "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+                "gr.nombre as Grado, " +
+                "ne.nombre as Nivel_Escolar, " +
+                "CONCAT(t.primerApellido, ' ', t.segApellido, ' ', t.nombrePila) as Tutor, " +
+                "t.numTel as Numero_de_Telefono, " +
+                "CONCAT(a.dirCalle, ' ', a.dirNumero, ' ', a.dirColonia) as Direccion " +
+                "FROM alumno as a " +
+                "INNER JOIN tutor_alumno as ta on ta.alumno = a.matricula " +
+                "INNER JOIN tutor as t on t.numero = ta.tutor " +
+                "INNER JOIN grupo_alumno as gra on gra.alumno = a.matricula " +
+                "INNER JOIN grupo as g on g.numero = gra.grupo " +
+                "INNER JOIN periodo as pe ON pe.numero = g.periodo " +
+                "INNER JOIN grado as gr on gr.numero = g.grado " +
+                "INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo " +
+                "WHERE a.matricula = ? and g.periodo = ?";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-            stmt.setString(1, matriculaInfo); // Set the value of the parameter
+            stmt.setString(1, matriculaInfo);
+            stmt.setInt(2, Periodo);
             try (ResultSet rs = stmt.executeQuery()) {
-
-                System.out.println(
-                        "╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗");
-                System.out.println(
-                        "║                                                                    INFORMACION ALUMNO                                                                              ║");
-                System.out.println(
-                        "╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
-                System.out.printf("║ %-10s │ %-25s │ %-4s │ %-15s │ %-34s │ %-39s │ %-15s  ║\n",
-                        "Matrícula", "Alumno", "Edad", "Fecha Nacimiento", "Tutor", "Dirección", "Teléfono");
-                System.out.println(
-                        "╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣");
+                String matricula = null;
+                String nombreCompleto = null;
+                int edad = 0;
+                String fechaInicio = null;
+                String fechaFin = null;
+                String periodoEscolar = null;
+                String grado = null;
+                String nivelEscolar = null;
+                String direccionCompleta = null;
+                List<String> tutores = new ArrayList<>();
+                List<String> numerosDeTelefono = new ArrayList<>();
 
                 while (rs.next()) {
-                    String matricula = rs.getString("matricula");
-                    String nombreCompleto = rs.getString("nombreCompleto");
-                    int edad = rs.getInt("edad");
-                    Date fechaNac = rs.getDate("fechaNac");
-                    String nombreTutorCompleto = rs.getString("nombreTutorCompleto");
-                    String direccionCompleta = rs.getString("direccionCompleta");
-                    String numTel = rs.getString("numTel");
-
-                    System.out.printf("║ %-10s │ %-25s │ %-4d │ %-15s │ %-35s │ %-40s │ %-15s ║\n",
-                            matricula, nombreCompleto, edad, fechaNac, nombreTutorCompleto, direccionCompleta, numTel);
+                    if (matricula == null) {
+                        matricula = rs.getString("Matricula");
+                        nombreCompleto = rs.getString("Alumno");
+                        edad = rs.getInt("Edad");
+                        fechaInicio = rs.getString("Fecha_de_Inicio");
+                        fechaFin = rs.getString("Fecha_Final");
+                        periodoEscolar = rs.getString("Periodo_Escolar");
+                        grado = rs.getString("Grado");
+                        nivelEscolar = rs.getString("Nivel_Escolar");
+                        direccionCompleta = rs.getString("Direccion");
+                    }
+                    String nombreTutorCompleto = rs.getString("Tutor");
+                    String numTel = rs.getString("Numero_de_Telefono");
+                    tutores.add(nombreTutorCompleto);
+                    numerosDeTelefono.add(numTel);
                 }
 
-                System.out.println(
-                        "╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝");
+                if (matricula != null) {
+                    System.out.println("╔══════════════════════════════════════════════╗");
+                    System.out.println("║               Informacion alumno             ║");
+                    System.out.println("╚══════════════════════════════════════════════╝");
+                    System.out.println("┌──────────────────────────────────────────────┐");
+                    System.out.println("    Nombre alumno: " + nombreCompleto);
+                    System.out.println("    Matricula: " + matricula);
+                    System.out.println("    Edad: " + edad);
+                    System.out.println("    Periodo Escolar: " + periodoEscolar);
+                    System.out.println("    Fecha de Inicio: " + fechaInicio);
+                    System.out.println("    Fecha Final: " + fechaFin);
+                    System.out.println("    Grado: " + grado);
+                    System.out.println("    Nivel Escolar: " + nivelEscolar);
+                    System.out.println("    Direccion: " + direccionCompleta);
+
+                    for (int i = 0; i < tutores.size(); i++) {
+                        System.out.println("    Tutor " + (i + 1) + ": " + tutores.get(i));
+                        System.out.println("    Numero de telefono: " + numerosDeTelefono.get(i));
+                    }
+                    System.out.println("└──────────────────────────────────────────────┘");
+                } else {
+                    System.out.println("No se encontró información para la matrícula proporcionada.");
+                }
 
             } catch (SQLException e) {
                 System.err.println("Error al consultar la informacion: " + e.getMessage());
@@ -377,4 +416,123 @@ public class AlumnoDAO {
         LocalDate fechaActual = LocalDate.now();
         return Period.between(fechaNacimiento, fechaActual).getYears();
     }
+
+    public String verificarPass(String matricula, String password) throws SQLException {
+        String sql = "SELECT category FROM alumno WHERE matricula = ? AND password = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            stmt.setString(2, password);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("category");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar las credenciales: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public static String generarMatricula() throws SQLException {
+        Random random = new Random();
+        String matricula;
+        boolean isUnique;
+
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            do {
+                int randomInt = random.nextInt(240000, 249999);
+                matricula = String.format("%06d", randomInt); // Formatea el número a 6 digitos
+
+                // Comprobacion matricula
+                String query = "SELECT COUNT(*) FROM alumno WHERE matricula = ?";
+                try (PreparedStatement statement = conn.prepareStatement(query)) {
+                    statement.setString(1, matricula);
+                    try (ResultSet resultSet = statement.executeQuery()) {
+                        resultSet.next();
+                        isUnique = resultSet.getInt(1) == 0;
+                    }
+                }
+            } while (!isUnique);
+        }
+
+        return matricula;
+    }
+
+    public String verificarMatricula(String matricula) throws SQLException {
+        String sql = "SELECT category FROM alumno WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("category");
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar la matrícula: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public boolean existeMatricula(String matricula) throws SQLException {
+        String sql = "SELECT 1 FROM alumno WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al verificar la matrícula: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    public static void consultarGrupoAlumno(String matricula) {
+        String sql = "SELECT a.matricula as Matricula, " +
+                "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+                "DATE_FORMAT(pe.añoInicio, '%d-%m-%y') as Inicio_del_Periodo_Escolar, " +
+                "DATE_FORMAT(pe.añoFin, '%d-%m-%y') as Final_del_Periodo_Escolar, " +
+                "gr.nombre as Grado, " +
+                "g.nombre as Grupo " +
+                "FROM alumno as a " +
+                "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                "INNER JOIN grupo as g on g.numero = ga.grupo " +
+                "INNER JOIN periodo as pe on pe.numero = g.periodo " +
+                "INNER JOIN grado as gr on gr.numero = g.grado " +
+                "WHERE a.matricula = ? " +
+                "ORDER BY a.matricula";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, matricula);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                boolean firstRow = true;
+                while (rs.next()) {
+                    if (firstRow) {
+                        System.out.println("Matricula: " + rs.getString("Matricula"));
+                        System.out.println("Alumno: " + rs.getString("Alumno"));
+                        System.out.println("\nHistorial Académico:");
+                        firstRow = false;
+                    }
+                    System.out.println("--------------------");
+                    System.out.println("Periodo Escolar: " + rs.getString("Inicio_del_Periodo_Escolar") +
+                            " / " + rs.getString("Final_del_Periodo_Escolar"));
+                    System.out.println("Grado: " + rs.getString("Grado"));
+                    System.out.println("Grupo: " + rs.getString("Grupo"));
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

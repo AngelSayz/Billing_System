@@ -43,21 +43,22 @@ public class Inicio {
                             10);
                     if (password.equalsIgnoreCase("CANCELAR")) {
                         System.out.println("Cancelando proceso...");
+                        iniciarSesion();
                     } else {
         try {
             String categoria = alumnoDAO.verificarPass(matricula, password);
             if (categoria != null) {
                 if (categoria.equals("admin")) {
                     loginExitoso = true;
-                    menu.menuAdmin();
+                    menuAdmin.menuPrincipal();
                 } else {
                     loginExitoso = true;
-                    menu.menuAlumno(matricula);
+                    menuAlumno.menuPrincipal(matricula);
                 }
             } else {
-                System.out.println("╔════════════════════════════════════════════════════╗");
+                System.out.println("╔═════════════════════════════════════════════════════╗");
                 System.out.println("║ Contraseña inválida. Por favor, inténtelo de nuevo. ║");
-                System.out.println("╚════════════════════════════════════════════════════╝");
+                System.out.println("╚═════════════════════════════════════════════════════╝");
             }
         } catch (SQLException e) {
             System.err.println("Error al verificar la contraseña: " + e.getMessage());

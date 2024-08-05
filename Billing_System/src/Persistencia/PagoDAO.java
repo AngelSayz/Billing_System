@@ -3,6 +3,8 @@ package Persistencia;
 import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class PagoDAO{
@@ -212,32 +214,69 @@ public static void eliminarPago(String referencia) throws SQLException {
 
 //Leer los datos
 public static Pago ConsultarPago(String referencia) throws SQLException {
-    String sql = "SELECT * FROM pago WHERE referencia = ?";
+    String sql = "SELECT " + 
+                "    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno," + 
+                "    a.matricula as Matricula," + 
+                "    DATE_FORMAT(p.fechaPago, '%d-%m-%y') as Fecha_de_Pago," + 
+                "    ROUND(p.monto, 2) as Monto," + 
+                "    p.referencia as Referencia," + 
+                "    CASE " + 
+                "        WHEN tp.inscripcion IS NOT NULL THEN 'Inscripcion'" + 
+                "        WHEN tp.paquete_de_libros IS NOT NULL THEN 'Paquete de Libros'" + 
+                "        WHEN tp.paquete_de_uniforme IS NOT NULL THEN 'Paquete de Uniforme'" + 
+                "        WHEN tp.examen IS NOT NULL THEN 'Examen'" + 
+                "        WHEN tp.mensualidad IS NOT NULL THEN 'Mensualidad'" + 
+                "        WHEN tp.evento IS NOT NULL THEN 'Evento'" + 
+                "        WHEN tp.paquete_de_material IS NOT NULL THEN 'Paquete de Material'" + 
+                "        WHEN tp.mantenimiento IS NOT NULL THEN 'Mantenimiento'" + 
+                "        ELSE 'Desconocido'" + 
+                "    END as Tipo_de_Pago," + 
+                "    tp.descripcion as Descripcion," + 
+                "    p.estado as Estado " + 
+                "FROM pago as p " + 
+                "INNER JOIN tipo_de_pago as tp ON tp.pago = p.referencia " + 
+                "INNER JOIN alumno as a on p.alumno = a.matricula " + 
+                "WHERE p.referencia = ? " + 
+                "  AND (" + 
+                "        tp.inscripcion IS NOT NULL OR " + 
+                "        tp.paquete_de_libros IS NOT NULL OR " + 
+                "        tp.paquete_de_uniforme IS NOT NULL OR " + 
+                "        tp.examen IS NOT NULL OR " + 
+                "        tp.mensualidad IS NOT NULL OR " + 
+                "        tp.evento IS NOT NULL OR " + 
+                "        tp.paquete_de_material IS NOT NULL OR " + 
+                "        tp.mantenimiento IS NOT NULL" + 
+                "  ) ORDER BY fechaPago;";
+
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
         stmt.setString(1, referencia);
         try (ResultSet rs = stmt.executeQuery()) {
             if (rs.next()) {
                 Pago pago = new Pago(
-                    rs.getString("referencia"),
-                    rs.getString("fechaPago"),
-                    rs.getString("nivel_educativo"),
-                    rs.getString("periodo"),
-                    rs.getString("alumno"),
-                    rs.getDouble("monto"), sql, 0, sql, sql, sql, 0, sql, sql, 0, sql
+                    // constructor
+                    rs.getString("Referencia"),
+                    rs.getString("Fecha_de_Pago"),
+                    rs.getString("Matricula"),
+                    rs.getDouble("Monto"),
+                    rs.getString("Tipo_de_Pago"),
+                    rs.getString("Descripcion"),
+                    rs.getString("Estado")
                 );
 
-                // Imprimir información del pago en formato de tabla
-                System.out.println("-----------------------------------------------------------------------------------------");
-                System.out.printf("| %-15s | %-10s | %-15s | %-10s | %-10s | %-10s |\n",
-                        "Referencia", "Fecha Pago", "Nivel Educativo", "Periodo", "Alumno", "Monto");
-                System.out.println("-----------------------------------------------------------------------------------------");
-
-                System.out.printf("| %-15s | %-10s | %-15s | %-10s | %-10s | %-10.2f |\n",
-                        pago.getReferencia(), pago.getFecha(), pago.getNivel_educativo(), 
-                        pago.getPeriodo(), pago.getAlumno(), pago.getMonto());
-
-                System.out.println("-----------------------------------------------------------------------------------------");
+                System.out.println("╔═══════════════════════════════════════════════════════════════╗");
+                System.out.println("║                         INFORMACION PAGO                      ║");
+                System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.printf("│ %-18s: %-41s │\n", "Referencia de pago", rs.getString("Referencia"));
+                System.out.printf("│ %-18s: %-41s │\n", "Fecha de Pago", rs.getString("Fecha_de_Pago"));
+                System.out.printf("│ %-18s: %-41s │\n", "Alumno", rs.getString("Alumno"));
+                System.out.printf("│ %-18s: %-41s │\n", "Matrícula", rs.getString("Matricula"));
+                System.out.printf("│ %-18s: %-41s │\n", "Monto", rs.getDouble("Monto"));
+                System.out.printf("│ %-18s: %-41s │\n", "Tipo de Pago", rs.getString("Tipo_de_Pago"));
+                System.out.printf("│ %-18s: %-41s │\n", "Descripción", rs.getString("Descripcion"));
+                System.out.printf("│ %-18s: %-41s │\n", "Estado", rs.getString("Estado"));
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
 
                 return pago;
             }
@@ -248,46 +287,148 @@ public static Pago ConsultarPago(String referencia) throws SQLException {
     }
     return null; // No se encontró el pago
 }
-public static Pago ConsultarPagoAlumno(String matricula) throws SQLException {
-    String sql = "SELECT * FROM pago WHERE alumno = ?";
+public static void ConsultarPagoAlumno(String matricula) throws SQLException {
+    String sql = "SELECT " + 
+                "    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno," + 
+                "    a.matricula as Matricula," + 
+                "    DATE_FORMAT(p.fechaPago, '%d-%m-%y') as Fecha_de_Pago," + 
+                "    ROUND(p.monto, 2) as Monto," + 
+                "    p.referencia as Referencia," + 
+                "    CASE " + 
+                "        WHEN tp.inscripcion IS NOT NULL THEN 'Inscripcion'" + 
+                "        WHEN tp.paquete_de_libros IS NOT NULL THEN 'Paquete de Libros'" + 
+                "        WHEN tp.paquete_de_uniforme IS NOT NULL THEN 'Paquete de Uniforme'" + 
+                "        WHEN tp.examen IS NOT NULL THEN 'Examen'" + 
+                "        WHEN tp.mensualidad IS NOT NULL THEN 'Mensualidad'" + 
+                "        WHEN tp.evento IS NOT NULL THEN 'Evento'" + 
+                "        WHEN tp.paquete_de_material IS NOT NULL THEN 'Paquete de Material'" + 
+                "        WHEN tp.mantenimiento IS NOT NULL THEN 'Mantenimiento'" + 
+                "        ELSE 'Desconocido'" + 
+                "    END as Tipo_de_Pago," + 
+                "    tp.descripcion as Descripcion," + 
+                "    p.estado as Estado" + 
+                "FROM pago as p " + 
+                "INNER JOIN tipo_de_pago as tp ON tp.pago = p.referencia " + 
+                "INNER JOIN alumno as a on p.alumno = a.matricula " + 
+                "WHERE a.matricula = ? " + 
+                "  AND (" + 
+                "        tp.inscripcion IS NOT NULL OR " + 
+                "        tp.paquete_de_libros IS NOT NULL OR " + 
+                "        tp.paquete_de_uniforme IS NOT NULL OR " + 
+                "        tp.examen IS NOT NULL OR " + 
+                "        tp.mensualidad IS NOT NULL OR " + 
+                "        tp.evento IS NOT NULL OR " + 
+                "        tp.paquete_de_material IS NOT NULL OR " + 
+                "        tp.mantenimiento IS NOT NULL" + 
+                "  ) ORDER BY p.fechaPago";
+               List<Pago> pagos = new ArrayList<>();
+
     try (Connection conn = DatabaseConnection.getConnection();
          PreparedStatement stmt = conn.prepareStatement(sql)) {
         stmt.setString(1, matricula);
+
         try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
+            while (rs.next()) {
                 Pago pago = new Pago(
-                    rs.getString("referencia"),
-                    rs.getString("fechaPago"),
-                    rs.getString("nivel_educativo"),
-                    rs.getString("periodo"),
-                    rs.getString("alumno"),
-                    rs.getDouble("monto"), sql, 0, sql, sql, sql, 0, sql, sql, 0, sql
+                    rs.getString("Referencia"),
+                    rs.getString("Fecha_de_Pago"),
+                    rs.getString("Matricula"),
+                    rs.getDouble("Monto"),
+                    rs.getString("Tipo_de_Pago"),
+                    rs.getString("Descripcion"),
+                    rs.getString("Estado")
                 );
-                System.out.println("-----------------------------------------------------------------------------------------");
-                System.out.printf("| %-15s | %-10s | %-15s | %-10s | %-10s | %-10s |\n",
-                        "Referencia", "Fecha Pago", "Nivel Educativo", "Periodo", "Alumno", "Monto");
-                System.out.println("-----------------------------------------------------------------------------------------");
 
-                System.out.printf("| %-15s | %-10s | %-15s | %-10s | %-10s | %-10.2f |\n",
-                        pago.getReferencia(), pago.getFecha(), pago.getNivel_educativo(), 
-                        pago.getPeriodo(), pago.getAlumno(), pago.getMonto());
+                pagos.add(pago);
 
-                System.out.println("-----------------------------------------------------------------------------------------");
-
-                return pago;
+                System.out.println("╔═══════════════════════════════════════════════════════════════╗");
+                System.out.println("║                         INFORMACION PAGO                      ║");
+                System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.printf("│ %-18s: %-41s │\n", "Referencia de pago", rs.getString("Referencia"));
+                System.out.printf("│ %-18s: %-41s │\n", "Fecha de Pago", rs.getString("Fecha_de_Pago"));
+                System.out.printf("│ %-18s: %-41s │\n", "Alumno", rs.getString("Alumno"));
+                System.out.printf("│ %-18s: %-41s │\n", "Matrícula", rs.getString("Matricula"));
+                System.out.printf("│ %-18s: %-41s │\n", "Monto", rs.getDouble("Monto"));
+                System.out.printf("│ %-18s: %-41s │\n", "Tipo de Pago", rs.getString("Tipo_de_Pago"));
+                System.out.printf("│ %-18s: %-41s │\n", "Descripción", rs.getString("Descripcion"));
+                System.out.printf("│ %-18s: %-41s │\n", "Estado", rs.getString("Estado"));
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
             }
         }
     } catch (SQLException e) {
         System.err.println("Error al consultar el pago: " + e.getMessage());
         throw e;
     }
-    return null; 
+ // Devuelve la lista de pagos encontrados
 }
 public static void pagarInscripcion(String matricula, int grado) throws SQLException {
 
 }
 public static void pagarUniforme(String matricula, int numPaq) {
     // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'pagarUniforme'");
+    throw new UnsupportedOperationException("Unimplemented method 'pagarUniforme'"); 
+}
+public static void consultarInscripcionesPagadas(String matricula) throws SQLException {
+    //Consulta 4
+    String sql = "SELECT a.matricula as Matricula, " +
+            "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+            "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Inicio_del_Periodo_Escolar, " +
+            "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Final_del_Periodo_Escolar, " +
+            "pe.nombre as Periodo, " +
+            "g.nombre as Grupo, " +
+            "g.nivel_educativo as Nivel_Educativo, " +
+            "gr.nombre as Grado, " +
+            "p.fechaPago as Fecha_del_Pago, " +
+            "tp.descripcion as Pago " +
+            "FROM alumno as a " +
+            "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+            "INNER JOIN grupo as g on g.numero = ga.grupo " +
+            "INNER JOIN periodo as pe on pe.numero = g.periodo " +
+            "inner join grado as gr on g.grado = gr.numero " +
+            "inner join pago as p on p.periodo = pe.numero " +
+            "inner join tipo_de_pago as tp on tp.pago = p.numero " +
+            "where a.matricula = ? and tp.inscripcion is not null and p.alumno = ? " +
+            "ORDER BY pe.numero;";
+
+    try (Connection conn = DatabaseConnection.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+        stmt.setString(1, matricula);
+        stmt.setString(2, matricula);
+
+        try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.println("    Matricula: " + rs.getString("Matricula"));
+                System.out.println("    Alumno: " + rs.getString("Alumno"));
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.println("                      INSCRIPCIONES PAGADAS " );
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
+
+                do {    
+                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                    System.out.println("  PERIODO ESCOLAR: "+ rs.getString("Periodo"));
+                    System.out.println("  Inicio: " + rs.getString("Inicio_del_Periodo_Escolar"));
+                    System.out.println("  Final: " + rs.getString("Final_del_Periodo_Escolar"));
+                    System.out.println("─────────────────────────────────────────────────────────────────");
+                    System.out.println("  INFORMACION ACADEMICA:");
+                    System.out.println("  Grupo: " + rs.getString("Grupo"));
+                    System.out.println("  Nivel Educativo: " + rs.getString("Nivel_Educativo"));
+                    System.out.println("  Grado: " + rs.getString("Grado"));
+                    System.out.println("─────────────────────────────────────────────────────────────────");
+
+                    System.out.println("  INFORMACION DEL PAGO:");
+                    System.out.println("  Fecha: " + rs.getString("Fecha_del_Pago"));
+                    System.out.println("  Descripción: " + rs.getString("Pago"));
+                    System.out.println("└───────────────────────────────────────────────────────────────┘");
+                    System.out.println();
+                } while (rs.next());
+            } else {
+                System.out.println("No se encontraron registros.");
+            }
+        }
+    }
 }
 }

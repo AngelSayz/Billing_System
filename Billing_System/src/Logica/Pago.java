@@ -45,6 +45,13 @@ public class Pago {
 
 
 
+    public Pago(String referencia, String fecha, String matricula, double monto, String tipopago, String descripcion,
+            String estado) {
+    
+    }
+
+
+
     public String getReferencia() {
         return referencia;
     }
