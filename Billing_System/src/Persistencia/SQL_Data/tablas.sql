@@ -104,13 +104,7 @@ CREATE TABLE pago (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE grado (
-    numero INT PRIMARY KEY AUTO_INCREMENT,
-    nombre VARCHAR(50) NOT NULL,
-    nivel_educativo VARCHAR(10) NOT NULL,
-    FOREIGN KEY (nivel_educativo) REFERENCES nivel_educativo(codigo),
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
 CREATE TABLE grupo (
     numero INT PRIMARY KEY AUTO_INCREMENT,
     nombre VARCHAR(15) NOT NULL,
@@ -137,15 +131,6 @@ CREATE TABLE inscripcion (
     codigo VARCHAR(15) PRIMARY KEY,
     precio DECIMAL(10,2) NOT NULL,
     grado INT,
-    FOREIGN KEY (grado) REFERENCES grado(numero),
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE paquete_de_libros (
-    codigo VARCHAR(15) PRIMARY KEY,
-    nombre VARCHAR(30) NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    grado INT NOT NULL,
     FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -200,7 +185,6 @@ CREATE TABLE tipo_de_pago (
     mantenimiento VARCHAR(10),
     FOREIGN KEY (pago) REFERENCES pago(numero),
     FOREIGN KEY (inscripcion) REFERENCES inscripcion(codigo),
-    FOREIGN KEY (paquete_de_libros) REFERENCES paquete_de_libros(codigo),
     FOREIGN KEY (paquete_de_uniforme) REFERENCES paquete_de_uniforme(numero),
     FOREIGN KEY (examen) REFERENCES examen(codigo),
     FOREIGN KEY (mensualidad) REFERENCES mensualidad(codigo),

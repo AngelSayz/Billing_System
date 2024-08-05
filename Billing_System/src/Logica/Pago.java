@@ -4,7 +4,7 @@ public class Pago {
     private String referencia;
     private String fecha;
     private String nivel_educativo;
-    private String periodo;
+    private int periodo;
     private String alumno;
     private double monto;
     private String estado;
@@ -21,7 +21,7 @@ public class Pago {
     
 
 
-    public Pago(String referencia, String fecha, String nivel_educativo, String periodo, String alumno, double monto,
+    public Pago(String referencia, String fecha, String nivel_educativo, int periodo, String alumno, double monto,
             String estado, int tPnumero, String tPdescripcion, String tPinscripcion, String tPpaquete_de_libros,
             int tPpaquete_de_uniforme, String tPexamen, String tPmensualidad, int tPevento,
             String tPpaquete_de_material) {
@@ -42,16 +42,10 @@ public class Pago {
         TPevento = tPevento;
         TPpaquete_de_material = tPpaquete_de_material;
     }
-
-
-
-    public Pago(String referencia, String fecha, String matricula, double monto, String tipopago, String descripcion,
-            String estado) {
-    
+    public Pago(String string, String string2, String string3, double double1, String string4, String string5,
+            String string6) {
+        //TODO Auto-generated constructor stub
     }
-
-
-
     public String getReferencia() {
         return referencia;
     }
@@ -88,13 +82,13 @@ public class Pago {
 
 
 
-    public String getPeriodo() {
+    public int getPeriodo() {
         return periodo;
     }
 
 
 
-    public void setPeriodo(String periodo) {
+    public void setPeriodo(int periodo) {
         this.periodo = periodo;
     }
 

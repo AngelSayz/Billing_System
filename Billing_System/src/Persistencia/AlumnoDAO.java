@@ -179,10 +179,9 @@ public class AlumnoDAO {
             System.out.println("    MODIFICANDO A: " + nombreAlumno.toUpperCase());
             System.out.println("└──────────────────────────────────────────────┘");
             System.out.println("╔══════════════════════════════════════════════╗");
-            System.out.println("║  [1]- Asignar nivel educativo al alumno      ║");
-            System.out.println("║  [2]- Asignar un grupo al alumno             ║");
-            System.out.println("║  [3]- Modificar la informacion del alumno    ║");
-            System.out.println("║  [4]- Dar de baja el alumno                  ║");
+            System.out.println("║  [1]- Asignar grupo al alumno                ║");
+            System.out.println("║  [2]- Restablecer contraseña del alumno      ║");
+            System.out.println("║  [3]- Dar de baja el alumno                  ║");
             System.out.println("║  [0]- Salir                                  ║");
             System.out.println("╚══════════════════════════════════════════════╝");
             int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 4);
@@ -192,15 +191,12 @@ public class AlumnoDAO {
                     actualizarAlumno = false;
                     break;
                 case 1:
-
+                    asignarGrupo(sc, matricula);
                     break;
                 case 2:
-
+                    cambiarPassword(sc, matricula);
                     break;
                 case 3:
-                    // IN PROCESSS
-                    break;
-                case 4:
                     System.out.println("╔══════════════════════════════════════════════╗");
                     System.out.println("║        DESEA DAR DE BAJA AL ALUMNO           ║");
                     System.out.println("╠══════════════════════════════════════════════╣");
@@ -226,6 +222,132 @@ public class AlumnoDAO {
                     break;
             }
         }
+    }
+
+    private static void asignarGrupo(Scanner sc, String matricula) throws SQLException {
+        int grupo;
+        int grado;
+        System.out.println("╔═══════════════════════╗");
+        System.out.println("║    NIVEL EDUCATIVO    ║");
+        System.out.println("╠═══════════════════════╣");
+        System.out.println("║ [1]- KINDER           ║");
+        System.out.println("║ [2]- PRIMARIA         ║");
+        System.out.println("║ [3]- SECUNDARIA       ║");
+        System.out.println("╚═══════════════════════╝");
+
+        int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 3);
+
+        switch (respuesta) {
+            case 1:
+                System.out.println("╔═══════════════════════╗");
+                System.out.println("║     GRADO KINDER      ║");
+                System.out.println("╠═══════════════════════╣");
+                System.out.println("║ [1]- Primero          ║");
+                System.out.println("║ [2]- Segundo          ║");
+                System.out.println("║ [3]- Tercero          ║");
+                System.out.println("╚═══════════════════════╝");
+
+                respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 3);
+
+                switch (respuesta) {
+                    case 1:
+                        grado = 1;
+                        grupo = 28;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 2:
+                        grupo = 31;
+                        grado = 2;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 3:
+                        grupo = 34;
+                        grado = 3;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                }
+                break;
+            case 2:
+                System.out.println("╔═════════════════════════╗");
+                System.out.println("║     GRADO PRIMARIA      ║");
+                System.out.println("╠═════════════════════════╣");
+                System.out.println("║ [1]- Primero            ║");
+                System.out.println("║ [2]- Segundo            ║");
+                System.out.println("║ [3]- Tercero            ║");
+                System.out.println("║ [4]- Cuarto             ║");
+                System.out.println("║ [5]- Quinto             ║");
+                System.out.println("║ [6]- Sexto              ║");
+                System.out.println("╚═════════════════════════╝");
+                respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 6);
+                switch (respuesta) {
+                    case 1:
+                        grado = 4;
+                        grupo = 92;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 2:
+                        grado = 5;
+                        grupo = 94;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 3:
+                        grado = 6;
+                        grupo = 97;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 4:
+                        grado = 7;
+                        grupo = 100;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 5:
+                        grado = 8;
+                        grupo = 103;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 6:
+                        grupo = 106;
+                        grado = 9;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case 3:
+                System.out.println("╔════════════════════════╗");
+                System.out.println("║    GRADO SECUNDARIA    ║");
+                System.out.println("╠════════════════════════╣");
+                System.out.println("║ [1]- Primero           ║");
+                System.out.println("║ [2]- Segundo           ║");
+                System.out.println("║ [3]- Tercero           ║");
+                System.out.println("╚════════════════════════╝");
+                respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 3);
+
+                switch (respuesta) {
+                    case 1:
+                        grado = 10;
+                        grupo = 136;
+                        registrarGradoGrupo(matricula, grado, grupo);
+
+                        break;
+                        
+                    case 2:
+                        grado = 11;
+                        grupo = 139;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    case 3:
+                        grado = 12;
+                        grupo = 142;
+                        registrarGradoGrupo(matricula, grado, grupo);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+        }
+
     }
 
     public static void consultarTodosAlumnos() throws SQLException {
@@ -534,5 +656,78 @@ public class AlumnoDAO {
         }
     }
 
+    public static void cambiarPassword(Scanner sc, String matricula) {
+        String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
+        String password = Valid.getValidString(sc, "Ingrese la nueva contraseña: ", 30);
 
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, password);
+            stmt.setString(2, matricula);
+            int rowsAffected = stmt.executeUpdate();
+
+            if (rowsAffected > 0) {
+                System.out.println("La contraseña se ha cambiado exitosamente.");
+            } else {
+                System.out.println("No se encontró ningún alumno con esa matrícula.");
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar la contraseña: " + e.getMessage());
+        }
+    }
+
+    public static void registrarGradoGrupo(String matricula, int grado, int grupo) throws SQLException {
+        String sqlGrado = "INSERT INTO grado_alumno (alumno, grado) VALUES (?, ?)";
+        String sqlGrupo = "INSERT INTO grupo_alumno (alumno, grupo) VALUES (?, ?)";
+        String sqlNombreGrado = "SELECT nombre FROM grado WHERE numero = ?";
+        String sqlNombreGrupo = "SELECT nombre FROM grupo WHERE numero = ?";
+    
+        try (Connection conn = DatabaseConnection.getConnection()) {
+            try (PreparedStatement stmtGrado = conn.prepareStatement(sqlGrado);
+                 PreparedStatement stmtGrupo = conn.prepareStatement(sqlGrupo);
+                 PreparedStatement stmtNombreGrado = conn.prepareStatement(sqlNombreGrado);
+                 PreparedStatement stmtNombreGrupo = conn.prepareStatement(sqlNombreGrupo)) {
+    
+                // Asignar grado
+                stmtGrado.setString(1, matricula);
+                stmtGrado.setInt(2, grado);
+                stmtGrado.executeUpdate();
+    
+                // Asignar grupo
+                stmtGrupo.setString(1, matricula);
+                stmtGrupo.setInt(2, grupo);
+                stmtGrupo.executeUpdate();
+    
+                // Obtener el nombre del grado
+                stmtNombreGrado.setInt(1, grado);
+                String nombreGrado = "";
+                try (ResultSet rsGrado = stmtNombreGrado.executeQuery()) {
+                    if (rsGrado.next()) {
+                        nombreGrado = rsGrado.getString("nombre");
+                    }
+                }
+    
+                // Obtener el nombre del grupo
+                stmtNombreGrupo.setInt(1, grupo);
+                String nombreGrupo = "";
+                try (ResultSet rsGrupo = stmtNombreGrupo.executeQuery()) {
+                    if (rsGrupo.next()) {
+                        nombreGrupo = rsGrupo.getString("nombre");
+                    }
+                }
+    
+                // Mensaje de confirmación
+                System.out.println("El alumno con matrícula " + matricula + " ha sido registrado en el grado " + nombreGrado + " y en el grupo " + nombreGrupo + ".");
+    
+            } catch (SQLException e) {
+                System.err.println("Error al asignar grado y grupo: " + e.getMessage());
+                throw e;
+            }
+        } catch (SQLException e) {
+            System.err.println("Error en la conexión a la base de datos: " + e.getMessage());
+            throw e;
+        }
+    }
 }

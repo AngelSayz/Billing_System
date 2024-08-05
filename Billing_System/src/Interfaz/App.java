@@ -5,6 +5,7 @@ import java.sql.*;
 
 public class App {
     public static void main(String[] args) throws SQLException {
+        
         Valid.clear();
         System.out.println("                  :=*#%@@@@@@@@@@@%#*=-.                                                \r\n" + //
                         "                :+%@@@@@@@@@@@@@@@@@@@@@@@@#+:                                            \r\n" + //

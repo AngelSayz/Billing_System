@@ -1,6 +1,9 @@
 package Persistencia;
 
 import java.sql.*;
+import java.time.LocalDate;
+
+import Logica.Pago;
 
 
 public class EventoDAO{
@@ -96,4 +99,79 @@ public class EventoDAO{
                 if (conn != null) try { conn.close(); } catch (SQLException e) { /* ignored */ }
             }
         }
+public static String pagarEvento(String matricula, int numEvento, String nivelE) throws SQLException {
+        PagoDAO pagoDAO = new PagoDAO();
+        // ----------------------------
+        String tpInscripcion = null;
+        String tpPaqueteDeLibros = null;
+        int tpPaqueteDeUniforme = 0;
+        String tpExamen = null;
+        String tpMensualidad = null;
+        int tpEvento = 0;
+        String tpPaqueteDeMaterial = null;
+        // ----------------------------
+        LocalDate fechaActual = LocalDate.now();
+        String fechaPago = fechaActual.toString();
+        double monto;
+        String nivel_educativo = nivelE;
+        int periodo = 4;
+        String alumno = matricula;
+        String tpDescripcion;
+        String referencia = PagoDAO.generarReferencia();
+
+        // Asignar valores según el tipo de pago seleccionado
+        switch (numEvento) {
+            case 1:
+                monto = 200;
+                tpDescripcion = "Kermes de regreso a clases";
+                tpEvento = 19;
+                break;
+            case 2:
+                monto = 75;
+                tpDescripcion = "Fiesta independencia de Mexico";
+                tpEvento = 20;
+                break;
+            case 3:
+                monto = 100;
+                tpDescripcion = "Fiesta navidad";
+                tpEvento = 21;
+                break;
+            case 4:
+                monto = 65;
+                tpDescripcion = "Fiesta semana santa";
+                tpEvento = 22;
+                break;
+            case 5:
+                monto = 70;
+                tpDescripcion = "Dia del Niño";
+                tpEvento = 23;
+                break;
+
+            default:
+                System.out.println("Error en el proceso");
+                return null;
+        }
+
+        Pago pago = new Pago(referencia, fechaPago, nivel_educativo, periodo, alumno, monto, tpPaqueteDeMaterial,
+                tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
+                tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
+        pago.setTPdescripcion(tpDescripcion);
+        pago.setTPinscripcion(tpInscripcion);
+        pago.setTPpaquete_de_libros(tpPaqueteDeLibros);
+        pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
+        pago.setTPexamen(tpExamen);
+        pago.setTPmensualidad(tpMensualidad);
+        pago.setTPevento(tpEvento);
+        pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
+        pago.setEstado("pendiente");
+
+        try {
+            pagoDAO.registrarPago(pago);
+            System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
+
+        } catch (SQLException e) {
+            System.err.println("Error al registrar el pago: " + e.getMessage());
+        }
+        return referencia;
+    }
 }
