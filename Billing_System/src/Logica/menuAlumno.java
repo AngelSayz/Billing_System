@@ -199,7 +199,7 @@ public class menuAlumno {
                     System.out.println("║  [3]- SECUNDARIA      ║");
                     System.out.println("║  [0]- Salir           ║");
                     System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
+                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 0, 3);
                     switch (respuesta) {
                         case 0:
                             break;
@@ -224,7 +224,7 @@ public class menuAlumno {
                     System.out.println("║  [3]- SECUNDARIA      ║");
                     System.out.println("║  [0]- Salir           ║");
                     System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
+                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 0, 3);
                     switch (respuesta) {
                         case 0:
                             break;
@@ -545,7 +545,7 @@ public class menuAlumno {
             System.out.println("║ [0]- Salir                                           ║");
             System.out.println("╚══════════════════════════════════════════════════════╝");
             int numero;
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 4);
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 6);
 
             switch (respuesta) {
                 case 0:
@@ -599,7 +599,7 @@ public class menuAlumno {
             System.out.println("║ [5]- EXAMEN INGLES            ║");
             System.out.println("║ [0]- SALIR                    ║");
             System.out.println("╚═══════════════════════════════╝");
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 4);
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 5);
 
             switch (respuesta) {
                 case 0:
@@ -648,7 +648,7 @@ public class menuAlumno {
             System.out.println("║ [6]- Mensualidad                          ║");
             System.out.println("║ [0]- Salir                                ║");
             System.out.println("╚═══════════════════════════════════════════╝");
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 4);
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 6);
 
             switch (respuesta) {
                 case 0:
@@ -703,7 +703,7 @@ public class menuAlumno {
             System.out.println("║ [12]- Diciembre         ║");
             System.out.println("║ [0]- Salir              ║");
             System.out.println("╚═════════════════════════╝");
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 4);
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 12);
 
             switch (respuesta) {
                 case 0:

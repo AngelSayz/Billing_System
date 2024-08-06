@@ -105,7 +105,7 @@ public class AlumnoDAO {
     public static void eliminarAlumno(String matricula) {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false); // Iniciar la transacción
-
+    
             String checkCategoriaSql = "SELECT category FROM alumno WHERE matricula = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkCategoriaSql)) {
                 checkStmt.setString(1, matricula);
@@ -124,7 +124,21 @@ public class AlumnoDAO {
                                 deleteRelacionStmt.setString(1, matricula);
                                 deleteRelacionStmt.executeUpdate();
                             }
-
+    
+                            // Eliminar registros en grado_alumno
+                            String deleteGradoSql = "DELETE FROM grado_alumno WHERE alumno = ?";
+                            try (PreparedStatement deleteGradoStmt = conn.prepareStatement(deleteGradoSql)) {
+                                deleteGradoStmt.setString(1, matricula);
+                                deleteGradoStmt.executeUpdate();
+                            }
+    
+                            // Eliminar registros en grupo_alumno
+                            String deleteGrupoSql = "DELETE FROM grupo_alumno WHERE alumno = ?";
+                            try (PreparedStatement deleteGrupoStmt = conn.prepareStatement(deleteGrupoSql)) {
+                                deleteGrupoStmt.setString(1, matricula);
+                                deleteGrupoStmt.executeUpdate();
+                            }
+    
                             // Eliminar el registro en alumno
                             String deleteSql = "DELETE FROM alumno WHERE matricula = ?";
                             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
