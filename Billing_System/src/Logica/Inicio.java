@@ -2,14 +2,12 @@ package Logica;
 
 import java.sql.SQLException;
 import java.util.Scanner;
-
 import Persistencia.AlumnoDAO;
 
 public class Inicio {
     public static void iniciarSesion() {
         Scanner sc = new Scanner(System.in);
         AlumnoDAO alumnoDAO = new AlumnoDAO();
-
         System.out.println("╔══════════════════════════════════════════════╗");
         System.out.println("║       BIENVENIDO AL SISTEMA DE PAGOS         ║");
         System.out.println("╚══════════════════════════════════════════════╝");
@@ -40,7 +38,7 @@ public class Inicio {
     do {
         String password = Valid.getValidString(sc,
                             "Introduzca su contraseña (escriba 'CANCELAR' para cancelar el proceso): ",
-                            10);
+                            30);
                     if (password.equalsIgnoreCase("CANCELAR")) {
                         System.out.println("Cancelando proceso...");
                         iniciarSesion();

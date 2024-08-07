@@ -1,5 +1,6 @@
 package Persistencia;
 
+import java.util.Scanner;
 import Logica.*;
 import java.sql.*;
 import java.util.ArrayList;
@@ -48,6 +49,65 @@ public class PagoDAO {
                     setNullableString(stmtTP, 9, pago.getTPpaquete_de_material());
 
                     stmtTP.executeUpdate();
+                    LocalDate fechaValido = LocalDate.now().plusDays(10);
+System.out.println("╔═══════════════════════════════════════════════════════════════╗");
+System.out.println("                                                       PAYTECH");
+System.out.println("                                               Made by CafCATS");
+System.out.println("---------------------------Contacto----------------------------");
+System.out.println();
+System.out.println("  Email: paytech@cafcats.com");
+System.out.println("  Num. Telefonico: (664) 123-9212");
+System.out.println("  Pagina Web: https://cafcats/paytech.com");
+System.out.println();
+System.out.println("--------------------Informacion del alumno---------------------");
+System.out.println(" " + AlumnoDAO.obtenerNombrePorMatricula(pago.getAlumno()));
+System.out.println(" Matricula: " + pago.getAlumno());
+System.out.println(" Nivel Educativo: " + pago.getNivel_educativo());
+System.out.println(" Periodo: ");
+System.out.println("--------------------Informacion del pago-----------------------");
+System.out.println();
+System.out.println("  Num. Pago: " + pagoId);
+System.out.println("  Concepto de pago: " + pago.getTPdescripcion());
+System.out.println("  Fecha de pago: " + pago.getFecha());
+System.out.println("  Valido hasta: " + fechaValido);
+System.out.println("  Num. Referencia: " + pago.getReferencia());
+System.out.println("  Institucion bancaria: Bancomer");
+System.out.println("  Convenio: 001479334");
+System.out.println("  Cuenta CLABE: 0129140002014793346");
+System.out.println();
+
+System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+System.out.println("--------Instrucciones para realizar el pago--------");
+System.out.println();
+System.out.println("**Proceso de pago:**");
+System.out.println("  En línea:");
+System.out.println("    1. Ingresa al portal de tu banco en línea.");
+System.out.println("    2. Selecciona la opción para realizar pagos.");
+System.out.println("    3. Introduce la cuenta CLABE proporcionada y el convenio.");
+System.out.println("    4. Ingresa el monto exacto a pagar.");
+System.out.println("    5. Introduce el número de referencia " + pago.getReferencia() + " en el campo correspondiente.");
+System.out.println("    6. Confirma la transacción.");
+System.out.println("  En sucursal bancaria:");
+System.out.println("    1. Visita una sucursal de Bancomer.");
+System.out.println("    2. Completa una ficha de depósito con los datos bancarios proporcionados.");
+System.out.println("    3. Entrega la ficha y el monto a pagar al cajero.");
+System.out.println("    4. Guarda el comprobante de pago.");
+System.out.println();
+System.out.println("**Tiempo de reflejo:**");
+System.out.println("  - Los pagos realizados en línea se reflejan generalmente en un plazo de 24 a 48 horas.");
+System.out.println("  - Los pagos realizados en sucursal bancaria pueden tardar hasta 72 horas en reflejarse.");
+System.out.println();
+System.out.println("**Confirmación del pago:**");
+System.out.println("  - Recibirás un correo electrónico de confirmación una vez que el pago se haya registrado correctamente.");
+System.out.println("  - Puedes verificar el estado de tu pago accediendo a tu cuenta en el sistema de pagos de la escuela.");
+System.out.println();
+System.out.println("**Asistencia y problemas:**");
+System.out.println("  - Personal de la escuela: Si tienes algún problema o duda respecto al pago, puedes contactar al personal de administración de la escuela.");
+System.out.println("  - Banco: Para problemas relacionados con la transferencia bancaria, puedes acudir a tu sucursal de Bancomer más cercana o llamar a su servicio de atención al cliente.");
+System.out.println("  - Equipo de desarrollo: Para problemas relacionados al funcionamiento del software, favor de comunicarse al equipo");
+System.out.println("    - Correo electrónico: paytech@cafcats.com");
+System.out.println("    - Teléfono: (664) 123-9212");
+
                 } else {
                     throw new SQLException("No se pudo obtener el ID generado para el pago");
                 }
@@ -102,17 +162,34 @@ public class PagoDAO {
     }
 
     // Actualizacion de datos
-    public void actualizarPago(Pago pago) throws SQLException {
-        String sql = "UPDATE pago SET fechaPago = ?, monto = ?, nivel_educativo = ?, periodo = ?, alumno = ? WHERE referencia = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-            stmt.setString(1, pago.getReferencia());
-            stmt.setDate(2, Date.valueOf(pago.getFecha()));
-            stmt.setDouble(3, pago.getMonto());
-            stmt.setString(4, pago.getNivel_educativo());
-            stmt.setInt(5, pago.getPeriodo());
-            stmt.setString(6, pago.getAlumno());
-            stmt.executeUpdate();
+    public static void actualizarPago(String referencia, String nuevoEstado) throws SQLException {
+        // Verificar que el nuevo estado sea válido
+        if (!nuevoEstado.equals("pendiente") && !nuevoEstado.equals("confirmado") && !nuevoEstado.equals("cancelado")) {
+            throw new IllegalArgumentException("Estado no válido: " + nuevoEstado);
+        }
+
+        String sql = "UPDATE pago SET estado = ? WHERE referencia = ?";
+
+        try (Connection connection = DatabaseConnection.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, nuevoEstado);
+            statement.setString(2, referencia);
+
+            // Ejecutar la actualización
+            int rowsUpdated = statement.executeUpdate();
+
+            // Verificar si se actualizó alguna fila
+            if (rowsUpdated > 0) {
+                System.out.println(
+                        "El estado del pago con referencia " + referencia + " ha sido actualizado a " + nuevoEstado);
+            } else {
+                System.out.println("No se encontró ningún pago con la referencia " + referencia);
+            }
+        } catch (SQLException e) {
+            // Manejo de errores de SQL
+            e.printStackTrace();
+            throw new SQLException("Error al actualizar el estado del pago", e);
         }
     }
 
@@ -281,6 +358,7 @@ public class PagoDAO {
             throw e;
         }
     }
+
     public static void consultarPagosPendientes() throws SQLException {
         String sql = "SELECT " +
                 "    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
@@ -315,14 +393,14 @@ public class PagoDAO {
                 "        tp.paquete_de_material IS NOT NULL OR " +
                 "        tp.mantenimiento IS NOT NULL" +
                 "  ) ORDER BY p.fechaPago";
-        
+
         List<Pago> pagos = new ArrayList<>();
         int contadorPagosPendientes = 0;
-    
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
             while (rs.next()) {
                 Pago pago = new Pago(
                         rs.getString("Referencia"),
@@ -332,10 +410,10 @@ public class PagoDAO {
                         rs.getString("Tipo_de_Pago"),
                         rs.getString("Descripcion"),
                         rs.getString("Estado"));
-    
+
                 pagos.add(pago);
                 contadorPagosPendientes++;
-    
+
                 System.out.println("╔═══════════════════════════════════════════════════════════════╗");
                 System.out.println("║                       INFORMACION PAGO                        ║");
                 System.out.println("╚═══════════════════════════════════════════════════════════════╝");
@@ -350,14 +428,14 @@ public class PagoDAO {
                 System.out.printf("│ %-18s: %-41s │\n", "Estado", rs.getString("Estado"));
                 System.out.println("└───────────────────────────────────────────────────────────────┘");
             }
-    
+
             if (contadorPagosPendientes == 0) {
                 System.out.println("No hay pagos pendientes.");
             } else {
                 System.out.println("───────────────────────────────────────────────────────────────");
                 System.out.printf("Total de pagos pendientes: %d\n", contadorPagosPendientes);
             }
-            
+
         } catch (SQLException e) {
             System.err.println("Error al consultar los pagos: " + e.getMessage());
             throw e;
@@ -366,6 +444,7 @@ public class PagoDAO {
 
     public static String pagarInscripcion(String matricula, int grado) throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
+        Scanner sc = new Scanner(System.in);
         // ----------------------------
         String tpInscripcion = null;
         String tpPaqueteDeLibros = null;
@@ -475,21 +554,30 @@ public class PagoDAO {
         pago.setTPevento(tpEvento);
         pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
         pago.setEstado("pendiente");
+        System.out.println("------------------------INFORMACION PAGO------------------------");
+        System.out.println("Matricula: " + alumno);
+        System.out.println("Alumno: " + AlumnoDAO.obtenerNombrePorMatricula(alumno));
+        System.out.println("Concepto: " + tpDescripcion);
+        System.out.println("Monto a pagar: " + monto);
+        String respuesta = Valid.getValidString(sc, "Esta seguro de que desea continuar con el pago? (SI/NO)", 2);
+        if (respuesta.equals("SI")) {
 
-        try {
-            pagoDAO.registrarPago(pago);
-            System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
+            try {
+                pagoDAO.registrarPago(pago);
+                System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
 
-        } catch (SQLException e) {
-            System.err.println("Error al registrar el pago: " + e.getMessage());
+            } catch (SQLException e) {
+                System.err.println("Error al registrar el pago: " + e.getMessage());
+            }
+            return referencia;
+        } else {
+            return null;
         }
-        return referencia;
     }
-
-    
 
     public static String pagarUniforme(String matricula, int paqUniforme, String nivelE) throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
+        Scanner sc = new Scanner(System.in);
         // ----------------------------
         String tpInscripcion = null;
         String tpPaqueteDeLibros = null;
@@ -507,7 +595,7 @@ public class PagoDAO {
         String alumno = matricula;
         String tpDescripcion;
         String referencia = generarReferencia();
-    
+
         // Asignar valores según el tipo de pago seleccionado
         switch (paqUniforme) {
             case 1:
@@ -542,14 +630,15 @@ public class PagoDAO {
                 break;
             default:
                 System.out.println("Error en el proceso");
+                sc.close();
                 return null;
         }
-    
+
         // Crear el objeto Pago
         Pago pago = new Pago(referencia, fechaPago, nivel_educativo, periodo, alumno, monto, tpPaqueteDeMaterial,
                 tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
                 tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
-    
+
         // Asignar detalles del pago
         pago.setTPdescripcion(tpDescripcion);
         pago.setTPinscripcion(tpInscripcion);
@@ -560,15 +649,24 @@ public class PagoDAO {
         pago.setTPevento(tpEvento);
         pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
         pago.setEstado("pendiente");
-    
-        // Registrar el pago
-        try {
-            pagoDAO.registrarPago(pago);
-            System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
-        } catch (SQLException e) {
-            System.err.println("Error al registrar el pago: " + e.getMessage());
+        System.out.println("------------------------INFORMACION PAGO------------------------");
+        System.out.println("Matricula: " + alumno);
+        System.out.println("Alumno: " + AlumnoDAO.obtenerNombrePorMatricula(alumno));
+        System.out.println("Concepto: " + tpDescripcion);
+        System.out.println("Monto a pagar: " + monto);
+        String respuesta = Valid.getValidString(sc, "Esta seguro de que desea continuar con el pago? (SI/NO)", 2);
+        if (respuesta.equals("SI")) {
+            // Registrar el pago
+            try {
+                pagoDAO.registrarPago(pago);
+                System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
+            } catch (SQLException e) {
+                System.err.println("Error al registrar el pago: " + e.getMessage());
+            }
+            return referencia;
+        } else {
+            return null;
         }
-        return referencia;
     }
 
     public static void consultarInscripcionesPagadas(String matricula) throws SQLException {
@@ -783,7 +881,7 @@ public class PagoDAO {
     }
 
     public static void precioUniformes(int periodo, String nivel_educativo) throws SQLException {
-        //consulta 9
+        // consulta 9
         String sql = "SELECT DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio_del_Periodo_Escolar, " +
                 "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
                 "ne.nombre as Nivel, " +
@@ -796,22 +894,23 @@ public class PagoDAO {
                 "inner join nivel_educativo as ne on ne.codigo = tu.nivel_educativo " +
                 "inner join grado as g on g.nivel_educativo = ne.codigo " +
                 "where pe.numero = ? and ne.codigo = ?";
-    
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, periodo);
             stmt.setString(2, nivel_educativo);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     System.out.println("┌───────────────────────────────────────────────────────────────┐");
                     System.out.println("                      PRECIO DE LOS UNIFORMES ");
                     System.out.println("└───────────────────────────────────────────────────────────────┘");
-    
+
                     do {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                        System.out.println("  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
+                        System.out.println(
+                                "  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
                         System.out.println("  Final del Periodo: " + rs.getString("Fecha_Final_del_Periodo_Escolar"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel"));
                         System.out.println("  Grado: " + rs.getString("Grado"));
@@ -829,7 +928,6 @@ public class PagoDAO {
             throw e;
         }
     }
-    
 
     public static void consultarCostoMantenimiento(int periodo) {
         String sql = "SELECT " +
@@ -896,4 +994,118 @@ public class PagoDAO {
             e.printStackTrace();
         }
     }
+
+    public static String pagarMensualidad(String matricula, String mes, String nivelE) throws SQLException {
+        PagoDAO pagoDAO = new PagoDAO();
+        Scanner sc = new Scanner(System.in);
+        String tpInscripcion = null;
+        String tpPaqueteDeLibros = null;
+        int tpPaqueteDeUniforme = 0;
+        String tpExamen = null;
+        String tpMensualidad = null;
+        int tpEvento = 0;
+        String tpPaqueteDeMaterial = null;
+        LocalDate fechaActual = LocalDate.now();
+        String fechaPago = fechaActual.toString();
+        double monto = 200;
+        int periodo = 4;
+        String alumno = matricula;
+        String tpDescripcion = null;
+        String referencia = generarReferencia();
+
+        // Asignar valores según el tipo de pago seleccionado
+        switch (mes) {
+            case "ENE":
+                tpDescripcion = "Mensualidad de Enero";
+                tpMensualidad = "Ene";
+                break;
+            case "FEB":
+                tpDescripcion = "Mensualidad de Febrero";
+                tpMensualidad = "Feb";
+                break;
+            case "MAR":
+                tpDescripcion = "Mensualidad de Marzo";
+                tpMensualidad = "Mar";
+                break;
+            case "ABR":
+                tpDescripcion = "Mensualidad de Abril";
+                tpMensualidad = "Abr";
+                break;
+            case "MAY":
+                tpDescripcion = "Mensualidad de Mayo";
+                tpMensualidad = "May";
+                break;
+            case "JUN":
+                tpDescripcion = "Mensualidad de Junio";
+                tpMensualidad = "Jun";
+                break;
+            case "JUL":
+                tpDescripcion = "Mensualidad de Julio";
+                tpMensualidad = "Jul";
+                break;
+            case "AGO":
+                tpDescripcion = "Mensualidad de Agosto";
+                tpMensualidad = "Ago";
+                break;
+            case "SEP":
+                tpDescripcion = "Mensualidad de Septiembre";
+                tpMensualidad = "Sep";
+                break;
+            case "OCT":
+                tpDescripcion = "Mensualidad de Octubre";
+                tpMensualidad = "Oct";
+                break;
+            case "NOV":
+                tpDescripcion = "Mensualidad de Noviembre";
+                tpMensualidad = "Nov";
+                break;
+            case "DIC":
+                tpDescripcion = "Mensualidad de Diciembre";
+                tpMensualidad = "Dic";
+                break;
+            default:
+                System.out.println("Error en el proceso");
+                sc.close();
+                return null;
+        }
+
+        // Crear el objeto Pago
+        Pago pago = new Pago(referencia, fechaPago, nivelE, periodo, alumno, monto, tpPaqueteDeMaterial,
+        tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
+        tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
+
+// Asignar detalles del pago
+pago.setTPdescripcion(tpDescripcion);
+pago.setTPinscripcion(tpInscripcion);
+pago.setTPpaquete_de_libros(tpPaqueteDeLibros);
+pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
+pago.setTPexamen(tpExamen);
+pago.setTPmensualidad(tpMensualidad);
+pago.setTPevento(tpEvento);
+pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
+pago.setEstado("pendiente");
+
+        // No se asignaron los demás detalles del pago porque no son necesarios según el
+        // caso dado.
+
+        System.out.println("------------------------INFORMACION PAGO------------------------");
+        System.out.println("Matricula: " + alumno);
+        System.out.println("Alumno: " + AlumnoDAO.obtenerNombrePorMatricula(alumno));
+        System.out.println("Concepto: " + tpDescripcion);
+        System.out.println("Monto a pagar: " + monto);
+        String respuesta = Valid.getValidString(sc, "Esta seguro de que desea generar la referencia de pago? (SI/NO)",
+                2);
+        if (respuesta.equals("SI")) {
+            // Registrar el pago
+            try {
+                pagoDAO.registrarPago(pago);
+            } catch (SQLException e) {
+                System.err.println("Error al registrar el pago: " + e.getMessage());
+            }
+            return referencia;
+        } else {
+            return null;
+        }
+    }
+
 }

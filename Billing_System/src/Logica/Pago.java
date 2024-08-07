@@ -10,7 +10,7 @@ public class Pago {
     private String estado;
     private int TPnumero;
     private String TPdescripcion;
-    // private String TPpago; (pago en tipo de pago es 'referencia', se obtiene del getReferencia())
+    // private String TPpago; (pago en tipo de pago es 'numero de pago', se obtiene de consultar la primary key generada
     private String TPinscripcion;
     private String TPpaquete_de_libros;
     private int TPpaquete_de_uniforme;
@@ -44,6 +44,10 @@ public class Pago {
     }
     public Pago(String string, String string2, String string3, double double1, String string4, String string5,
             String string6) {
+        //TODO Auto-generated constructor stub
+    }
+    public Pago(String referencia2, String fechaPago, double monto2, String string, int periodo2, String alumno2,
+            String string2) {
         //TODO Auto-generated constructor stub
     }
     public String getReferencia() {

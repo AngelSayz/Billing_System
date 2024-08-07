@@ -77,6 +77,23 @@ INSERT INTO nivel_educativo (codigo, nombre) VALUES
     ('KIND', 'Kinder'),
     ('PRIM', 'Primaria'),
     ('SECU', 'Secundaria');
+    -- Tabla grado
+INSERT INTO grado (numero, nombre, nivel_educativo) VALUES
+    -- PERIODO 1
+    (null, 'Primero de Kinder', 'KIND'), -- 1
+    (null, 'Segundo de Kinder', 'KIND'), -- 2
+    (null, 'Tercero de Kinder', 'KIND'), -- 3
+    -- PERIODO 1
+    (null, 'Primero de Primaria', 'PRIM'), -- 4
+    (null, 'Segundo de Primaria', 'PRIM'), -- 5
+    (null, 'Tercero de Primaria', 'PRIM'), -- 6
+    (null, 'Cuarto de Primaria', 'PRIM'), -- 7
+    (null, 'Quinto de Primaria', 'PRIM'), -- 8
+    (null, 'Sexto de Primaria', 'PRIM'), -- 9
+    -- PERIODO 1
+    (null, 'Primero de Secundaria', 'SECU'), -- 10
+    (null, 'Segundo de Secundaria', 'SECU'), -- 11
+    (null, 'Tercero de Secundaria', 'SECU'); -- 12
 
 -- Tabla tipo_de_mensualidad
 INSERT INTO tipo_de_mensualidad (codigo, nombre) VALUES
@@ -87,6 +104,85 @@ INSERT INTO tipo_de_mensualidad (codigo, nombre) VALUES
 INSERT INTO genero (codigo, nombre) VALUES
     ('M', 'Masculino'),
     ('F', 'Femenino');
+    INSERT INTO paquete_de_material (codigo, nombre, precio, grado) VALUES
+    ('LIBBAS_KIND1', 'Libros Básicos 1ro de Kinder', 250.00, 1),
+    ('LIBBAS_KIND2', 'Libros Básicos 2do de Kinder', 250.00, 2),
+    ('LIBBAS_KIND3', 'Libros Básicos 3ro de Kinder', 250.00, 3),
+    ('LIBBAS_PRIM1', 'Libros Básicos 1ro de Primaria', 250.00, 4),
+    ('LIBBAS_PRIM2', 'Libros Básicos 2do de Primaria', 250.00, 5),
+    ('LIBBAS_PRIM3', 'Libros Básicos 3ro de Primaria', 250.00, 6),
+    ('LIBBAS_PRIM4', 'Libros Básicos 4to de Primaria', 250.00, 7),
+    ('LIBBAS_PRIM5', 'Libros Básicos 5to de Primaria', 250.00, 8),
+    ('LIBBAS_PRIM6', 'Libros Básicos 6to de Primaria', 250.00, 9),
+    ('LIBBAS_SECU1', 'Libros Básicos 1ro de Secundaria', 250.00, 10),
+    ('LIBBAS_SECU2', 'Libros Básicos 2do de Secundaria', 250.00, 11),
+    ('LIBBAS_SECU3', 'Libros Básicos 3ro de Secundaria', 250.00, 12),
+
+    ('MATART_KIND1', 'Material de Arte 1ro de Kinder', 150.00, 1),
+    ('MATART_KIND2', 'Material de Arte 2do de Kinder', 150.00, 2),
+    ('MATART_KIND3', 'Material de Arte 3ro de Kinder', 150.00, 3),
+    ('MATART_PRIM1', 'Material de Arte 1ro de Primaria', 150.00, 4),
+    ('MATART_PRIM2', 'Material de Arte 2do de Primaria', 150.00, 5),
+    ('MATART_PRIM3', 'Material de Arte 3ro de Primaria', 150.00, 6),
+    ('MATART_PRIM4', 'Material de Arte 4to de Primaria', 150.00, 7),
+    ('MATART_PRIM5', 'Material de Arte 5to de Primaria', 150.00, 8),
+    ('MATART_PRIM6', 'Material de Arte 6to de Primaria', 150.00, 9),
+    ('MATART_SECU1', 'Material de Arte 1ro de Secundaria', 150.00, 10),
+    ('MATART_SECU2', 'Material de Arte 2do de Secundaria', 150.00, 11),
+    ('MATART_SECU3', 'Material de Arte 3ro de Secundaria', 150.00, 12),
+
+    ('PAQLAB_KIND1', 'Paquete de Laboratorio 1ro de Kinder', 300.75, 1),
+    ('PAQLAB_KIND2', 'Paquete de Laboratorio 2do de Kinder', 300.75, 2),
+    ('PAQLAB_KIND3', 'Paquete de Laboratorio 3ro de Kinder', 300.75, 3),
+    ('PAQLAB_PRIM1', 'Paquete de Laboratorio 1ro de Primaria', 300.75, 4),
+    ('PAQLAB_PRIM2', 'Paquete de Laboratorio 2do de Primaria', 300.75, 5),
+    ('PAQLAB_PRIM3', 'Paquete de Laboratorio 3ro de Primaria', 300.75, 6),
+    ('PAQLAB_PRIM4', 'Paquete de Laboratorio 4to de Primaria', 300.75, 7),
+    ('PAQLAB_PRIM5', 'Paquete de Laboratorio 5to de Primaria', 300.75, 8),
+    ('PAQLAB_PRIM6', 'Paquete de Laboratorio 6to de Primaria', 300.75, 9),
+    ('PAQLAB_SECU1', 'Paquete de Laboratorio 1ro de Secundaria', 300.75, 10),
+    ('PAQLAB_SECU2', 'Paquete de Laboratorio 2do de Secundaria', 300.75, 11),
+    ('PAQLAB_SECU3', 'Paquete de Laboratorio 3ro de Secundaria', 300.75, 12),
+
+    ('PAQDEP_KIND1', 'Paquete de Deportes 1ro de Kinder', 120.00, 1),
+    ('PAQDEP_KIND2', 'Paquete de Deportes 2do de Kinder', 120.00, 2),
+    ('PAQDEP_KIND3', 'Paquete de Deportes 3ro de Kinder', 120.00, 3),
+    ('PAQDEP_PRIM1', 'Paquete de Deportes 1ro de Primaria', 120.00, 4),
+    ('PAQDEP_PRIM2', 'Paquete de Deportes 2do de Primaria', 120.00, 5),
+    ('PAQDEP_PRIM3', 'Paquete de Deportes 3ro de Primaria', 120.00, 6),
+    ('PAQDEP_PRIM4', 'Paquete de Deportes 4to de Primaria', 120.00, 7),
+    ('PAQDEP_PRIM5', 'Paquete de Deportes 5to de Primaria', 120.00, 8),
+    ('PAQDEP_PRIM6', 'Paquete de Deportes 6to de Primaria', 120.00, 9),
+    ('PAQDEP_SECU1', 'Paquete de Deportes 1ro de Secundaria', 120.00, 10),
+    ('PAQDEP_SECU2', 'Paquete de Deportes 2do de Secundaria', 120.00, 11),
+    ('PAQDEP_SECU3', 'Paquete de Deportes 3ro de Secundaria', 120.00, 12),
+
+    ('PAQMAT_KIND1', 'Paquete de Material Escolar 1ro de Kinder', 120.00, 1),
+    ('PAQMAT_KIND2', 'Paquete de Material Escolar 2do de Kinder', 120.00, 2),
+    ('PAQMAT_KIND3', 'Paquete de Material Escolar 3ro de Kinder', 120.00, 3),
+    ('PAQMAT_PRIM1', 'Paquete de Material Escolar 1ro de Primaria', 120.00, 4),
+    ('PAQMAT_PRIM2', 'Paquete de Material Escolar 2do de Primaria', 120.00, 5),
+    ('PAQMAT_PRIM3', 'Paquete de Material Escolar 3ro de Primaria', 120.00, 6),
+    ('PAQMAT_PRIM4', 'Paquete de Material Escolar 4to de Primaria', 120.00, 7),
+    ('PAQMAT_PRIM5', 'Paquete de Material Escolar 5to de Primaria', 120.00, 8),
+    ('PAQMAT_PRIM6', 'Paquete de Material Escolar 6to de Primaria', 120.00, 9),
+    ('PAQMAT_SECU1', 'Paquete de Material Escolar 1ro de Secundaria', 120.00, 10),
+    ('PAQMAT_SECU2', 'Paquete de Material Escolar 2do de Secundaria', 120.00, 11),
+    ('PAQMAT_SECU3', 'Paquete de Material Escolar 3ro de Secundaria', 120.00, 12),
+
+    ('MATCOM_KIND1', 'Material de Computación 1ro de Kinder', 200.00, 1),
+    ('MATCOM_KIND2', 'Material de Computación 2do de Kinder', 200.00, 2),
+    ('MATCOM_KIND3', 'Material de Computación 3ro de Kinder', 200.00, 3),
+    ('MATCOM_PRIM1', 'Material de Computación 1ro de Primaria', 200.00, 4),
+    ('MATCOM_PRIM2', 'Material de Computación 2do de Primaria', 200.00, 5),
+    ('MATCOM_PRIM3', 'Material de Computación 3ro de Primaria', 200.00, 6),
+    ('MATCOM_PRIM4', 'Material de Computación 4to de Primaria', 200.00, 7),
+    ('MATCOM_PRIM5', 'Material de Computación 5to de Primaria', 200.00, 8),
+    ('MATCOM_PRIM6', 'Material de Computación 6to de Primaria', 200.00, 9),
+    ('MATCOM_SECU1', 'Material de Computación 1ro de Secundaria', 200.00, 10),
+    ('MATCOM_SECU2', 'Material de Computación 2do de Secundaria', 200.00, 11),
+    ('MATCOM_SECU3', 'Material de Computación 3ro de Secundaria', 200.00, 12);
+
 
 -- Tabla tipo_de_uniforme /// AUTO_INCREMENT
 INSERT INTO tipo_de_uniforme (numero, descripcion, precio, nivel_educativo) VALUES
@@ -1042,8 +1138,6 @@ INSERT INTO grupo_alumno (alumno, grupo) VALUES
     -- PERIODO 2
     ('000011', 118),
     ('000012', 118);
-
--- Tabla grado
 
 -- Tabla inscripcion
 INSERT INTO inscripcion (codigo, precio, grado) VALUES

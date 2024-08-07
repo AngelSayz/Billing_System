@@ -129,7 +129,7 @@ f. Nombre del alumno
 g. Grupo
 h. Grado
 i. Nivel*/
-SELECT
+SELECT DISTINCT
     ev.nombre AS Evento,
     DATE_FORMAT(ev.fecha, '%d/%m/%Y') AS Fecha,
     ev.costo AS Costo,
@@ -179,7 +179,7 @@ FROM
     INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
     INNER JOIN periodo AS p ON mp.periodo = p.numero
 WHERE
-    p.numero = ?
+    p.numero = 3
 
 UNION ALL
 
@@ -194,7 +194,7 @@ FROM
     INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
     INNER JOIN periodo AS p ON mp.periodo = p.numero
 WHERE
-    p.numero = ?;
+    p.numero = 3;
 
 
 
@@ -251,7 +251,7 @@ SELECT
 FROM pago AS pa
 INNER JOIN periodo AS pe ON pe.numero = pa.periodo
 INNER JOIN nivel_educativo AS ne ON ne.codigo = pa.nivel_educativo
-WHERE pa.periodo = 1 AND pa.nivel_educativo = 'KIND'
+WHERE pa.periodo = 3 AND pa.nivel_educativo = 'SECU' AND pa.estado = 'confirmado'
 GROUP BY pe.añoInicio, pe.añoFin, ne.nombre;
 
 /*Consultas usadas en la logica del proyecto:

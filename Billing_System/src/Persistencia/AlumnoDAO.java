@@ -176,8 +176,7 @@ public class AlumnoDAO {
 
     public static void actualizarAlumno(Scanner sc, String matricula) throws SQLException {
 
-        AlumnoDAO alumnoDAO = new AlumnoDAO();
-        String nombreAlumno = alumnoDAO.obtenerNombrePorMatricula(matricula);
+        String nombreAlumno = AlumnoDAO.obtenerNombrePorMatricula(matricula);
         if (nombreAlumno == null) {
             System.out.println("╔══════════════════════════════════════════════════════════════╗");
             System.out.println("║ No se encontró ningún alumno con la matrícula proporcionada. ║");
@@ -190,7 +189,7 @@ public class AlumnoDAO {
             System.out.println("║               MODIFICAR ALUMNO               ║");
             System.out.println("╚══════════════════════════════════════════════╝");
             System.out.println("┌──────────────────────────────────────────────┐");
-            System.out.println("    MODIFICANDO A: " + nombreAlumno.toUpperCase());
+            System.out.println("    MODIFICANDO A: " + nombreAlumno);
             System.out.println("└──────────────────────────────────────────────┘");
             System.out.println("╔══════════════════════════════════════════════╗");
             System.out.println("║  [1]- Asignar grupo al alumno                ║");
@@ -439,7 +438,7 @@ public class AlumnoDAO {
         }
     }
 
-    public String obtenerNombrePorMatricula(String matricula) throws SQLException {
+    public static String obtenerNombrePorMatricula(String matricula) throws SQLException {
         String sql = "SELECT CONCAT(primerApellido, ' ', segApellido, ' ', nombrePila) AS nombreCompleto FROM alumno WHERE matricula = ?";
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -463,7 +462,6 @@ public class AlumnoDAO {
                 "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio, " +
                 "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final, " +
                 "a.matricula as Matricula, " +
-                "a.edad as Edad, " +
                 "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
                 "gr.nombre as Grado, " +
                 "ne.nombre as Nivel_Escolar, " +
@@ -488,7 +486,6 @@ public class AlumnoDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 String matricula = null;
                 String nombreCompleto = null;
-                int edad = 0;
                 String fechaInicio = null;
                 String fechaFin = null;
                 String periodoEscolar = null;
@@ -502,7 +499,6 @@ public class AlumnoDAO {
                     if (matricula == null) {
                         matricula = rs.getString("Matricula");
                         nombreCompleto = rs.getString("Alumno");
-                        edad = rs.getInt("Edad");
                         fechaInicio = rs.getString("Fecha_de_Inicio");
                         fechaFin = rs.getString("Fecha_Final");
                         periodoEscolar = rs.getString("Periodo_Escolar");
@@ -523,7 +519,6 @@ public class AlumnoDAO {
                     System.out.println("┌──────────────────────────────────────────────┐");
                     System.out.println("    Nombre alumno: " + nombreCompleto);
                     System.out.println("    Matricula: " + matricula);
-                    System.out.println("    Edad: " + edad);
                     System.out.println("    Periodo Escolar: " + periodoEscolar);
                     System.out.println("    Fecha de Inicio: " + fechaInicio);
                     System.out.println("    Fecha Final: " + fechaFin);
@@ -671,24 +666,62 @@ public class AlumnoDAO {
     }
 
     public static void cambiarPassword(Scanner sc, String matricula) {
-        String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
-        String password = Valid.getValidString(sc, "Ingrese la nueva contraseña: ", 30);
+        AlumnoDAO alumnoDAO = new AlumnoDAO();
+        String currentPassword = Valid.getValidString(sc, "Ingrese su contraseña actual: ", 30);
 
-        try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try {
+            // Verify the current password
+            String storedPassword = alumnoDAO.obtenerPassword(matricula); // Assume this method retrieves the current password from DB
+            if (!storedPassword.equals(currentPassword)) {
+                System.out.println("La contraseña actual es incorrecta.");
+                return;
+            }
 
-            stmt.setString(1, password);
-            stmt.setString(2, matricula);
-            int rowsAffected = stmt.executeUpdate();
+            // Input new password
+            String newPassword = Valid.getValidString(sc, "Ingrese la nueva contraseña: ", 30);
+            String confirmPassword = Valid.getValidString(sc, "Confirme la nueva contraseña: ", 30);
 
-            if (rowsAffected > 0) {
-                System.out.println("La contraseña se ha cambiado exitosamente.");
-            } else {
-                System.out.println("No se encontró ningún alumno con esa matrícula.");
+            // Check if new passwords match
+            if (!newPassword.equals(confirmPassword)) {
+                System.out.println("Las contraseñas no coinciden. Inténtelo de nuevo.");
+                return;
+            }
+
+            // Update the password in the database
+            String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, newPassword);
+                stmt.setString(2, matricula);
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("La contraseña se ha cambiado exitosamente.");
+                } else {
+                    System.out.println("No se encontró ningún alumno con esa matrícula.");
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error al cambiar la contraseña: " + e.getMessage());
             }
 
         } catch (SQLException e) {
-            System.out.println("Error al cambiar la contraseña: " + e.getMessage());
+            System.out.println("Error al verificar la contraseña actual: " + e.getMessage());
+        }
+    }
+    public String obtenerPassword(String matricula) throws SQLException {
+        String sql = "SELECT password FROM alumno WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, matricula);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("password");
+                } else {
+                    return null;
+                }
+            }
         }
     }
 
