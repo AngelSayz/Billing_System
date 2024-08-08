@@ -174,7 +174,6 @@ public class menuAdmin {
             System.out.println("╠══════════════════════════════════════════════╣");
             System.out.println("║ [1]- Consultar un alumno especifico          ║");
             System.out.println("║ [2]- Consultar todos los alumnos             ║");
-            System.out.println("║ [3]- Consultas especificas                   ║");
             System.out.println("║ [0]- Salir                                   ║");
             System.out.println("╚══════════════════════════════════════════════╝");
             int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 3);
@@ -205,8 +204,6 @@ public class menuAdmin {
                 case 2:
                     AlumnoDAO.consultarTodosAlumnos();
                     break;
-                case 3:
-                    break;
                 default:
                     System.out.println("╔═════════════════════════════════════════════════════════╗");
                     System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
@@ -218,7 +215,7 @@ public class menuAdmin {
 
     public static void gestionarPagos(Scanner sc) throws SQLException {
         boolean gestionarPagos = true;
-
+    
         while (gestionarPagos) {
             System.out.println("╔══════════════════════════════════════════════╗");
             System.out.println("║               GESTIONAR PAGOS                ║");
@@ -230,9 +227,9 @@ public class menuAdmin {
             System.out.println("║ [5]- Ver pagos realizados                    ║");
             System.out.println("║ [0]- Salir                                   ║");
             System.out.println("╚══════════════════════════════════════════════╝");
-
+    
             int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 5);
-
+    
             switch (respuesta) {
                 case 0:
                     gestionarPagos = false;
@@ -244,42 +241,40 @@ public class menuAdmin {
                     System.out.println("║  [0]- Volver                    ║");
                     System.out.println("╚═════════════════════════════════╝");
                     respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 1);
-                    switch (respuesta) {
-                        case 1:
-                            String referencia = Valid.getValidString(sc, "Ingrese el numero de referencia del pago a actualizar: ", 10);
+                    if (respuesta == 1) {
+                        String referencia = Valid.getValidString(sc, "Ingrese el numero de referencia del pago a actualizar (escriba 'CANCELAR' para cancelar el proceso): ", 10);
+                        if (referencia.equals("CANCELAR")) {
+                            System.out.println("Cancelando proceso...");
+                        } else {
                             System.out.println("╔═════════════════════════════════╗");
                             System.out.println("║  [1]- Confirmar el pago         ║");
                             System.out.println("║  [2]- Cancelar el pago          ║");
                             System.out.println("║  [0]- Cancelar                  ║");
                             System.out.println("╚═════════════════════════════════╝");
                             respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 2);
-                    switch (respuesta) {
-                        case 1:
-                            String estado = "confirmado";
-                            PagoDAO.actualizarPago(referencia, estado);
-                            break;
-                        case 2:
-                            estado = "cancelado";
-                            PagoDAO.actualizarPago(referencia, estado);
-                            return;
-                        default:
-                            System.out.println("╔═════════════════════════════════════════════════════════╗");
-                            System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
-                            System.out.println("╚═════════════════════════════════════════════════════════╝");
-                            break;
-                        case 0:
-                            return;
-                        
+                            switch (respuesta) {
+                                case 1:
+                                    String estado = "confirmado";
+                                    PagoDAO.actualizarPago(referencia, estado);
+                                    break;
+                                case 2:
+                                    estado = "cancelado";
+                                    PagoDAO.actualizarPago(referencia, estado);
+                                    break;
+                                default:
+                                    System.out.println("╔═════════════════════════════════════════════════════════╗");
+                                    System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
+                                    System.out.println("╚═════════════════════════════════════════════════════════╝");
+                                    break;
+                            }
+                        }
                     }
-
                     break;
                 case 2:
                     System.out.println("╔══════════════════════════════════════════════╗");
                     System.out.println("║               ELIMINAR UN PAGO               ║");
                     System.out.println("╚══════════════════════════════════════════════╝");
-                    String refEliminar = Valid.getValidString(sc,
-                            "Ingrese la referencia del pago a eliminar (escriba 'CANCELAR' para cancelar el proceso): ",
-                            10);
+                    String refEliminar = Valid.getValidString(sc, "Ingrese la referencia del pago a eliminar (escriba 'CANCELAR' para cancelar el proceso): ", 10);
                     if (refEliminar.equals("CANCELAR")) {
                         System.out.println("Cancelando proceso...");
                     } else {
@@ -290,9 +285,7 @@ public class menuAdmin {
                     System.out.println("╔══════════════════════════════════════════════╗");
                     System.out.println("║               CONSULTAR UN PAGO              ║");
                     System.out.println("╚══════════════════════════════════════════════╝");
-                    String refConsultar = Valid.getValidString(sc,
-                            "Ingrese la referencia del pago a consultar (escriba 'CANCELAR' para cancelar el proceso): ",
-                            10);
+                    String refConsultar = Valid.getValidString(sc, "Ingrese la referencia del pago a consultar (escriba 'CANCELAR' para cancelar el proceso): ", 10);
                     if (refConsultar.equals("CANCELAR")) {
                         System.out.println("Cancelando proceso...");
                     } else {
@@ -304,26 +297,31 @@ public class menuAdmin {
                     System.out.println("║  [1]- CICLO 21-22     ║");
                     System.out.println("║  [2]- CICLO 22-23     ║");
                     System.out.println("║  [3]- CICLO 23-24     ║");
+                    System.out.println("║  [0]- Volver          ║");
                     System.out.println("╚═══════════════════════╝");
-                    int periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
-                    PagoDAO.consultarCostoMantenimiento(periodo);
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- Regresar        ║");
-                    System.out.println("║  [2]- Cerrar sesion   ║");
-                    System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 2);
-                    switch (respuesta) {
-                        case 1:
-                            break;
-                        case 2:
-                            Valid.clear();
-                            Inicio.iniciarSesion();
-                            return;
-                        default:
-                            System.out.println("╔═════════════════════════════════════════════════════════╗");
-                            System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
-                            System.out.println("╚═════════════════════════════════════════════════════════╝");
-                            break;
+                    int periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 0, 3);
+                    if (periodo == 0) {
+                        System.out.println("Volviendo...");
+                    } else {
+                        PagoDAO.consultarCostoMantenimiento(periodo);
+                        System.out.println("╔═══════════════════════╗");
+                        System.out.println("║  [1]- Regresar        ║");
+                        System.out.println("║  [2]- Cerrar sesion   ║");
+                        System.out.println("╚═══════════════════════╝");
+                        respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 2);
+                        switch (respuesta) {
+                            case 1:
+                                break;
+                            case 2:
+                                Valid.clear();
+                                Inicio.iniciarSesion();
+                                return;
+                            default:
+                                System.out.println("╔═════════════════════════════════════════════════════════╗");
+                                System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
+                                System.out.println("╚═════════════════════════════════════════════════════════╝");
+                                break;
+                        }
                     }
                     break;
                 case 5:
@@ -332,11 +330,27 @@ public class menuAdmin {
                     System.out.println("║  [1]- KINDER          ║");
                     System.out.println("║  [2]- PRIMARIA        ║");
                     System.out.println("║  [3]- SECUNDARIA      ║");
+                    System.out.println("║  [0]- Volver          ║");
                     System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
-                    switch (respuesta) {
-                        case 1:
-                            nivel_educativo = "KIND";
+                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 0, 3);
+                    if (respuesta == 0) {
+                        System.out.println("Volviendo...");
+                    } else {
+                        switch (respuesta) {
+                            case 1:
+                                nivel_educativo = "KIND";
+                                break;
+                            case 2:
+                                nivel_educativo = "PRIM";
+                                break;
+                            case 3:
+                                nivel_educativo = "SECU";
+                                break;
+                            default:
+                                nivel_educativo = "";
+                                break;
+                        }
+                        if (!nivel_educativo.isEmpty()) {
                             System.out.println("╔═══════════════════════╗");
                             System.out.println("║  [1]- CICLO 21-22     ║");
                             System.out.println("║  [2]- CICLO 22-23     ║");
@@ -344,32 +358,15 @@ public class menuAdmin {
                             System.out.println("╚═══════════════════════╝");
                             periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
                             PagoDAO.consultarTotalPagos(periodo, nivel_educativo);
-                            break;
-                        case 2:
-                            nivel_educativo = "PRIM";
-                            System.out.println("╔═══════════════════════╗");
-                            System.out.println("║  [1]- CICLO 21-22     ║");
-                            System.out.println("║  [2]- CICLO 22-23     ║");
-                            System.out.println("║  [3]- CICLO 23-24     ║");
-                            System.out.println("╚═══════════════════════╝");
-                            periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
-                            PagoDAO.consultarTotalPagos(periodo, nivel_educativo);
-                            break;
-                        case 3:
-                            nivel_educativo = "SECU";
-                            System.out.println("╔═══════════════════════╗");
-                            System.out.println("║  [1]- CICLO 21-22     ║");
-                            System.out.println("║  [2]- CICLO 22-23     ║");
-                            System.out.println("║  [3]- CICLO 23-24     ║");
-                            System.out.println("╚═══════════════════════╝");
-                            periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
-                            PagoDAO.consultarTotalPagos(periodo, nivel_educativo);
-                            break;
+                        }
                     }
+                    break;
                 default:
+                    System.out.println("╔═════════════════════════════════════════════════════════╗");
+                    System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
+                    System.out.println("╚═════════════════════════════════════════════════════════╝");
                     break;
             }
         }
     }
-}
 }

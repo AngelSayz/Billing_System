@@ -21,8 +21,8 @@ CREATE TABLE alumno (
 CREATE TABLE mantenimiento (
     codigo VARCHAR(10) PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,
-    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    precio DECIMAL(10,2) NOT NULL,CURRENT_TIMESTAMP
+    fecha_registro TIMESTAMP DEFAULT 
 );
 
 
@@ -63,6 +63,7 @@ CREATE TABLE paquete_de_material (
     nombre VARCHAR(50) NOT NULL,
     precio DECIMAL(10,2) NOT NULL,
     grado INT,
+    tipo VARCHAR(20),
     FOREIGN KEY (grado) REFERENCES grado(numero),
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

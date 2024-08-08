@@ -207,7 +207,7 @@ public class AlumnoDAO {
                     asignarGrupo(sc, matricula);
                     break;
                 case 2:
-                    cambiarPassword(sc, matricula);
+                    restablecerPassword(sc, matricula);
                     break;
                 case 3:
                     System.out.println("╔══════════════════════════════════════════════╗");
@@ -664,11 +664,32 @@ public class AlumnoDAO {
             e.printStackTrace();
         }
     }
+    public static void restablecerPassword(Scanner sc, String matricula) {
+        
+            String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
+            try (Connection conn = DatabaseConnection.getConnection();
+                    PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+                stmt.setString(1, matricula);
+                stmt.setString(2, matricula);
+                int rowsAffected = stmt.executeUpdate();
+
+                if (rowsAffected > 0) {
+                    System.out.println("La contraseña se ha cambiado exitosamente.");
+                } else {
+                    System.out.println("No se encontró ningún alumno con esa matrícula.");
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Error al cambiar la contraseña: " + e.getMessage());
+            }
+
+        }
 
     public static void cambiarPassword(Scanner sc, String matricula) {
         AlumnoDAO alumnoDAO = new AlumnoDAO();
+        
         String currentPassword = Valid.getValidString(sc, "Ingrese su contraseña actual: ", 30);
-
         try {
             // Verify the current password
             String storedPassword = alumnoDAO.obtenerPassword(matricula); // Assume this method retrieves the current password from DB
@@ -777,4 +798,57 @@ public class AlumnoDAO {
             throw e;
         }
     }
+    public static int obtenerGrado(String matricula) throws SQLException {
+        String sql = "SELECT grad.numero as Grado " +
+                     "FROM alumno as a " +
+                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                     "INNER JOIN grupo as g on ga.grupo = g.numero " +
+                     "INNER JOIN grado as grad on g.grado = grad.numero " +
+                     "INNER JOIN periodo as p on periodo = p.numero " +
+                     "WHERE a.matricula = ? and periodo = ?";
+    
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, matricula);
+            stmt.setInt(2, 4);
+    
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("Grado");
+                } else {
+                    System.out.println("No se encontró el alumno en el periodo actual.");
+                    return -1; // Indicador de que no se encontró el grado
+                }
+            }
+        }
+    }
+    public static String obtenerNivelEducativo(String matricula) throws SQLException {
+        String sql = "SELECT ne.codigo as Nivel " +
+                     "FROM alumno as a " +
+                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                     "INNER JOIN grupo as g on ga.grupo = g.numero " +
+                     "INNER JOIN grado as grad on g.grado = grad.numero " +
+                     "INNER JOIN nivel_educativo as ne on ne.codigo = grad.nivel_educativo " +
+                     "INNER JOIN periodo as p on periodo = p.numero " +
+                     "WHERE a.matricula = ? and periodo = ?";
+    
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setString(1, matricula);
+            stmt.setInt(2, 4);
+    
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getString("Nivel");
+                } else {
+                    System.out.println("No se encontró el alumno en el periodo actual.");
+                    return null; // Indicador de que no se encontró el nivel educativo
+                }
+            }
+        }
+    }
+    
+    
 }

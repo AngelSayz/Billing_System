@@ -216,7 +216,7 @@ inner join paq_periodo as pp on pp.paquete_de_material = pm.codigo
 inner join periodo as pe on pe.numero = pp.periodo
 inner join grado as g on pm.grado = g.numero
 inner join nivel_educativo as ne on ne.codigo = g.nivel_educativo
-where pe.numero = 3 and ne.codigo = 'SECU';
+where pe.numero = 4 and ne.codigo = 'SECU' and pm.tipo = 'papeleria';
 
 /*9. Lista de precios de los uniformes para un periodo y nivel escolar. IMPLEMENTADO
 a. Fecha de inicio del periodo escolar

@@ -539,6 +539,7 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 break;
             default:
                 System.out.println("Error en el proceso");
+                sc.close();
                 return null;
         }
 
@@ -734,44 +735,43 @@ System.out.println("    - Teléfono: (664) 123-9212");
 
     public static void consultarMensualidadesPagadas(String matricula, int periodo) throws SQLException {
         // Consulta 5
-        String sql = "SELECT a.matricula as Matricula," +
-                "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
-                "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Inicio_del_Periodo_Escolar, " +
-                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Final_del_Periodo_Escolar, " +
-                "pe.nombre as Periodo, " +
-                "g.nombre as Grupo, " +
-                "g.nivel_educativo as Nivel_Educativo, " +
-                "gr.nombre as Grado," +
-                "DATE_FORMAT(p.fechaPago, '%d/%m/%Y') AS Fecha_del_Pago, " +
-                "tp.descripcion as Pago " +
-                "FROM alumno as a " +
-                "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
-                "INNER JOIN grupo as g on g.numero = ga.grupo " +
-                "INNER JOIN periodo as pe on pe.numero = g.periodo " +
-                "inner join grado as gr on g.grado = gr.numero " +
-                "inner join pago as p on p.periodo = pe.numero " +
-                "inner join tipo_de_pago as tp on tp.pago = p.numero " +
-                "where a.matricula = ? and tp.mensualidad is not null and p.alumno = ? and pe.numero = ? " +
-                "ORDER BY a.matricula; ";
-
+        String sql = "SELECT a.matricula as Matricula, " +
+                     "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+                     "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Inicio_del_Periodo_Escolar, " +
+                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Final_del_Periodo_Escolar, " +
+                     "pe.nombre as Periodo, " +
+                     "g.nombre as Grupo, " +
+                     "g.nivel_educativo as Nivel_Educativo, " +
+                     "gr.nombre as Grado, " +
+                     "DATE_FORMAT(p.fechaPago, '%d/%m/%Y') AS Fecha_del_Pago, " +
+                     "tp.descripcion as Pago " +
+                     "FROM alumno as a " +
+                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                     "INNER JOIN grupo as g on g.numero = ga.grupo " +
+                     "INNER JOIN periodo as pe on pe.numero = g.periodo " +
+                     "INNER JOIN grado as gr on g.grado = gr.numero " +
+                     "INNER JOIN pago as p on p.periodo = pe.numero " +
+                     "INNER JOIN tipo_de_pago as tp on tp.pago = p.numero " +
+                     "WHERE a.matricula = ? AND tp.mensualidad IS NOT NULL AND p.alumno = ? AND pe.numero = ? " +
+                     "ORDER BY a.matricula;";
+    
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
             stmt.setString(1, matricula);
             stmt.setString(2, matricula);
             stmt.setInt(3, periodo);
-
+    
             try (ResultSet rs = stmt.executeQuery()) {
+                boolean firstRow = true;
+    
                 if (rs.next()) {
                     System.out.println("┌───────────────────────────────────────────────────────────────┐");
                     System.out.println("    Matricula: " + rs.getString("Matricula"));
                     System.out.println("    Alumno: " + rs.getString("Alumno"));
                     System.out.println("└───────────────────────────────────────────────────────────────┘");
-                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                    System.out.println("                      MENSUALIDADES PAGADAS ");
-                    System.out.println("└───────────────────────────────────────────────────────────────┘");
-
-                    do {
+    
+                    if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
                         System.out.println("  PERIODO ESCOLAR: " + rs.getString("Periodo"));
                         System.out.println("  Inicio: " + rs.getString("Inicio_del_Periodo_Escolar"));
@@ -780,6 +780,13 @@ System.out.println("    - Teléfono: (664) 123-9212");
                         System.out.println("  Grupo: " + rs.getString("Grupo"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel_Educativo"));
                         System.out.println("  Grado: " + rs.getString("Grado"));
+                        System.out.println("└───────────────────────────────────────────────────────────────┘");
+                        System.out.println();
+                        firstRow = false;  // Asegura que esta información solo se imprima una vez
+                    }
+    
+                    do {
+                        System.out.println("┌───────────────────────────────────────────────────────────────┐");
                         System.out.println("  INFORMACION DEL PAGO:");
                         System.out.println("  Fecha: " + rs.getString("Fecha_del_Pago"));
                         System.out.println("  Descripción: " + rs.getString("Pago"));
@@ -790,8 +797,12 @@ System.out.println("    - Teléfono: (664) 123-9212");
                     System.out.println("No se encontraron registros.");
                 }
             }
+        } catch (SQLException e) {
+            System.err.println("Error al consultar las mensualidades pagadas: " + e.getMessage());
+            throw e;
         }
     }
+    
 
     public static void consultarTotalPagos(int periodo, String nivel_educativo) throws SQLException {
         // Consulta 10
@@ -836,90 +847,107 @@ System.out.println("    - Teléfono: (664) 123-9212");
         }
     }
 
-    public static void precioUtiles(int periodo, String nivel_educativo) throws SQLException {
-        // consulta 8
+    public static void precioUtiles(String nivel_educativo) throws SQLException {
+        // Consulta 8
         String sql = "SELECT DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio_del_Periodo_Escolar, " +
-                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
-                "ne.nombre as Nivel, " +
-                "pm.nombre as Descripcion, " +
-                "pm.precio as Costo " +
-                "FROM paquete_de_material as pm " +
-                "inner join paq_periodo as pp on pp.paquete_de_material = pm.codigo " +
-                "inner join periodo as pe on pe.numero = pp.periodo " +
-                "inner join grado as g on pm.grado = g.numero " +
-                "inner join nivel_educativo as ne on ne.codigo = g.nivel_educativo " +
-                "where pe.numero = ? and ne.codigo = ?; ";
-
+                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
+                     "ne.nombre as Nivel, " +
+                     "pm.nombre as Descripcion, " +
+                     "pm.precio as Costo " +
+                     "FROM paquete_de_material as pm " +
+                     "INNER JOIN paq_periodo as pp on pp.paquete_de_material = pm.codigo " +
+                     "INNER JOIN periodo as pe on pe.numero = pp.periodo " +
+                     "INNER JOIN grado as g on pm.grado = g.numero " +
+                     "INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo " +
+                     "WHERE pe.numero = ? and ne.codigo = ? and pm.tipo = 'papeleria'";
+    
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, periodo);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setInt(1, 4);
             stmt.setString(2, nivel_educativo);
-
+    
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                    System.out.println("                      PRECIOS DE LOS UTILES ESCOLARES ");
-                    System.out.println("└───────────────────────────────────────────────────────────────┘");
-
-                    do {
+                boolean firstRow = true;
+    
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.println("                      PRECIOS DE LOS UTILES ESCOLARES ");
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
+    
+                while (rs.next()) {
+                    if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                        System.out.println(
-                                "  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
+                        System.out.println("  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
                         System.out.println("  Final del Periodo: " + rs.getString("Fecha_Final_del_Periodo_Escolar"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel"));
-                        System.out.println("  Descripcion: " + rs.getString("Descripcion"));
-                        System.out.println("  Costo: " + rs.getString("Costo"));
                         System.out.println("└───────────────────────────────────────────────────────────────┘");
                         System.out.println();
-                    } while (rs.next());
-                } else {
+                        firstRow = false;  // Para asegurarse de que esta información solo se imprima una vez
+                    }
+    
+                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                    System.out.println("  Descripcion: " + rs.getString("Descripcion"));
+                    System.out.println("  Costo: " + rs.getString("Costo"));
+                    System.out.println("└───────────────────────────────────────────────────────────────┘");
+                    System.out.println();
+                }
+    
+                if (firstRow) {  // Esto significa que no se encontraron registros
                     System.out.println("No se encontraron registros.");
                 }
             }
         }
     }
+    
 
-    public static void precioUniformes(int periodo, String nivel_educativo) throws SQLException {
-        // consulta 9
+    public static void precioUniformes( String nivel_educativo) throws SQLException {
+        // Consulta 9
         String sql = "SELECT DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio_del_Periodo_Escolar, " +
-                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
-                "ne.nombre as Nivel, " +
-                "g.nombre as Grado, " +
-                "tu.descripcion as Descripcion, " +
-                "tu.precio as Precio " +
-                "FROM tipo_de_uniforme as tu " +
-                "inner join uni_periodo as up on up.tipo_de_uniforme = tu.numero " +
-                "inner join periodo as pe on pe.numero = up.periodo " +
-                "inner join nivel_educativo as ne on ne.codigo = tu.nivel_educativo " +
-                "inner join grado as g on g.nivel_educativo = ne.codigo " +
-                "where pe.numero = ? and ne.codigo = ?";
-
+                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
+                     "ne.nombre as Nivel, " +
+                     "g.nombre as Grado, " +
+                     "tu.descripcion as Descripcion, " +
+                     "tu.precio as Precio " +
+                     "FROM tipo_de_uniforme as tu " +
+                     "INNER JOIN uni_periodo as up on up.tipo_de_uniforme = tu.numero " +
+                     "INNER JOIN periodo as pe on pe.numero = up.periodo " +
+                     "INNER JOIN nivel_educativo as ne on ne.codigo = tu.nivel_educativo " +
+                     "INNER JOIN grado as g on g.nivel_educativo = ne.codigo " +
+                     "WHERE pe.numero = ? and ne.codigo = ?";
+    
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setInt(1, periodo);
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+    
+            stmt.setInt(1, 4);
             stmt.setString(2, nivel_educativo);
-
+    
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) {
-                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                    System.out.println("                      PRECIO DE LOS UNIFORMES ");
-                    System.out.println("└───────────────────────────────────────────────────────────────┘");
-
-                    do {
+                boolean firstRow = true;
+    
+                System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                System.out.println("                      PRECIO DE LOS UNIFORMES ");
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
+    
+                while (rs.next()) {
+                    if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                        System.out.println(
-                                "  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
+                        System.out.println("  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
                         System.out.println("  Final del Periodo: " + rs.getString("Fecha_Final_del_Periodo_Escolar"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel"));
-                        System.out.println("  Grado: " + rs.getString("Grado"));
-                        System.out.println("  Descripcion: " + rs.getString("Descripcion"));
-                        System.out.println("  Costo: " + rs.getString("Precio"));
                         System.out.println("└───────────────────────────────────────────────────────────────┘");
                         System.out.println();
-                    } while (rs.next());
-                } else {
+                        firstRow = false;  // Asegura que esta información solo se imprima una vez
+                    }
+    
+                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                    System.out.println("  Grado: " + rs.getString("Grado"));
+                    System.out.println("  Descripcion: " + rs.getString("Descripcion"));
+                    System.out.println("  Costo: " + rs.getString("Precio"));
+                    System.out.println("└───────────────────────────────────────────────────────────────┘");
+                    System.out.println();
+                }
+    
+                if (firstRow) {  // Esto significa que no se encontraron registros
                     System.out.println("No se encontraron registros.");
                 }
             }
@@ -928,6 +956,7 @@ System.out.println("    - Teléfono: (664) 123-9212");
             throw e;
         }
     }
+    
 
     public static void consultarCostoMantenimiento(int periodo) {
         String sql = "SELECT " +

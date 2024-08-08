@@ -174,121 +174,33 @@ public class menuAlumno {
                     realizarPago = false;
                     break;
                 case 1:
-                    menuInscripcion(matricula);
+                    int grado = AlumnoDAO.obtenerGrado(matricula)+1;
+                    if(grado<13){
+                    PagoDAO.pagarInscripcion(matricula, grado);
+                    }
                     break;
                 case 2:
-
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- KINDER          ║");
-                    System.out.println("║  [2]- PRIMARIA        ║");
-                    System.out.println("║  [3]- SECUNDARIA      ║");
-                    System.out.println("║  [0]- Salir           ║");
-                    System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
-                    switch (respuesta) {
-                        case 0:
-                            break;
-                        case 1:
-                            nivel_educativo = "KIND";
-                            menuEvento(matricula, nivel_educativo);
-                            break;
-                        case 2:
-                            nivel_educativo = "PRIM";
-                            menuEvento(matricula, nivel_educativo);
-                            break;
-                        case 3:
-                            nivel_educativo = "SECU";
-                            menuEvento(matricula, nivel_educativo);
-                            break;
-                    }
+                    nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
+                    menuEvento(matricula, nivel_educativo);
                     break;
                 case 3:
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- KINDER          ║");
-                    System.out.println("║  [2]- PRIMARIA        ║");
-                    System.out.println("║  [3]- SECUNDARIA      ║");
-                    System.out.println("║  [0]- Salir           ║");
-                    System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
-                    switch (respuesta) {
-                        case 0:
-                            break;
-                        case 1:
-                            nivel_educativo = "KIND";
-                            int periodo = 4;
-                            PagoDAO.precioUniformes(periodo, nivel_educativo);
-                            menuUniforme(matricula, nivel_educativo);
-                            break;
-                        case 2:
-                            nivel_educativo = "PRIM";
-                            periodo = 4;
-                            PagoDAO.precioUniformes(periodo, nivel_educativo);
-                            menuUniforme(matricula, nivel_educativo);
-                            break;
-                        case 3:
-                            nivel_educativo = "SECU";
-                            periodo = 4;
-                            PagoDAO.precioUniformes(periodo, nivel_educativo);
-                            menuUniforme(matricula, nivel_educativo);
-                            break;
-                    }
+                    nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
+                    PagoDAO.precioUniformes(nivel_educativo);
+                    menuUniforme(matricula, nivel_educativo);
                     break;
                 case 4:
                     menuExamen(matricula);
                     break;
                 case 5:
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- KINDER          ║");
-                    System.out.println("║  [2]- PRIMARIA        ║");
-                    System.out.println("║  [3]- SECUNDARIA      ║");
-                    System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
-                    switch (respuesta) {
-                        case 1:
-                            nivel_educativo = "KIND";
-                            int periodo = 4;
-                            PagoDAO.precioUtiles(periodo, nivel_educativo);
-                            break;
-                        case 2:
-                            nivel_educativo = "PRIM";
-                            periodo = 4;
-                            PagoDAO.precioUtiles(periodo, nivel_educativo);
-                            break;
-                        case 3:
-                            nivel_educativo = "SECU";
-                            periodo = 4;
-                            PagoDAO.precioUtiles(periodo, nivel_educativo);
-                            break;
-                    }
+
+                    nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
+                    PagoDAO.precioUtiles(nivel_educativo);
+
                 case 6:
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- KINDER          ║");
-                    System.out.println("║  [2]- PRIMARIA        ║");
-                    System.out.println("║  [3]- SECUNDARIA      ║");
-                    System.out.println("╚═══════════════════════╝");
-                    respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo ", 1, 3);
-                    switch (respuesta) {
-                        case 1:
-                            nivel_educativo = "KIND";
+                    nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
+                    menuMensualidad(matricula, nivel_educativo);
+                    break;
 
-                            menuMensualidad(matricula, nivel_educativo);
-                            break;
-                        case 2:
-                            nivel_educativo = "PRIM";
-
-                            menuMensualidad(matricula, nivel_educativo);
-                            break;
-                        case 3:
-                            nivel_educativo = "SECU";
-
-                            menuMensualidad(matricula, nivel_educativo);
-                            break;
-                        default:
-                            System.out.println("╔═════════════════════════════════════════════════════════╗");
-                            System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
-                            System.out.println("╚═════════════════════════════════════════════════════════╝");
-                            break;
-                    }
                 case 7:
                     System.out.println("--------Como realizar un pago--------");
                     System.out.println();
@@ -333,193 +245,6 @@ public class menuAlumno {
                     System.out.println("    - Correo electrónico: paytech@cafcats.com");
                     System.out.println("    - Teléfono: (664) 123-9212");
             }
-        }
-    }
-
-    public static void menuInscripcion(String matricula) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        boolean menuInscripcion = true;
-
-        while (menuInscripcion) {
-            System.out.println("╔═══════════════════════════════════════════╗");
-            System.out.println("║                INSCRIPCIONES              ║");
-            System.out.println("╠═══════════════════════════════════════════╣");
-            System.out.println("║ [1] - Kinder                              ║");
-            System.out.println("║ [2] - Primaria                            ║");
-            System.out.println("║ [3] - Secundaria                          ║");
-            System.out.println("║ [0] - Salir                               ║");
-            System.out.println("╚═══════════════════════════════════════════╝");
-
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese el nivel educativo del que pagara la inscripcion: ", 0,
-                    3);
-
-            switch (respuesta) {
-                case 0:
-                    menuInscripcion = false;
-                    break;
-                case 1:
-                    InscripcionesKinder(matricula);
-                    break;
-                case 2:
-                    InscripcionesPrimaria(matricula);
-                    break;
-                case 3:
-                    InscripcionesSecundaria(matricula);
-                    break;
-
-                default:
-                    System.out.println("╔═════════════════════════════════════════════════════════╗");
-                    System.out.println("║ Entrada inválida. Por favor, ingrese una opción válida. ║");
-                    System.out.println("╚═════════════════════════════════════════════════════════╝");
-                    break;
-            }
-
-        }
-    }
-
-    public static void InscripcionesKinder(String matricula) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        boolean InscripcionesKinder = true;
-
-        while (InscripcionesKinder) {
-            System.out.println("╔═══════════════════════════════════════════╗");
-            System.out.println("║            INSCRIPCIONES KINDER           ║");
-            System.out.println("╠═══════════════════════════════════════════╣");
-            System.out.println("║ [1] - Generar referencia primero Kinder   ║");
-            System.out.println("║ [2] - Generar referencia segundo Kinder   ║");
-            System.out.println("║ [3] - Generar referencia tercero Kinder   ║");
-            System.out.println("║ [0] - Salir                               ║");
-            System.out.println("╚═══════════════════════════════════════════╝");
-            int grado;
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese la inscripcion a pagar: ", 0, 3);
-
-            switch (respuesta) {
-                case 0:
-                    InscripcionesKinder = false;
-                    break;
-                case 1:
-                    grado = 1;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 2:
-                    grado = 2;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 3:
-                    grado = 3;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-
-                default:
-                    System.out.println("╔═════════════════════════════════════════════════════════╗");
-                    System.out.println("║ Entrada inválida. Por favor, ingrese una opción válida. ║");
-                    System.out.println("╚═════════════════════════════════════════════════════════╝");
-                    break;
-            }
-
-        }
-    }
-
-    public static void InscripcionesSecundaria(String matricula) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        boolean inscripcionesSecundaria = true;
-
-        while (inscripcionesSecundaria) {
-            System.out.println("╔══════════════════════════════════════════════╗");
-            System.out.println("║          INSCRIPCIONES SECUNDARIA            ║");
-            System.out.println("╠══════════════════════════════════════════════╣");
-            System.out.println("║ [1] - Generar referencia primero secundaria  ║");
-            System.out.println("║ [2] - Generar referencia segundo secundaria  ║");
-            System.out.println("║ [3] - Generar referencia tercero secundaria  ║");
-            System.out.println("║ [0] - Salir                                  ║");
-            System.out.println("╚══════════════════════════════════════════════╝");
-
-            int grado;
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese la inscripcion a pagar: ", 0, 3);
-
-            switch (respuesta) {
-                case 0:
-                    inscripcionesSecundaria = false;
-                    break;
-                case 1:
-                    grado = 10;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 2:
-                    grado = 11;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 3:
-                    grado = 12;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-
-                default:
-                    System.out.println("╔═════════════════════════════════════════════════════════╗");
-                    System.out.println("║ Entrada inválida. Por favor, ingrese una opción válida. ║");
-                    System.out.println("╚═════════════════════════════════════════════════════════╝");
-                    break;
-            }
-
-        }
-    }
-
-    public static void InscripcionesPrimaria(String matricula) throws SQLException {
-        Scanner sc = new Scanner(System.in);
-        boolean inscripcionesSecudaria = true;
-
-        while (inscripcionesSecudaria) {
-            System.out.println("╔═════════════════════════════════════════════╗");
-            System.out.println("║            INSCRIPCIONES PRIMARIA           ║");
-            System.out.println("╠═════════════════════════════════════════════╣");
-            System.out.println("║ [1] - Generar referencia primero primaria   ║");
-            System.out.println("║ [2] - Generar referencia segundo primaria   ║");
-            System.out.println("║ [3] - Generar referencia tercero primaria   ║");
-            System.out.println("║ [4] - Generar referencia cuarto primaria    ║");
-            System.out.println("║ [5] - Generar referencia quinto primaria    ║");
-            System.out.println("║ [6] - Generar referencia sexto primaria     ║");
-            System.out.println("║ [0] - Salir                                 ║");
-            System.out.println("╚═════════════════════════════════════════════╝");
-
-            int grado;
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese la inscripcion a pagar: ", 0, 6);
-
-            switch (respuesta) {
-                case 0:
-                    inscripcionesSecudaria = false;
-                    break;
-                case 1:
-                    grado = 4;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 2:
-                    grado = 5;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 3:
-                    grado = 6;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 4:
-                    grado = 7;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 5:
-                    grado = 8;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-                case 6:
-                    grado = 9;
-                    PagoDAO.pagarInscripcion(matricula, grado);
-                    break;
-
-                default:
-                    System.out.println("╔═════════════════════════════════════════════════════════╗");
-                    System.out.println("║ Entrada inválida. Por favor, ingrese una opción válida. ║");
-                    System.out.println("╚═════════════════════════════════════════════════════════╝");
-                    break;
-            }
-
         }
     }
 
