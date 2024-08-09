@@ -62,7 +62,6 @@ public class PagoDAO {
                     System.out.println(" " + AlumnoDAO.obtenerNombrePorMatricula(pago.getAlumno()));
                     System.out.println(" Matricula: " + pago.getAlumno());
                     System.out.println(" Nivel Educativo: " + pago.getNivel_educativo());
-                    System.out.println(" Periodo: ");
                     System.out.println("--------------------Informacion del pago-----------------------");
                     System.out.println();
                     System.out.println("  Num. Pago: " + pagoId);
