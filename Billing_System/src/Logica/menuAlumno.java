@@ -24,7 +24,7 @@ public class menuAlumno {
             System.out.println("║  [4]- Cerrar sesion                          ║");
             System.out.println("║  [0]- Cerrar programa                        ║");
             System.out.println("╚══════════════════════════════════════════════╝");
-            int respuesta = Valid.getValidIntMenu(sc, " Ingrese una opcion: ", 0, 4);
+            int respuesta = Valid.getValidIntMenu(sc, " Ingrese una opcion: ", 0, 5);
 
             switch (respuesta) {
                 case 0:
@@ -174,9 +174,9 @@ public class menuAlumno {
                     realizarPago = false;
                     break;
                 case 1:
-                    int grado = AlumnoDAO.obtenerGrado(matricula)+1;
-                    if(grado<13){
-                    PagoDAO.pagarInscripcion(matricula, grado);
+                    int grado = AlumnoDAO.obtenerGrado(matricula) + 1;
+                    if (grado < 13) {
+                        PagoDAO.pagarInscripcion(matricula, grado);
                     }
                     break;
                 case 2:

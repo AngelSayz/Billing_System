@@ -40,8 +40,10 @@ public class App {
                         "               :%@@@@@@@@@@@@@@@@@@@@@@@@@@-     %#           +@@%       :@@@             \r\n" + //
                         "               -@@@@@@@@@@@@@@@@@@@@@@@@@@@+  **#%***       ***%%%#**  ***%%%*** ");
         System.out.println("MADE BY CafCATS 2024");
-        System.out.println("Angel David Mayo Ramos, Aguilera Perez Jesus Abraham, Cruz Nunez Carlos Axxel, Alvarez Galindo Aldo Yamil");
-        System.out.println("Ver. 1.5.14");
+        System.out.println("Development: Angel David Mayo Ramos, Oscar Gael Muñoz Reynoso ");
+        System.out.println("Database managment: Cruz Nunez Carlos Axxel, Alvarez Galindo Aldo Yamil");
+        System.out.println("Documentation: Aguilera Perez Jesus Abraham");
+        System.out.println("Ver. 1.6.1");
         Inicio.iniciarSesion();
     }
 }

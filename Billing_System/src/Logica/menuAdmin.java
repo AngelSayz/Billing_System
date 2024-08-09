@@ -293,36 +293,8 @@ public class menuAdmin {
                     }
                     break;
                 case 4:
-                    System.out.println("╔═══════════════════════╗");
-                    System.out.println("║  [1]- CICLO 21-22     ║");
-                    System.out.println("║  [2]- CICLO 22-23     ║");
-                    System.out.println("║  [3]- CICLO 23-24     ║");
-                    System.out.println("║  [0]- Volver          ║");
-                    System.out.println("╚═══════════════════════╝");
-                    int periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 0, 3);
-                    if (periodo == 0) {
-                        System.out.println("Volviendo...");
-                    } else {
-                        PagoDAO.consultarCostoMantenimiento(periodo);
-                        System.out.println("╔═══════════════════════╗");
-                        System.out.println("║  [1]- Regresar        ║");
-                        System.out.println("║  [2]- Cerrar sesion   ║");
-                        System.out.println("╚═══════════════════════╝");
-                        respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 1, 2);
-                        switch (respuesta) {
-                            case 1:
-                                break;
-                            case 2:
-                                Valid.clear();
-                                Inicio.iniciarSesion();
-                                return;
-                            default:
-                                System.out.println("╔═════════════════════════════════════════════════════════╗");
-                                System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");
-                                System.out.println("╚═════════════════════════════════════════════════════════╝");
-                                break;
-                        }
-                    }
+                        PagoDAO.consultarCostoMantenimiento();
+                        
                     break;
                 case 5:
                     String nivel_educativo;
@@ -356,7 +328,7 @@ public class menuAdmin {
                             System.out.println("║  [2]- CICLO 22-23     ║");
                             System.out.println("║  [3]- CICLO 23-24     ║");
                             System.out.println("╚═══════════════════════╝");
-                            periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
+                            int periodo = Valid.getValidIntMenu(sc, "Ingrese el periodo a consultar ", 1, 3);
                             PagoDAO.consultarTotalPagos(periodo, nivel_educativo);
                         }
                     }

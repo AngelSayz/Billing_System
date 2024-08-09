@@ -105,7 +105,7 @@ public class AlumnoDAO {
     public static void eliminarAlumno(String matricula) {
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false); // Iniciar la transacción
-    
+
             String checkCategoriaSql = "SELECT category FROM alumno WHERE matricula = ?";
             try (PreparedStatement checkStmt = conn.prepareStatement(checkCategoriaSql)) {
                 checkStmt.setString(1, matricula);
@@ -124,21 +124,21 @@ public class AlumnoDAO {
                                 deleteRelacionStmt.setString(1, matricula);
                                 deleteRelacionStmt.executeUpdate();
                             }
-    
+
                             // Eliminar registros en grado_alumno
                             String deleteGradoSql = "DELETE FROM grado_alumno WHERE alumno = ?";
                             try (PreparedStatement deleteGradoStmt = conn.prepareStatement(deleteGradoSql)) {
                                 deleteGradoStmt.setString(1, matricula);
                                 deleteGradoStmt.executeUpdate();
                             }
-    
+
                             // Eliminar registros en grupo_alumno
                             String deleteGrupoSql = "DELETE FROM grupo_alumno WHERE alumno = ?";
                             try (PreparedStatement deleteGrupoStmt = conn.prepareStatement(deleteGrupoSql)) {
                                 deleteGrupoStmt.setString(1, matricula);
                                 deleteGrupoStmt.executeUpdate();
                             }
-    
+
                             // Eliminar el registro en alumno
                             String deleteSql = "DELETE FROM alumno WHERE matricula = ?";
                             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteSql)) {
@@ -344,7 +344,7 @@ public class AlumnoDAO {
                         registrarGradoGrupo(matricula, grado, grupo);
 
                         break;
-                        
+
                     case 2:
                         grado = 11;
                         grupo = 139;
@@ -637,7 +637,7 @@ public class AlumnoDAO {
                 "INNER JOIN periodo as pe on pe.numero = g.periodo " +
                 "INNER JOIN grado as gr on gr.numero = g.grado " +
                 "WHERE a.matricula = ? " +
-                "ORDER BY a.matricula";
+                "ORDER BY pe.añoInicio";
 
         try (Connection conn = DatabaseConnection.getConnection();
                 PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -646,53 +646,70 @@ public class AlumnoDAO {
 
             try (ResultSet rs = stmt.executeQuery()) {
                 boolean firstRow = true;
+
                 while (rs.next()) {
                     if (firstRow) {
-                        System.out.println("Matricula: " + rs.getString("Matricula"));
+                        // Imprime la matrícula y el nombre del alumno solo una vez
+                        System.out.println();
+                        System.out.println("Matrícula: " + rs.getString("Matricula"));
                         System.out.println("Alumno: " + rs.getString("Alumno"));
-                        System.out.println("\nHistorial Académico:");
+                        System.out.println("Historial Académico:");
+                        System.out.println("┌───────────────────────────────────────────────────────────────────────────┐");
+                        System.out.printf("| %-18s | %-17s | %-21s | %-8s |%n",
+                                "Inicio del Periodo", "Final del Periodo", "Grado", "Grupo");
+                        System.out.println("├───────────────────────────────────────────────────────────────────────────┤");
                         firstRow = false;
                     }
-                    System.out.println("--------------------");
-                    System.out.println("Periodo Escolar: " + rs.getString("Inicio_del_Periodo_Escolar") +
-                            " / " + rs.getString("Final_del_Periodo_Escolar"));
-                    System.out.println("Grado: " + rs.getString("Grado"));
-                    System.out.println("Grupo: " + rs.getString("Grupo"));
+
+                    System.out.printf("| %-18s | %-17s | %-21s | %-8s |%n",
+                            rs.getString("Inicio_del_Periodo_Escolar"),
+                            rs.getString("Final_del_Periodo_Escolar"),
+                            rs.getString("Grado"),
+                            rs.getString("Grupo"));
+                }
+
+                if (!firstRow) {
+                    System.out.println("└───────────────────────────────────────────────────────────────────────────┘");
+                } else {
+                    // Si no hay registros
+                    System.out.println("No se encontraron registros para la matrícula: " + matricula);
                 }
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
     public static void restablecerPassword(Scanner sc, String matricula) {
-        
-            String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
-            try (Connection conn = DatabaseConnection.getConnection();
-                    PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                stmt.setString(1, matricula);
-                stmt.setString(2, matricula);
-                int rowsAffected = stmt.executeUpdate();
+        String sql = "UPDATE alumno SET password = ? WHERE matricula = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-                if (rowsAffected > 0) {
-                    System.out.println("La contraseña se ha cambiado exitosamente.");
-                } else {
-                    System.out.println("No se encontró ningún alumno con esa matrícula.");
-                }
+            stmt.setString(1, matricula);
+            stmt.setString(2, matricula);
+            int rowsAffected = stmt.executeUpdate();
 
-            } catch (SQLException e) {
-                System.out.println("Error al cambiar la contraseña: " + e.getMessage());
+            if (rowsAffected > 0) {
+                System.out.println("La contraseña se ha cambiado exitosamente.");
+            } else {
+                System.out.println("No se encontró ningún alumno con esa matrícula.");
             }
 
+        } catch (SQLException e) {
+            System.out.println("Error al cambiar la contraseña: " + e.getMessage());
         }
+
+    }
 
     public static void cambiarPassword(Scanner sc, String matricula) {
         AlumnoDAO alumnoDAO = new AlumnoDAO();
-        
+
         String currentPassword = Valid.getValidString(sc, "Ingrese su contraseña actual: ", 30);
         try {
             // Verify the current password
-            String storedPassword = alumnoDAO.obtenerPassword(matricula); // Assume this method retrieves the current password from DB
+            String storedPassword = alumnoDAO.obtenerPassword(matricula); // Assume this method retrieves the current
+                                                                          // password from DB
             if (!storedPassword.equals(currentPassword)) {
                 System.out.println("La contraseña actual es incorrecta.");
                 return;
@@ -731,6 +748,7 @@ public class AlumnoDAO {
             System.out.println("Error al verificar la contraseña actual: " + e.getMessage());
         }
     }
+
     public String obtenerPassword(String matricula) throws SQLException {
         String sql = "SELECT password FROM alumno WHERE matricula = ?";
         try (Connection conn = DatabaseConnection.getConnection();
@@ -751,23 +769,23 @@ public class AlumnoDAO {
         String sqlGrupo = "INSERT INTO grupo_alumno (alumno, grupo) VALUES (?, ?)";
         String sqlNombreGrado = "SELECT nombre FROM grado WHERE numero = ?";
         String sqlNombreGrupo = "SELECT nombre FROM grupo WHERE numero = ?";
-    
+
         try (Connection conn = DatabaseConnection.getConnection()) {
             try (PreparedStatement stmtGrado = conn.prepareStatement(sqlGrado);
-                 PreparedStatement stmtGrupo = conn.prepareStatement(sqlGrupo);
-                 PreparedStatement stmtNombreGrado = conn.prepareStatement(sqlNombreGrado);
-                 PreparedStatement stmtNombreGrupo = conn.prepareStatement(sqlNombreGrupo)) {
-    
+                    PreparedStatement stmtGrupo = conn.prepareStatement(sqlGrupo);
+                    PreparedStatement stmtNombreGrado = conn.prepareStatement(sqlNombreGrado);
+                    PreparedStatement stmtNombreGrupo = conn.prepareStatement(sqlNombreGrupo)) {
+
                 // Asignar grado
                 stmtGrado.setString(1, matricula);
                 stmtGrado.setInt(2, grado);
                 stmtGrado.executeUpdate();
-    
+
                 // Asignar grupo
                 stmtGrupo.setString(1, matricula);
                 stmtGrupo.setInt(2, grupo);
                 stmtGrupo.executeUpdate();
-    
+
                 // Obtener el nombre del grado
                 stmtNombreGrado.setInt(1, grado);
                 String nombreGrado = "";
@@ -776,7 +794,7 @@ public class AlumnoDAO {
                         nombreGrado = rsGrado.getString("nombre");
                     }
                 }
-    
+
                 // Obtener el nombre del grupo
                 stmtNombreGrupo.setInt(1, grupo);
                 String nombreGrupo = "";
@@ -785,10 +803,11 @@ public class AlumnoDAO {
                         nombreGrupo = rsGrupo.getString("nombre");
                     }
                 }
-    
+
                 // Mensaje de confirmación
-                System.out.println("El alumno con matrícula " + matricula + " ha sido registrado en el grado " + nombreGrado + " y en el grupo " + nombreGrupo + ".");
-    
+                System.out.println("El alumno con matrícula " + matricula + " ha sido registrado en el grado "
+                        + nombreGrado + " y en el grupo " + nombreGrupo + ".");
+
             } catch (SQLException e) {
                 System.err.println("Error al asignar grado y grupo: " + e.getMessage());
                 throw e;
@@ -798,21 +817,22 @@ public class AlumnoDAO {
             throw e;
         }
     }
+
     public static int obtenerGrado(String matricula) throws SQLException {
         String sql = "SELECT grad.numero as Grado " +
-                     "FROM alumno as a " +
-                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
-                     "INNER JOIN grupo as g on ga.grupo = g.numero " +
-                     "INNER JOIN grado as grad on g.grado = grad.numero " +
-                     "INNER JOIN periodo as p on periodo = p.numero " +
-                     "WHERE a.matricula = ? and periodo = ?";
-    
+                "FROM alumno as a " +
+                "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                "INNER JOIN grupo as g on ga.grupo = g.numero " +
+                "INNER JOIN grado as grad on g.grado = grad.numero " +
+                "INNER JOIN periodo as p on periodo = p.numero " +
+                "WHERE a.matricula = ? and periodo = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, matricula);
             stmt.setInt(2, 4);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getInt("Grado");
@@ -823,22 +843,23 @@ public class AlumnoDAO {
             }
         }
     }
+
     public static String obtenerNivelEducativo(String matricula) throws SQLException {
         String sql = "SELECT ne.codigo as Nivel " +
-                     "FROM alumno as a " +
-                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
-                     "INNER JOIN grupo as g on ga.grupo = g.numero " +
-                     "INNER JOIN grado as grad on g.grado = grad.numero " +
-                     "INNER JOIN nivel_educativo as ne on ne.codigo = grad.nivel_educativo " +
-                     "INNER JOIN periodo as p on periodo = p.numero " +
-                     "WHERE a.matricula = ? and periodo = ?";
-    
+                "FROM alumno as a " +
+                "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                "INNER JOIN grupo as g on ga.grupo = g.numero " +
+                "INNER JOIN grado as grad on g.grado = grad.numero " +
+                "INNER JOIN nivel_educativo as ne on ne.codigo = grad.nivel_educativo " +
+                "INNER JOIN periodo as p on periodo = p.numero " +
+                "WHERE a.matricula = ? and periodo = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, matricula);
             stmt.setInt(2, 4);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
                     return rs.getString("Nivel");
@@ -849,6 +870,5 @@ public class AlumnoDAO {
             }
         }
     }
-    
-    
+
 }

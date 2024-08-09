@@ -21,8 +21,8 @@ CREATE TABLE alumno (
 CREATE TABLE mantenimiento (
     codigo VARCHAR(10) PRIMARY KEY,
     descripcion VARCHAR(50) NOT NULL,
-    precio DECIMAL(10,2) NOT NULL,CURRENT_TIMESTAMP
-    fecha_registro TIMESTAMP DEFAULT 
+    precio DECIMAL(10,2) NOT NULL,
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 
@@ -177,7 +177,6 @@ CREATE TABLE tipo_de_pago (
     descripcion VARCHAR(50) NOT NULL,
     pago INT,
     inscripcion VARCHAR(15),
-    paquete_de_libros VARCHAR(10),
     paquete_de_uniforme INT,
     examen VARCHAR(10),
     mensualidad VARCHAR(10),

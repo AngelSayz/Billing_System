@@ -102,7 +102,7 @@ public class TutorDAO {
                         firstRow = false;
                     }
                     System.out.println("--------------------");
-                    System.out.println("Tutor: " + rs.getString("Tutor"));
+                    System.out.println(rs.getString("Tutor"));
                     System.out.println("Número de Teléfono: " + rs.getString("Número_de_Teléfono"));
                 }
                 

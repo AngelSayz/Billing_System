@@ -129,7 +129,7 @@ f. Nombre del alumno
 g. Grupo
 h. Grado
 i. Nivel*/
-SELECT DISTINCT
+SELECT 
     ev.nombre AS Evento,
     DATE_FORMAT(ev.fecha, '%d/%m/%Y') AS Fecha,
     ev.costo AS Costo,
@@ -169,6 +169,7 @@ b. Fecha final del periodo escolar
 c. Concepto del mantenimiento
 d. Costo*/
 SELECT
+    p.nombre as Periodo,
     DATE_FORMAT(p.añoInicio, '%d/%m/%Y') AS Fecha_de_inicio_del_periodo_escolar,
     DATE_FORMAT(p.añoFin, '%d/%m/%Y') AS Fecha_final_del_periodo_escolar,
     m.descripcion AS Concepto_del_mantenimiento,
@@ -178,12 +179,11 @@ FROM
     mantenimiento AS m
     INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
     INNER JOIN periodo AS p ON mp.periodo = p.numero
-WHERE
-    p.numero = 3
 
 UNION ALL
 
 SELECT
+    p.nombre as Periodo,
     NULL AS Fecha_de_inicio_del_periodo_escolar,
     NULL AS Fecha_final_del_periodo_escolar,
     'Total' AS Concepto_del_mantenimiento,
@@ -193,8 +193,7 @@ FROM
     mantenimiento AS m
     INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo
     INNER JOIN periodo AS p ON mp.periodo = p.numero
-WHERE
-    p.numero = 3;
+GROUP BY p.numero;
 
 
 
