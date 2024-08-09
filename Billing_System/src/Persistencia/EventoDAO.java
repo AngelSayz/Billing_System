@@ -165,7 +165,7 @@ public static String pagarEvento(String matricula, int numEvento, String nivelE)
 
         try {
             pagoDAO.registrarPago(pago);
-            System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
+            System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
 
         } catch (SQLException e) {
             System.err.println("Error al registrar el pago: " + e.getMessage());

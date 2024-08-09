@@ -49,63 +49,71 @@ public class PagoDAO {
 
                     stmtTP.executeUpdate();
                     LocalDate fechaValido = LocalDate.now().plusDays(10);
-System.out.println("╔═══════════════════════════════════════════════════════════════╗");
-System.out.println("                                                       PAYTECH");
-System.out.println("                                               Made by CafCATS");
-System.out.println("---------------------------Contacto----------------------------");
-System.out.println();
-System.out.println("  Email: paytech@cafcats.com");
-System.out.println("  Num. Telefonico: (664) 123-9212");
-System.out.println("  Pagina Web: https://cafcats/paytech.com");
-System.out.println();
-System.out.println("--------------------Informacion del alumno---------------------");
-System.out.println(" " + AlumnoDAO.obtenerNombrePorMatricula(pago.getAlumno()));
-System.out.println(" Matricula: " + pago.getAlumno());
-System.out.println(" Nivel Educativo: " + pago.getNivel_educativo());
-System.out.println(" Periodo: ");
-System.out.println("--------------------Informacion del pago-----------------------");
-System.out.println();
-System.out.println("  Num. Pago: " + pagoId);
-System.out.println("  Concepto de pago: " + pago.getTPdescripcion());
-System.out.println("  Fecha de pago: " + pago.getFecha());
-System.out.println("  Valido hasta: " + fechaValido);
-System.out.println("  Num. Referencia: " + pago.getReferencia());
-System.out.println("  Institucion bancaria: Bancomer");
-System.out.println("  Convenio: 001479334");
-System.out.println("  Cuenta CLABE: 0129140002014793346");
-System.out.println();
+                    System.out.println("╔═══════════════════════════════════════════════════════════════╗");
+                    System.out.println("                                                       PAYTECH");
+                    System.out.println("                                               Made by CafCATS");
+                    System.out.println("---------------------------Contacto----------------------------");
+                    System.out.println();
+                    System.out.println("  Email: paytech@cafcats.com");
+                    System.out.println("  Num. Telefonico: (664) 123-9212");
+                    System.out.println("  Pagina Web: https://cafcats/paytech.com");
+                    System.out.println();
+                    System.out.println("--------------------Informacion del alumno---------------------");
+                    System.out.println(" " + AlumnoDAO.obtenerNombrePorMatricula(pago.getAlumno()));
+                    System.out.println(" Matricula: " + pago.getAlumno());
+                    System.out.println(" Nivel Educativo: " + pago.getNivel_educativo());
+                    System.out.println(" Periodo: ");
+                    System.out.println("--------------------Informacion del pago-----------------------");
+                    System.out.println();
+                    System.out.println("  Num. Pago: " + pagoId);
+                    System.out.println("  Concepto de pago: " + pago.getTPdescripcion());
+                    System.out.println("  Fecha de pago: " + pago.getFecha());
+                    System.out.println("  Valido hasta: " + fechaValido);
+                    System.out.println("  Num. Referencia: " + pago.getReferencia());
+                    System.out.println("  Institucion bancaria: Bancomer");
+                    System.out.println("  Convenio: 001479334");
+                    System.out.println("  Cuenta CLABE: 0129140002014793346");
+                    System.out.println();
 
-System.out.println("╚═══════════════════════════════════════════════════════════════╝");
-System.out.println("--------Instrucciones para realizar el pago--------");
-System.out.println();
-System.out.println("**Proceso de pago:**");
-System.out.println("  En línea:");
-System.out.println("    1. Ingresa al portal de tu banco en línea.");
-System.out.println("    2. Selecciona la opción para realizar pagos.");
-System.out.println("    3. Introduce la cuenta CLABE proporcionada y el convenio.");
-System.out.println("    4. Ingresa el monto exacto a pagar.");
-System.out.println("    5. Introduce el número de referencia " + pago.getReferencia() + " en el campo correspondiente.");
-System.out.println("    6. Confirma la transacción.");
-System.out.println("  En sucursal bancaria:");
-System.out.println("    1. Visita una sucursal de Bancomer.");
-System.out.println("    2. Completa una ficha de depósito con los datos bancarios proporcionados.");
-System.out.println("    3. Entrega la ficha y el monto a pagar al cajero.");
-System.out.println("    4. Guarda el comprobante de pago.");
-System.out.println();
-System.out.println("**Tiempo de reflejo:**");
-System.out.println("  - Los pagos realizados en línea se reflejan generalmente en un plazo de 24 a 48 horas.");
-System.out.println("  - Los pagos realizados en sucursal bancaria pueden tardar hasta 72 horas en reflejarse.");
-System.out.println();
-System.out.println("**Confirmación del pago:**");
-System.out.println("  - Recibirás un correo electrónico de confirmación una vez que el pago se haya registrado correctamente.");
-System.out.println("  - Puedes verificar el estado de tu pago accediendo a tu cuenta en el sistema de pagos de la escuela.");
-System.out.println();
-System.out.println("**Asistencia y problemas:**");
-System.out.println("  - Personal de la escuela: Si tienes algún problema o duda respecto al pago, puedes contactar al personal de administración de la escuela.");
-System.out.println("  - Banco: Para problemas relacionados con la transferencia bancaria, puedes acudir a tu sucursal de Bancomer más cercana o llamar a su servicio de atención al cliente.");
-System.out.println("  - Equipo de desarrollo: Para problemas relacionados al funcionamiento del software, favor de comunicarse al equipo");
-System.out.println("    - Correo electrónico: paytech@cafcats.com");
-System.out.println("    - Teléfono: (664) 123-9212");
+                    System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+                    System.out.println("--------Instrucciones para realizar el pago--------");
+                    System.out.println();
+                    System.out.println("**Proceso de pago:**");
+                    System.out.println("  En línea:");
+                    System.out.println("    1. Ingresa al portal de tu banco en línea.");
+                    System.out.println("    2. Selecciona la opción para realizar pagos.");
+                    System.out.println("    3. Introduce la cuenta CLABE proporcionada y el convenio.");
+                    System.out.println("    4. Ingresa el monto exacto a pagar.");
+                    System.out.println("    5. Introduce el número de referencia " + pago.getReferencia()
+                            + " en el campo correspondiente.");
+                    System.out.println("    6. Confirma la transacción.");
+                    System.out.println("  En sucursal bancaria:");
+                    System.out.println("    1. Visita una sucursal de Bancomer.");
+                    System.out.println("    2. Completa una ficha de depósito con los datos bancarios proporcionados.");
+                    System.out.println("    3. Entrega la ficha y el monto a pagar al cajero.");
+                    System.out.println("    4. Guarda el comprobante de pago.");
+                    System.out.println();
+                    System.out.println("**Tiempo de reflejo:**");
+                    System.out.println(
+                            "  - Los pagos realizados en línea se reflejan generalmente en un plazo de 24 a 48 horas.");
+                    System.out.println(
+                            "  - Los pagos realizados en sucursal bancaria pueden tardar hasta 72 horas en reflejarse.");
+                    System.out.println();
+                    System.out.println("**Confirmación del pago:**");
+                    System.out.println(
+                            "  - Recibirás un correo electrónico de confirmación una vez que el pago se haya registrado correctamente.");
+                    System.out.println(
+                            "  - Puedes verificar el estado de tu pago accediendo a tu cuenta en el sistema de pagos de la escuela.");
+                    System.out.println();
+                    System.out.println("**Asistencia y problemas:**");
+                    System.out.println(
+                            "  - Personal de la escuela: Si tienes algún problema o duda respecto al pago, puedes contactar al personal de administración de la escuela.");
+                    System.out.println(
+                            "  - Banco: Para problemas relacionados con la transferencia bancaria, puedes acudir a tu sucursal de Bancomer más cercana o llamar a su servicio de atención al cliente.");
+                    System.out.println(
+                            "  - Equipo de desarrollo: Para problemas relacionados al funcionamiento del software, favor de comunicarse al equipo");
+                    System.out.println("    - Correo electrónico: paytech@cafcats.com");
+                    System.out.println("    - Teléfono: (664) 123-9212");
 
                 } else {
                     throw new SQLException("No se pudo obtener el ID generado para el pago");
@@ -196,21 +204,21 @@ System.out.println("    - Teléfono: (664) 123-9212");
     public static void eliminarPago(String referencia) throws SQLException {
         String sqlTP = "DELETE FROM tipo_de_pago WHERE pago = (SELECT numero FROM pago WHERE referencia = ?)";
         String sqlP = "DELETE FROM pago WHERE referencia = ?";
-    
+
         try (Connection conn = DatabaseConnection.getConnection()) {
             conn.setAutoCommit(false); // Desactiva el auto-commit para manejar transacciones manualmente
-    
+
             try (PreparedStatement stmtTP = conn.prepareStatement(sqlTP);
-                 PreparedStatement stmtP = conn.prepareStatement(sqlP)) {
-    
+                    PreparedStatement stmtP = conn.prepareStatement(sqlP)) {
+
                 // Eliminar primero el registro en tipo_de_pago
                 stmtTP.setString(1, referencia);
                 stmtTP.executeUpdate();
-    
+
                 // Eliminar luego el registro en pago
                 stmtP.setString(1, referencia);
                 int rowsAffectedP = stmtP.executeUpdate();
-    
+
                 if (rowsAffectedP > 0) {
                     conn.commit(); // Si ambas eliminaciones fueron exitosas, se confirma la transacción
                     System.out.println("Pago eliminado exitosamente.");
@@ -303,6 +311,10 @@ System.out.println("    - Teléfono: (664) 123-9212");
     }
 
     public static void ConsultarPagoAlumno(String matricula) throws SQLException {
+        System.out.println("╔═══════════════════════════════════════════════════════════════╗");
+        System.out.println("║                       INFORMACION PAGOS                       ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════════╝");
+        
         String sql = "SELECT " +
                 "    CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
                 "    a.matricula as Matricula, " +
@@ -311,7 +323,6 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 "    p.referencia as Referencia, " +
                 "    CASE " +
                 "        WHEN tp.inscripcion IS NOT NULL THEN 'Inscripcion' " +
-                "        WHEN tp.paquete_de_libros IS NOT NULL THEN 'Paquete de Libros' " +
                 "        WHEN tp.paquete_de_uniforme IS NOT NULL THEN 'Paquete de Uniforme' " +
                 "        WHEN tp.examen IS NOT NULL THEN 'Examen' " +
                 "        WHEN tp.mensualidad IS NOT NULL THEN 'Mensualidad' " +
@@ -328,7 +339,6 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 "WHERE a.matricula = ? " +
                 "  AND (" +
                 "        tp.inscripcion IS NOT NULL OR " +
-                "        tp.paquete_de_libros IS NOT NULL OR " +
                 "        tp.paquete_de_uniforme IS NOT NULL OR " +
                 "        tp.examen IS NOT NULL OR " +
                 "        tp.mensualidad IS NOT NULL OR " +
@@ -336,39 +346,49 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 "        tp.paquete_de_material IS NOT NULL OR " +
                 "        tp.mantenimiento IS NOT NULL" +
                 "  ) ORDER BY p.fechaPago";
+        
         List<Pago> pagos = new ArrayList<>();
-
+    
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql)) {
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, matricula);
-
+    
             try (ResultSet rs = stmt.executeQuery()) {
+                String nombreAlumno = "";
+                String matriculaAlumno = "";
+                boolean firstRow = true;
+    
                 while (rs.next()) {
+                    if (firstRow) {
+                        nombreAlumno = rs.getString("Alumno");
+                        matriculaAlumno = rs.getString("Matricula");
+                        System.out.println("┌───────────────────────────────────────────────────────────────┐");
+                        System.out.printf("│ %-18s: %-41s │\n", "Alumno", nombreAlumno);
+                        System.out.printf("│ %-18s: %-41s │\n", "Matrícula", matriculaAlumno);
+                        System.out.println("├───────────────────────────────────────────────────────────────┤");
+                        firstRow = false;
+                    }
+    
                     Pago pago = new Pago(
                             rs.getString("Referencia"),
                             rs.getString("Fecha_de_Pago"),
-                            rs.getString("Matricula"),
+                            matriculaAlumno,
                             rs.getDouble("Monto"),
                             rs.getString("Tipo_de_Pago"),
                             rs.getString("Descripcion"),
                             rs.getString("Estado"));
-
+    
                     pagos.add(pago);
-
-                    System.out.println("╔═══════════════════════════════════════════════════════════════╗");
-                    System.out.println("║                       INFORMACION PAGO                        ║");
-                    System.out.println("╚═══════════════════════════════════════════════════════════════╝");
-                    System.out.println("┌───────────────────────────────────────────────────────────────┐");
+    
                     System.out.printf("│ %-18s: %-41s │\n", "Referencia de pago", rs.getString("Referencia"));
                     System.out.printf("│ %-18s: %-41s │\n", "Fecha de Pago", rs.getString("Fecha_de_Pago"));
-                    System.out.printf("│ %-18s: %-41s │\n", "Alumno", rs.getString("Alumno"));
-                    System.out.printf("│ %-18s: %-41s │\n", "Matrícula", rs.getString("Matricula"));
                     System.out.printf("│ %-18s: %-41s │\n", "Monto", rs.getDouble("Monto"));
                     System.out.printf("│ %-18s: %-41s │\n", "Tipo de Pago", rs.getString("Tipo_de_Pago"));
                     System.out.printf("│ %-18s: %-41s │\n", "Descripción", rs.getString("Descripcion"));
                     System.out.printf("│ %-18s: %-41s │\n", "Estado", rs.getString("Estado"));
-                    System.out.println("└───────────────────────────────────────────────────────────────┘");
+                    System.out.println("├───────────────────────────────────────────────────────────────┤");
                 }
+                System.out.println("└───────────────────────────────────────────────────────────────┘");
             }
         } catch (SQLException e) {
             System.err.println("Error al consultar el pago: " + e.getMessage());
@@ -580,8 +600,8 @@ System.out.println("    - Teléfono: (664) 123-9212");
 
             try {
                 pagoDAO.registrarPago(pago);
-                System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
 
+                System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
             } catch (SQLException e) {
                 System.err.println("Error al registrar el pago: " + e.getMessage());
             }
@@ -673,7 +693,8 @@ System.out.println("    - Teléfono: (664) 123-9212");
             // Registrar el pago
             try {
                 pagoDAO.registrarPago(pago);
-                System.out.println("Pago registrado exitosamente, su referencia es: " + referencia);
+
+                System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
             } catch (SQLException e) {
                 System.err.println("Error al registrar el pago: " + e.getMessage());
             }
@@ -750,41 +771,41 @@ System.out.println("    - Teléfono: (664) 123-9212");
     public static void consultarMensualidadesPagadas(String matricula, int periodo) throws SQLException {
         // Consulta 5
         String sql = "SELECT a.matricula as Matricula, " +
-                     "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
-                     "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Inicio_del_Periodo_Escolar, " +
-                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Final_del_Periodo_Escolar, " +
-                     "pe.nombre as Periodo, " +
-                     "g.nombre as Grupo, " +
-                     "g.nivel_educativo as Nivel_Educativo, " +
-                     "gr.nombre as Grado, " +
-                     "DATE_FORMAT(p.fechaPago, '%d/%m/%Y') AS Fecha_del_Pago, " +
-                     "tp.descripcion as Pago " +
-                     "FROM alumno as a " +
-                     "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
-                     "INNER JOIN grupo as g on g.numero = ga.grupo " +
-                     "INNER JOIN periodo as pe on pe.numero = g.periodo " +
-                     "INNER JOIN grado as gr on g.grado = gr.numero " +
-                     "INNER JOIN pago as p on p.periodo = pe.numero " +
-                     "INNER JOIN tipo_de_pago as tp on tp.pago = p.numero " +
-                     "WHERE a.matricula = ? AND tp.mensualidad IS NOT NULL AND p.alumno = ? AND pe.numero = ? " +
-                     "ORDER BY a.matricula;";
-    
+                "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
+                "DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Inicio_del_Periodo_Escolar, " +
+                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Final_del_Periodo_Escolar, " +
+                "pe.nombre as Periodo, " +
+                "g.nombre as Grupo, " +
+                "g.nivel_educativo as Nivel_Educativo, " +
+                "gr.nombre as Grado, " +
+                "DATE_FORMAT(p.fechaPago, '%d/%m/%Y') AS Fecha_del_Pago, " +
+                "tp.descripcion as Pago " +
+                "FROM alumno as a " +
+                "INNER JOIN grupo_alumno as ga on ga.alumno = a.matricula " +
+                "INNER JOIN grupo as g on g.numero = ga.grupo " +
+                "INNER JOIN periodo as pe on pe.numero = g.periodo " +
+                "INNER JOIN grado as gr on g.grado = gr.numero " +
+                "INNER JOIN pago as p on p.periodo = pe.numero " +
+                "INNER JOIN tipo_de_pago as tp on tp.pago = p.numero " +
+                "WHERE a.matricula = ? AND tp.mensualidad IS NOT NULL AND p.alumno = ? AND pe.numero = ? " +
+                "ORDER BY a.matricula;";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setString(1, matricula);
             stmt.setString(2, matricula);
             stmt.setInt(3, periodo);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 boolean firstRow = true;
-    
+
                 if (rs.next()) {
                     System.out.println("┌───────────────────────────────────────────────────────────────┐");
                     System.out.println("    Matricula: " + rs.getString("Matricula"));
                     System.out.println("    Alumno: " + rs.getString("Alumno"));
                     System.out.println("└───────────────────────────────────────────────────────────────┘");
-    
+
                     if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
                         System.out.println("  PERIODO ESCOLAR: " + rs.getString("Periodo"));
@@ -796,9 +817,9 @@ System.out.println("    - Teléfono: (664) 123-9212");
                         System.out.println("  Grado: " + rs.getString("Grado"));
                         System.out.println("└───────────────────────────────────────────────────────────────┘");
                         System.out.println();
-                        firstRow = false;  // Asegura que esta información solo se imprima una vez
+                        firstRow = false; // Asegura que esta información solo se imprima una vez
                     }
-    
+
                     do {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
                         System.out.println("  INFORMACION DEL PAGO:");
@@ -816,7 +837,6 @@ System.out.println("    - Teléfono: (664) 123-9212");
             throw e;
         }
     }
-    
 
     public static void consultarTotalPagos(int periodo, String nivel_educativo) throws SQLException {
         // Consulta 10
@@ -863,34 +883,35 @@ System.out.println("    - Teléfono: (664) 123-9212");
 
     public static void precioUtiles(int periodo, String nivel_educativo) throws SQLException {
         String sql = "SELECT DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio_del_Periodo_Escolar, " +
-                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
-                     "ne.nombre as Nivel, " +
-                     "pm.nombre as Descripcion, " +
-                     "pm.precio as Costo " +
-                     "FROM paquete_de_material as pm " +
-                     "INNER JOIN paq_periodo as pp on pp.paquete_de_material = pm.codigo " +
-                     "INNER JOIN periodo as pe on pe.numero = pp.periodo " +
-                     "INNER JOIN grado as g on pm.grado = g.numero " +
-                     "INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo " +
-                     "WHERE pe.numero = ? and ne.codigo = ? and pm.tipo = 'papeleria'";
-    
+                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
+                "ne.nombre as Nivel, " +
+                "pm.nombre as Descripcion, " +
+                "pm.precio as Costo " +
+                "FROM paquete_de_material as pm " +
+                "INNER JOIN paq_periodo as pp on pp.paquete_de_material = pm.codigo " +
+                "INNER JOIN periodo as pe on pe.numero = pp.periodo " +
+                "INNER JOIN grado as g on pm.grado = g.numero " +
+                "INNER JOIN nivel_educativo as ne on ne.codigo = g.nivel_educativo " +
+                "WHERE pe.numero = ? and ne.codigo = ? and pm.tipo = 'papeleria'";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, periodo);
             stmt.setString(2, nivel_educativo);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 boolean firstRow = true;
-    
+
                 System.out.println("─────────────────────────────────────────────────────────────────");
                 System.out.println("                  PRECIOS DE LOS UTILES ESCOLARES ");
                 System.out.println("─────────────────────────────────────────────────────────────────");
-    
+
                 while (rs.next()) {
                     if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                        System.out.println("  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
+                        System.out.println(
+                                "  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
                         System.out.println("  Final del Periodo: " + rs.getString("Fecha_Final_del_Periodo_Escolar"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel"));
                         System.out.println("└───────────────────────────────────────────────────────────────┘");
@@ -898,59 +919,59 @@ System.out.println("    - Teléfono: (664) 123-9212");
                         System.out.println("─────────────────────────────────────────────────────────────────");
                         firstRow = false;
                     }
-    
-                    System.out.printf("  - Producto: %-40s Costo: $%-10s%n", 
-                                      rs.getString("Descripcion"), 
-                                      rs.getString("Costo"));
+
+                    System.out.printf("  - Producto: %-40s Costo: $%-10s%n",
+                            rs.getString("Descripcion"),
+                            rs.getString("Costo"));
                 }
-    
-                if (firstRow) {  // Esto significa que no se encontraron registros
+
+                if (firstRow) { // Esto significa que no se encontraron registros
                     System.out.println("No se encontraron registros.");
                 }
             }
         }
     }
-    
 
-    public static void precioUniformes( String nivel_educativo) throws SQLException {
+    public static void precioUniformes(String nivel_educativo) throws SQLException {
         // Consulta 9
         String sql = "SELECT DATE_FORMAT(pe.añoInicio, '%d-%m-%y' ) as Fecha_de_Inicio_del_Periodo_Escolar, " +
-                     "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
-                     "ne.nombre as Nivel, " +
-                     "g.nombre as Grado, " +
-                     "tu.descripcion as Descripcion, " +
-                     "tu.precio as Precio " +
-                     "FROM tipo_de_uniforme as tu " +
-                     "INNER JOIN uni_periodo as up on up.tipo_de_uniforme = tu.numero " +
-                     "INNER JOIN periodo as pe on pe.numero = up.periodo " +
-                     "INNER JOIN nivel_educativo as ne on ne.codigo = tu.nivel_educativo " +
-                     "INNER JOIN grado as g on g.nivel_educativo = ne.codigo " +
-                     "WHERE pe.numero = ? and ne.codigo = ?";
-    
+                "DATE_FORMAT(pe.añoFin, '%d-%m-%y' ) as Fecha_Final_del_Periodo_Escolar, " +
+                "ne.nombre as Nivel, " +
+                "g.nombre as Grado, " +
+                "tu.descripcion as Descripcion, " +
+                "tu.precio as Precio " +
+                "FROM tipo_de_uniforme as tu " +
+                "INNER JOIN uni_periodo as up on up.tipo_de_uniforme = tu.numero " +
+                "INNER JOIN periodo as pe on pe.numero = up.periodo " +
+                "INNER JOIN nivel_educativo as ne on ne.codigo = tu.nivel_educativo " +
+                "INNER JOIN grado as g on g.nivel_educativo = ne.codigo " +
+                "WHERE pe.numero = ? and ne.codigo = ?";
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+
             stmt.setInt(1, 4);
             stmt.setString(2, nivel_educativo);
-    
+
             try (ResultSet rs = stmt.executeQuery()) {
                 boolean firstRow = true;
-    
+
                 System.out.println("┌───────────────────────────────────────────────────────────────┐");
                 System.out.println("                      PRECIO DE LOS UNIFORMES ");
                 System.out.println("└───────────────────────────────────────────────────────────────┘");
-    
+
                 while (rs.next()) {
                     if (firstRow) {
                         System.out.println("┌───────────────────────────────────────────────────────────────┐");
-                        System.out.println("  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
+                        System.out.println(
+                                "  Inicio del Periodo: " + rs.getString("Fecha_de_Inicio_del_Periodo_Escolar"));
                         System.out.println("  Final del Periodo: " + rs.getString("Fecha_Final_del_Periodo_Escolar"));
                         System.out.println("  Nivel Educativo: " + rs.getString("Nivel"));
                         System.out.println("└───────────────────────────────────────────────────────────────┘");
                         System.out.println();
-                        firstRow = false;  // Asegura que esta información solo se imprima una vez
+                        firstRow = false; // Asegura que esta información solo se imprima una vez
                     }
-    
+
                     System.out.println("┌───────────────────────────────────────────────────────────────┐");
                     System.out.println("  Grado: " + rs.getString("Grado"));
                     System.out.println("  Descripcion: " + rs.getString("Descripcion"));
@@ -958,8 +979,8 @@ System.out.println("    - Teléfono: (664) 123-9212");
                     System.out.println("└───────────────────────────────────────────────────────────────┘");
                     System.out.println();
                 }
-    
-                if (firstRow) {  // Esto significa que no se encontraron registros
+
+                if (firstRow) { // Esto significa que no se encontraron registros
                     System.out.println("No se encontraron registros.");
                 }
             }
@@ -968,7 +989,7 @@ System.out.println("    - Teléfono: (664) 123-9212");
             throw e;
         }
     }
-    
+
     public static void consultarCostoMantenimiento() {
         String sql = "SELECT " +
                 "p.nombre as Periodo, " +
@@ -981,9 +1002,9 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 "mantenimiento AS m " +
                 "INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo " +
                 "INNER JOIN periodo AS p ON mp.periodo = p.numero " +
-    
+
                 "UNION ALL " +
-    
+
                 "SELECT " +
                 "p.nombre as Periodo, " +
                 "NULL AS Fecha_de_inicio_del_periodo_escolar, " +
@@ -996,16 +1017,16 @@ System.out.println("    - Teléfono: (664) 123-9212");
                 "INNER JOIN man_ped AS mp ON mp.mantenimiento = m.codigo " +
                 "INNER JOIN periodo AS p ON mp.periodo = p.numero " +
                 "GROUP BY p.numero";
-    
+
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-    
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
             boolean hasData = false;
-    
+
             while (rs.next()) {
                 String periodo = rs.getString("Periodo");
-    
+
                 if (rs.getString("Concepto_del_mantenimiento").equals("Total")) {
                     System.out.println("┌───────────────────────────────────────────────────────────────┐");
                     System.out.println("  Total del " + periodo + ": " + rs.getString("Total_del_periodo"));
@@ -1021,7 +1042,7 @@ System.out.println("    - Teléfono: (664) 123-9212");
                     hasData = true;
                 }
             }
-    
+
             if (!hasData) {
                 System.out.println("No se encontraron registros.");
             }
@@ -1029,7 +1050,6 @@ System.out.println("    - Teléfono: (664) 123-9212");
             e.printStackTrace();
         }
     }
-    
 
     public static String pagarMensualidad(String matricula, String mes, String nivelE) throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
@@ -1106,18 +1126,18 @@ System.out.println("    - Teléfono: (664) 123-9212");
 
         // Crear el objeto Pago
         Pago pago = new Pago(referencia, fechaPago, nivelE, periodo, alumno, monto, tpPaqueteDeMaterial,
-        tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
-        tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
+                tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
+                tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
 
-// Asignar detalles del pago
-pago.setTPdescripcion(tpDescripcion);
-pago.setTPinscripcion(tpInscripcion);
-pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
-pago.setTPexamen(tpExamen);
-pago.setTPmensualidad(tpMensualidad);
-pago.setTPevento(tpEvento);
-pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
-pago.setEstado("pendiente");
+        // Asignar detalles del pago
+        pago.setTPdescripcion(tpDescripcion);
+        pago.setTPinscripcion(tpInscripcion);
+        pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
+        pago.setTPexamen(tpExamen);
+        pago.setTPmensualidad(tpMensualidad);
+        pago.setTPevento(tpEvento);
+        pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
+        pago.setEstado("pendiente");
 
         // No se asignaron los demás detalles del pago porque no son necesarios según el
         // caso dado.
@@ -1133,6 +1153,10 @@ pago.setEstado("pendiente");
             // Registrar el pago
             try {
                 pagoDAO.registrarPago(pago);
+
+                System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
+
+                System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
             } catch (SQLException e) {
                 System.err.println("Error al registrar el pago: " + e.getMessage());
             }
@@ -1141,6 +1165,7 @@ pago.setEstado("pendiente");
             return null;
         }
     }
+
     public static String pagarExamen(String matricula, int TipoExam, String nivel_educativo) throws SQLException {
         PagoDAO pagoDAO = new PagoDAO();
         Scanner sc = new Scanner(System.in);
@@ -1161,48 +1186,48 @@ pago.setEstado("pendiente");
         switch (TipoExam) {
             case 1:
                 monto = 50.0;
-                tpExamen="EX_PAR";
+                tpExamen = "EX_PAR";
                 tpDescripcion = "Examen Parcial";
                 break;
             case 2:
                 monto = 60.0;
-                tpExamen="EX_REM";
+                tpExamen = "EX_REM";
                 tpDescripcion = "Examen Remedial";
                 break;
             case 3:
                 monto = 70.0;
-                tpExamen="EX_EXT";
+                tpExamen = "EX_EXT";
                 tpDescripcion = "Examen Extraordinario";
                 break;
             case 4:
                 monto = 80.0;
-                tpExamen="EX_DIAG";
+                tpExamen = "EX_DIAG";
                 tpDescripcion = "Examen Diagnostico";
                 break;
             case 5:
                 monto = 90.0;
-                tpExamen="EX_ING";
+                tpExamen = "EX_ING";
                 tpDescripcion = "Examen Ingles";
                 break;
             default:
                 System.out.println("Error en el proceso");
                 sc.close();
                 return null;
-                }
+        }
 
         // Crear el objeto Pago
         Pago pago = new Pago(referencia, fechaPago, nivel_educativo, periodo, alumno, monto, tpPaqueteDeMaterial,
-        tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
-        tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
+                tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
+                tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
 
-pago.setTPdescripcion(tpDescripcion);
-pago.setTPinscripcion(tpInscripcion);
-pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
-pago.setTPexamen(tpExamen);
-pago.setTPmensualidad(tpMensualidad);
-pago.setTPevento(tpEvento);
-pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
-pago.setEstado("pendiente");
+        pago.setTPdescripcion(tpDescripcion);
+        pago.setTPinscripcion(tpInscripcion);
+        pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
+        pago.setTPexamen(tpExamen);
+        pago.setTPmensualidad(tpMensualidad);
+        pago.setTPevento(tpEvento);
+        pago.setTPpaquete_de_material(tpPaqueteDeMaterial);
+        pago.setEstado("pendiente");
 
         // No se asignaron los demás detalles del pago porque no son necesarios según el
         // caso dado.
@@ -1218,6 +1243,8 @@ pago.setEstado("pendiente");
             // Registrar el pago
             try {
                 pagoDAO.registrarPago(pago);
+
+                System.out.println("Referencia generada exitosamente, gracias por usar PayTECH!");
             } catch (SQLException e) {
                 System.err.println("Error al registrar el pago: " + e.getMessage());
             }
@@ -1228,4 +1255,3 @@ pago.setEstado("pendiente");
         }
     }
 }
-
