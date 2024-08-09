@@ -4,10 +4,7 @@ import Logica.*;
 import java.sql.*;
 import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.time.LocalDate;
 import java.time.Period;
@@ -369,75 +366,72 @@ public class AlumnoDAO {
                 "CONCAT(a.primerApellido, ' ', a.segApellido, ' ', a.nombrePila) as Alumno, " +
                 "a.edad as Edad, " +
                 "DATE_FORMAT(a.fechaNac, '%d-%m-%y') as Fecha_Nacimiento, " +
+                "CONCAT(a.dirCalle, ' ', a.dirNumero, ' ', a.dirColonia) as Direccion, " +
                 "CONCAT(t.primerApellido, ' ', t.segApellido, ' ', t.nombrePila) as Tutor, " +
-                "t.numTel as Numero_de_Telefono, " +
-                "CONCAT(a.dirCalle, ' ', a.dirNumero, ' ', a.dirColonia) as Direccion " +
+                "t.numTel as Numero_de_Telefono " +
                 "FROM alumno as a " +
                 "LEFT JOIN tutor_alumno as ta ON ta.alumno = a.matricula " +
                 "LEFT JOIN tutor as t ON t.numero = ta.tutor " +
-                "WHERE a.category = 'user'";
-
+                "WHERE a.category = 'user' " +
+                "ORDER BY a.matricula, t.primerApellido";
+    
         String countSql = "SELECT COUNT(*) as TotalAlumnos FROM alumno WHERE category = 'user'";
-
+    
         try (Connection conn = DatabaseConnection.getConnection();
-                PreparedStatement stmt = conn.prepareStatement(sql);
-                ResultSet rs = stmt.executeQuery();
-                PreparedStatement countStmt = conn.prepareStatement(countSql);
-                ResultSet countRs = countStmt.executeQuery()) {
-
-            Map<String, List<String>> alumnos = new HashMap<>();
-
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery();
+             PreparedStatement countStmt = conn.prepareStatement(countSql);
+             ResultSet countRs = countStmt.executeQuery()) {
+    
+            String currentMatricula = "";
+            StringBuilder output = new StringBuilder();
+    
             while (rs.next()) {
                 String matricula = rs.getString("Matricula");
-                String nombreCompleto = rs.getString("Alumno");
-                int edad = rs.getInt("Edad");
-                String fechaNac = rs.getString("Fecha_Nacimiento");
-                String direccionCompleta = rs.getString("Direccion");
-
+    
+                if (!matricula.equals(currentMatricula)) {
+                    if (!currentMatricula.isEmpty()) {
+                        output.append("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+                    }
+    
+                    currentMatricula = matricula;
+                    String nombreCompleto = rs.getString("Alumno");
+                    int edad = rs.getInt("Edad");
+                    String fechaNac = rs.getString("Fecha_Nacimiento");
+                    String direccionCompleta = rs.getString("Direccion");
+    
+                    output.append("╔═════════════════════════════════════════════════════════════════════════════════════════════════════════════╗\n");
+                    output.append(String.format("║ %-10s │ %-30s │ %3d │ %-12s │ %-40s ║\n", 
+                                                   matricula, nombreCompleto, edad, fechaNac, direccionCompleta));
+                }
+    
                 String tutor = rs.getString("Tutor");
                 String numTel = rs.getString("Numero_de_Telefono");
-
-                String alumnoInfo = "Nombre: " + nombreCompleto + "\n" +
-                        "Edad: " + edad + "\n" +
-                        "Fecha de Nacimiento: " + fechaNac + "\n" +
-                        "Direccion: " + direccionCompleta;
-
-                String tutorInfo = "Tutor: " + tutor + "\n" +
-                        "Telefono: " + numTel;
-
-                if (!alumnos.containsKey(matricula)) {
-                    alumnos.put(matricula, new ArrayList<>(Arrays.asList(alumnoInfo)));
+    
+                if (tutor != null && !tutor.trim().isEmpty()) {
+                    output.append(String.format("║ %-10s │ %-30s │ %-61s ║\n", "", "Tutor",tutor, numTel));
                 }
-                alumnos.get(matricula).add(tutorInfo);
             }
-
-            if (alumnos.isEmpty()) {
+    
+            if (!currentMatricula.isEmpty()) {
+                output.append("╚═════════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n");
+            }
+    
+            if (output.length() == 0) {
                 System.out.println("No se encontró información de alumnos.");
             } else {
-                for (Map.Entry<String, List<String>> entry : alumnos.entrySet()) {
-                    System.out.println("╔══════════════════════════════════════════════╗");
-                    System.out.println("║               Información del Alumno         ║");
-                    System.out.println("╚══════════════════════════════════════════════╝");
-                    System.out.println("Matricula: " + entry.getKey());
-                    System.out.println(entry.getValue().get(0));
-
-                    for (int i = 1; i < entry.getValue().size(); i++) {
-                        System.out.println(entry.getValue().get(i));
-                    }
-                    System.out.println("└──────────────────────────────────────────────┘");
+                System.out.print(output.toString());
+    
+                if (countRs.next()) {
+                    int totalAlumnos = countRs.getInt("TotalAlumnos");
+                    System.out.println("\nTotal de alumnos registrados: " + totalAlumnos);
                 }
-            }
-
-            if (countRs.next()) {
-                int totalAlumnos = countRs.getInt("TotalAlumnos");
-                System.out.println("Total de alumnos registrados: " + totalAlumnos);
             }
         } catch (SQLException e) {
             System.err.println("Error al consultar la información: " + e.getMessage());
             throw e;
         }
     }
-
     public static String obtenerNombrePorMatricula(String matricula) throws SQLException {
         String sql = "SELECT CONCAT(primerApellido, ' ', segApellido, ' ', nombrePila) AS nombreCompleto FROM alumno WHERE matricula = ?";
         try (Connection conn = DatabaseConnection.getConnection();

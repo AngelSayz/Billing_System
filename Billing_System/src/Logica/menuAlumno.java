@@ -5,6 +5,8 @@ import java.util.Scanner;
 import Persistencia.*;
 
 public class menuAlumno {
+    
+    public static final String BLUE_BRIGHT = "\033[0;94m"; 
     public static void menuPrincipal(String matricula) throws SQLException {
         Scanner sc = new Scanner(System.in);
         String nombreAlumno = AlumnoDAO.obtenerNombrePorMatricula(matricula);
@@ -12,7 +14,7 @@ public class menuAlumno {
 
         while (menuAlumno) {
             Valid.clear();
-            System.out.println("┌──────────────────────────────────────────────┐");
+            System.out.println(BLUE_BRIGHT+"┌──────────────────────────────────────────────┐");
             System.out.println("       Bienvenido, " + nombreAlumno + "!");
             System.out.println("└──────────────────────────────────────────────┘");
             System.out.println("╔══════════════════════════════════════════════╗");
@@ -162,12 +164,11 @@ public class menuAlumno {
             System.out.println("║ [2]- Eventos                              ║");
             System.out.println("║ [3]- Uniforme                             ║");
             System.out.println("║ [4]- Examen                               ║");
-            System.out.println("║ [5]- Material                             ║");
-            System.out.println("║ [6]- Mensualidad                          ║");
-            System.out.println("║ [7]- Informacion sobre los pagos          ║");
+            System.out.println("║ [5]- Mensualidad                          ║");
+            System.out.println("║ [6]- Informacion sobre los pagos          ║");
             System.out.println("║ [0]- Salir                                ║");
             System.out.println("╚═══════════════════════════════════════════╝");
-            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 7);
+            int respuesta = Valid.getValidIntMenu(sc, "Ingrese una opcion: ", 0, 6);
 
             switch (respuesta) {
                 case 0:
@@ -192,16 +193,11 @@ public class menuAlumno {
                     menuExamen(matricula);
                     break;
                 case 5:
-
-                    nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
-                    PagoDAO.precioUtiles(nivel_educativo);
-
-                case 6:
                     nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
                     menuMensualidad(matricula, nivel_educativo);
                     break;
 
-                case 7:
+                case 6:
                     System.out.println("--------Como realizar un pago--------");
                     System.out.println();
                     System.out.println("**Generar referencia:**");
@@ -362,7 +358,7 @@ public class menuAlumno {
     public static void menuExamen(String matricula) throws SQLException {
         Scanner sc = new Scanner(System.in);
         boolean realizarPago = true;
-
+        String nivel_educativo = AlumnoDAO.obtenerNivelEducativo(matricula);
         while (realizarPago) {
             System.out.println("╔═══════════════════════════════╗");
             System.out.println("║        LISTA DE EXÁMENES      ║");
@@ -381,23 +377,21 @@ public class menuAlumno {
                     realizarPago = false;
                     break;
                 case 1:
-                    // pagarInscripcion(matricula);
+                    PagoDAO.pagarExamen(matricula, respuesta, nivel_educativo);
                     break;
                 case 2:
-                    // pagarEvento(matricula);
+                    PagoDAO.pagarExamen(matricula, respuesta, nivel_educativo);
                     break;
                 case 3:
-                    // pagarUniforme(matricula);
+                    PagoDAO.pagarExamen(matricula, respuesta, nivel_educativo);
                     break;
                 case 4:
-                    // pagarExamen(matricula);
+                    PagoDAO.pagarExamen(matricula, respuesta, nivel_educativo);
                     break;
                 case 5:
-                    // pagarLibros(matricula);
+                    PagoDAO.pagarExamen(matricula, respuesta, nivel_educativo);
+                    
                     break;
-                case 6:
-                    // menuMensualidad(matricula);
-
                 default:
                     System.out.println("╔═════════════════════════════════════════════════════════╗");
                     System.out.println("║ Entrada inválida. Por favor, ingrese una opcion valida. ║");

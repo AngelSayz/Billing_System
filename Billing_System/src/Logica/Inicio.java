@@ -5,10 +5,12 @@ import java.util.Scanner;
 import Persistencia.AlumnoDAO;
 
 public class Inicio {
+    
+    public static final String GREEN = "\033[0;32m";
     public static void iniciarSesion() {
         Scanner sc = new Scanner(System.in);
         AlumnoDAO alumnoDAO = new AlumnoDAO();
-        System.out.println("╔══════════════════════════════════════════════╗");
+        System.out.println(GREEN+"╔══════════════════════════════════════════════╗");
         System.out.println("║       BIENVENIDO AL SISTEMA DE PAGOS         ║");
         System.out.println("╚══════════════════════════════════════════════╝");
         boolean loginExitoso = false;

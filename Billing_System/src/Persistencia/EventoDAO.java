@@ -103,7 +103,6 @@ public static String pagarEvento(String matricula, int numEvento, String nivelE)
         PagoDAO pagoDAO = new PagoDAO();
         // ----------------------------
         String tpInscripcion = null;
-        String tpPaqueteDeLibros = null;
         int tpPaqueteDeUniforme = 0;
         String tpExamen = null;
         String tpMensualidad = null;
@@ -153,11 +152,10 @@ public static String pagarEvento(String matricula, int numEvento, String nivelE)
         }
 
         Pago pago = new Pago(referencia, fechaPago, nivel_educativo, periodo, alumno, monto, tpPaqueteDeMaterial,
-                tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
+                tpEvento, tpPaqueteDeMaterial, tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial,
                 tpPaqueteDeMaterial, tpEvento, tpPaqueteDeMaterial);
         pago.setTPdescripcion(tpDescripcion);
         pago.setTPinscripcion(tpInscripcion);
-        pago.setTPpaquete_de_libros(tpPaqueteDeLibros);
         pago.setTPpaquete_de_uniforme(tpPaqueteDeUniforme);
         pago.setTPexamen(tpExamen);
         pago.setTPmensualidad(tpMensualidad);

@@ -22,7 +22,7 @@ public class Pago {
 
 
     public Pago(String referencia, String fecha, String nivel_educativo, int periodo, String alumno, double monto,
-            String estado, int tPnumero, String tPdescripcion, String tPinscripcion, String tPpaquete_de_libros,
+            String estado, int tPnumero, String tPdescripcion, String tPinscripcion, 
             int tPpaquete_de_uniforme, String tPexamen, String tPmensualidad, int tPevento,
             String tPpaquete_de_material) {
         this.referencia = referencia;
@@ -35,21 +35,18 @@ public class Pago {
         TPnumero = tPnumero;
         TPdescripcion = tPdescripcion;
         TPinscripcion = tPinscripcion;
-        TPpaquete_de_libros = tPpaquete_de_libros;
         TPpaquete_de_uniforme = tPpaquete_de_uniforme;
         TPexamen = tPexamen;
         TPmensualidad = tPmensualidad;
         TPevento = tPevento;
         TPpaquete_de_material = tPpaquete_de_material;
     }
+
     public Pago(String string, String string2, String string3, double double1, String string4, String string5,
             String string6) {
         //TODO Auto-generated constructor stub
     }
-    public Pago(String referencia2, String fechaPago, double monto2, String string, int periodo2, String alumno2,
-            String string2) {
-        //TODO Auto-generated constructor stub
-    }
+
     public String getReferencia() {
         return referencia;
     }
